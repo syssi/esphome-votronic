@@ -1,0 +1,69 @@
+substitutions:
+  name: votronic
+  device_description: "Monitor a votronic device via BLE"
+  external_components_source: github://syssi/esphome-votronic@main
+  mac_address: 60:A4:23:91:8F:55
+
+esphome:
+  name: ${name}
+  comment: ${device_description}
+  project:
+    name: "syssi.esphome-votronic"
+    version: 1.0.0
+
+esp32:
+  board: wemos_d1_mini32
+  framework:
+    type: esp-idf
+    version: latest
+
+external_components:
+  - source: ${external_components_source}
+    refresh: 0s
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+ota:
+logger:
+
+# If you don't use Home Assistant please remove this `api` section and uncomment the `mqtt` component!
+api:
+
+# The MQTT component is ESP-IDF compatible since ESPHome version 2022.4.0. If
+# ESPHome suggests to use the arduino framework instead because of missing ESP-IDF
+# framework support you should update your setup.
+# mqtt:
+#   broker: !secret mqtt_host
+#   username: !secret mqtt_username
+#   password: !secret mqtt_password
+#   id: mqtt_client
+
+esp32_ble_tracker:
+  io_capability: keyboard_only
+
+ble_client:
+  - mac_address: ${mac_address}
+    id: client0
+    pin_code: 173928
+
+votronic_ble:
+  - ble_client_id: client0
+    id: votronic0
+    throttle: 5s
+
+sensor:
+  - platform: votronic_ble
+    votronic_ble_id: votronic0
+    total_voltage:
+      name: "${name} total voltage"
+    current:
+      name: "${name} current"
+    power:
+      name: "${name} power"
+
+switch:
+  - platform: ble_client
+    ble_client_id: client0
+    name: "${name} enable bluetooth connection"

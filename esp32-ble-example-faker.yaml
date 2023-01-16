@@ -1,0 +1,7 @@
+<<: !include esp32-ble-example-debug.yaml
+
+votronic_ble:
+  - ble_client_id: client0
+    id: votronic0
+    update_interval: 1s
+    enable_fake_traffic: true
