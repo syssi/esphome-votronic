@@ -188,9 +188,22 @@ void VotronicBle::dump_config() {
   ESP_LOGCONFIG(TAG, "  Photovoltaic Characteristic UUID : %s", this->char_photovoltaic_uuid_.to_string().c_str());
   ESP_LOGCONFIG(TAG, "  Fake traffic enabled: %s", YESNO(this->enable_fake_traffic_));
 
-  LOG_SENSOR("", "Total voltage", this->total_voltage_sensor_);
+  LOG_SENSOR("", "Battery voltage", this->battery_voltage_sensor_);
+  LOG_SENSOR("", "Secondary battery voltage", this->secondary_battery_voltage_sensor_);
+  LOG_SENSOR("", "Battery capacity", this->battery_capacity_sensor_);
+  LOG_SENSOR("", "State of charge", this->state_of_charge_sensor_);
   LOG_SENSOR("", "Current", this->current_sensor_);
-  LOG_SENSOR("", "Power", this->power_sensor_);
+  LOG_SENSOR("", "Battery nominal capacity", this->battery_nominal_capacity_sensor_);
+  LOG_SENSOR("", "PV voltage", this->pv_voltage_sensor_);
+  LOG_SENSOR("", "PV current", this->pv_current_sensor_);
+  LOG_SENSOR("", "Battery status bitmask", this->battery_status_bitmask_sensor_);
+  LOG_SENSOR("", "Controller status bitmask", this->controller_status_bitmask_sensor_);
+  LOG_SENSOR("", "Charged capacity", this->charged_capacity_sensor_);
+  LOG_SENSOR("", "Charged energy", this->charged_energy_sensor_);
+  LOG_SENSOR("", "PV power", this->pv_power_sensor_);
+
+  LOG_TEXT_SENSOR("", "Battery status", this->battery_status_text_sensor_);
+  LOG_TEXT_SENSOR("", "Controller Status", this->controller_status_text_sensor_);
 }
 
 void VotronicBle::publish_state_(sensor::Sensor *sensor, float value) {
