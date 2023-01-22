@@ -137,14 +137,14 @@ void VotronicBle::decode_photovoltaic_data_(const std::vector<uint8_t> &data) {
   // Bit0: Standby
   // Bit1: Active
   // Bit2: Reduce
-  ESP_LOGD(TAG, "  Controller status bitmask? (Byte 12): %d (0x%02X) (9: Active, 25?: Standby, 2?: Reduce)", data[12],
+  ESP_LOGD(TAG, "  Controller status bitmask? (Byte 12): %d (0x%02X) (8/9: Active, 25?: Standby, 2?: Reduce)", data[12],
            data[12]);
   ESP_LOGI(TAG, "  Charged capacity: %d Ah", votronic_get_16bit(13));
   ESP_LOGI(TAG, "  Charged energy: %d Wh", votronic_get_16bit(15) * 10);
   ESP_LOGD(TAG, "  PV power? (Byte 16): %d W? (0x%02X)", data[16], data[16]);
   ESP_LOGD(TAG, "  PV power? (Byte 17): %d W? (0x%02X)", data[17], data[17]);
   ESP_LOGD(TAG, "  PV power? (Byte 18): %d W? (0x%02X)", data[18], data[18]);
-  ESP_LOGI(TAG, "  PV power? (Bytes 17-18: %f W", votronic_get_16bit(17));
+  ESP_LOGI(TAG, "  PV power? (Bytes 17-18: %d W", votronic_get_16bit(17));
 }
 
 void VotronicBle::decode_battery_data_(const std::vector<uint8_t> &data) {
