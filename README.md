@@ -64,7 +64,22 @@ TODO: Explain how to pair the ESP with the Votronic Bluetooth Connector.
 ## Example response all sensors enabled
 
 ```
-TBD.
+# Battery computer
+[sensor:127]: 'votronic battery voltage': Sending state 12.56000 V with 2 decimals of accuracy
+[sensor:127]: 'votronic secondary battery voltage': Sending state 12.15000 V with 2 decimals of accuracy
+[sensor:127]: 'votronic battery capacity': Sending state 265.00000 Ah with 0 decimals of accuracy
+[sensor:127]: 'votronic state of charge': Sending state 95.00000 % with 0 decimals of accuracy
+[sensor:127]: 'votronic current': Sending state -0.35800 A with 3 decimals of accuracy
+[sensor:127]: 'votronic battery nominal capacity': Sending state 280.00000 Ah with 1 decimals of accuracy
+[sensor:127]: 'votronic battery voltage': Sending state 12.56000 V with 2 decimals of accuracy
+# Solar charger
+[sensor:127]: 'votronic pv voltage': Sending state 13.98000 V with 2 decimals of accuracy
+[sensor:127]: 'votronic pv current': Sending state 0.00000 A with 2 decimals of accuracy
+[sensor:127]: 'votronic battery status bitmask': Sending state 0.00000  with 0 decimals of accuracy
+[sensor:127]: 'votronic controller status bitmask': Sending state 9.00000  with 0 decimals of accuracy
+[sensor:127]: 'votronic charged capacity': Sending state 24.00000 Ah with 0 decimals of accuracy
+[sensor:127]: 'votronic charged energy': Sending state 340.00000 Wh with 0 decimals of accuracy
+[sensor:127]: 'votronic pv power': Sending state 0.00000 W with 0 decimals of accuracy
 ```
 
 ## Protocol

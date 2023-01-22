@@ -56,6 +56,7 @@ votronic_ble:
 sensor:
   - platform: votronic_ble
     votronic_ble_id: votronic0
+    # Battery computer
     battery_voltage:
       name: "${name} battery voltage"
     secondary_battery_voltage:
@@ -68,6 +69,8 @@ sensor:
       name: "${name} current"
     battery_nominal_capacity:
       name: "${name} battery nominal capacity"
+
+    # Solar charger
     pv_voltage:
       name: "${name} pv voltage"
     pv_current:
