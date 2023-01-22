@@ -61,13 +61,6 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
       break;
     }
     case ESP_GATTC_NOTIFY_EVT: {
-      if (param->notify.handle != this->char_battery_handle_ &&
-          param->notify.handle != this->char_photovoltaic_handle_) {
-        ESP_LOGD(TAG, "Notification skipped (handle %d): %s", param->notify.handle,
-                 format_hex_pretty(param->notify.value, param->notify.value_len).c_str());
-        break;
-      }
-
       ESP_LOGVV(TAG, "Notification received (handle %d): %s", param->notify.handle,
                 format_hex_pretty(param->notify.value, param->notify.value_len).c_str());
 
@@ -112,12 +105,12 @@ void VotronicBle::on_votronic_ble_data_(const uint8_t &handle, const std::vector
     return;
   }
 
-  ESP_LOGW(TAG, "Unhandled response received: %s", format_hex_pretty(&data.front(), data.size()).c_str());
+  ESP_LOGW(TAG, "Unhandled frame received: %s", format_hex_pretty(&data.front(), data.size()).c_str());
 }
 
 void VotronicBle::decode_photovoltaic_data_(const std::vector<uint8_t> &data) {
   if (data.size() != 19) {
-    ESP_LOGW(TAG, "Invalid response size: %zu", data.size());
+    ESP_LOGW(TAG, "Invalid frame size: %zu", data.size());
     return;
   }
 
@@ -155,7 +148,7 @@ void VotronicBle::decode_photovoltaic_data_(const std::vector<uint8_t> &data) {
 
 void VotronicBle::decode_battery_data_(const std::vector<uint8_t> &data) {
   if (data.size() != 20) {
-    ESP_LOGW(TAG, "Invalid response size: %zu", data.size());
+    ESP_LOGW(TAG, "Invalid frame size: %zu", data.size());
     return;
   }
 
