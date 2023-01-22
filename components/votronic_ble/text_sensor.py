@@ -9,30 +9,30 @@ DEPENDENCIES = ["votronic_ble"]
 
 CODEOWNERS = ["@syssi"]
 
-CONF_ERRORS = "errors"
-CONF_OPERATION_STATUS = "operation_status"
+CONF_BATTERY_STATUS = "battery_status"
+CONF_CONTROLLER_STATUS = "controller_status"
 
-ICON_ERRORS = "mdi:alert-circle-outline"
-ICON_OPERATION_STATUS = "mdi:heart-pulse"
+ICON_BATTERY_STATUS = "mdi:alert-circle-outline"
+ICON_CONTROLLER_STATUS = "mdi:heart-pulse"
 
 TEXT_SENSORS = [
-    CONF_ERRORS,
-    CONF_OPERATION_STATUS,
+    CONF_BATTERY_STATUS,
+    CONF_CONTROLLER_STATUS,
 ]
 
 CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(CONF_VOTRONIC_BLE_ID): cv.use_id(VotronicBle),
-        cv.Optional(CONF_ERRORS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
+        cv.Optional(CONF_BATTERY_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
             {
                 cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default=ICON_ERRORS): cv.icon,
+                cv.Optional(CONF_ICON, default=ICON_BATTERY_STATUS): cv.icon,
             }
         ),
-        cv.Optional(CONF_OPERATION_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
+        cv.Optional(CONF_CONTROLLER_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
             {
                 cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default=ICON_OPERATION_STATUS): cv.icon,
+                cv.Optional(CONF_ICON, default=ICON_CONTROLLER_STATUS): cv.icon,
             }
         ),
     }

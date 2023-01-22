@@ -28,17 +28,14 @@ wifi:
 ota:
 logger:
 
-# If you don't use Home Assistant please remove this `api` section and uncomment the `mqtt` component!
-api:
+# If you use Home Assistant please remove this `mqtt` section and uncomment the native `api` component!
+# api:
 
-# The MQTT component is ESP-IDF compatible since ESPHome version 2022.4.0. If
-# ESPHome suggests to use the arduino framework instead because of missing ESP-IDF
-# framework support you should update your setup.
-# mqtt:
-#   broker: !secret mqtt_host
-#   username: !secret mqtt_username
-#   password: !secret mqtt_password
-#   id: mqtt_client
+mqtt:
+  broker: !secret mqtt_host
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  id: mqtt_client
 
 esp32_ble_tracker:
   io_capability: keyboard_only
@@ -56,12 +53,43 @@ votronic_ble:
 sensor:
   - platform: votronic_ble
     votronic_ble_id: votronic0
-    total_voltage:
-      name: "${name} total voltage"
+    # Battery computer
+    battery_voltage:
+      name: "${name} battery voltage"
+    secondary_battery_voltage:
+      name: "${name} secondary battery voltage"
+    battery_capacity:
+      name: "${name} battery capacity"
+    state_of_charge:
+      name: "${name} state of charge"
     current:
       name: "${name} current"
-    power:
-      name: "${name} power"
+    battery_nominal_capacity:
+      name: "${name} battery nominal capacity"
+
+    # Solar charger
+    pv_voltage:
+      name: "${name} pv voltage"
+    pv_current:
+      name: "${name} pv current"
+    battery_status_bitmask:
+      name: "${name} battery status bitmask"
+    controller_status_bitmask:
+      name: "${name} controller status bitmask"
+    charged_capacity:
+      name: "${name} charged capacity"
+    charged_energy:
+      name: "${name} charged energy"
+    pv_power:
+      name: "${name} pv power"
+
+text_sensor:
+  - platform: votronic_ble
+    votronic_ble_id: votronic0
+    battery_status:
+      name: "${name} battery status"
+    controller_status:
+      name: "${name} controller status"
 
 switch:
   - platform: ble_client

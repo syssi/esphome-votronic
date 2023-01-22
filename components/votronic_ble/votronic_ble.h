@@ -24,24 +24,65 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   void update() override;
   float get_setup_priority() const override { return setup_priority::DATA; }
 
-  void set_total_voltage_sensor(sensor::Sensor *total_voltage_sensor) { total_voltage_sensor_ = total_voltage_sensor; }
-  void set_current_sensor(sensor::Sensor *current_sensor) { current_sensor_ = current_sensor; }
-  void set_power_sensor(sensor::Sensor *power_sensor) { power_sensor_ = power_sensor; }
-
-  void set_operation_status_text_sensor(text_sensor::TextSensor *operation_status_text_sensor) {
-    operation_status_text_sensor_ = operation_status_text_sensor;
+  void set_battery_voltage_sensor(sensor::Sensor *battery_voltage_sensor) {
+    battery_voltage_sensor_ = battery_voltage_sensor;
   }
-  void set_errors_text_sensor(text_sensor::TextSensor *errors_text_sensor) { errors_text_sensor_ = errors_text_sensor; }
+  void set_secondary_battery_voltage_sensor(sensor::Sensor *secondary_battery_voltage_sensor) {
+    secondary_battery_voltage_sensor_ = secondary_battery_voltage_sensor;
+  }
+  void set_battery_capacity_sensor(sensor::Sensor *battery_capacity_sensor) {
+    battery_capacity_sensor_ = battery_capacity_sensor;
+  }
+  void set_state_of_charge_sensor(sensor::Sensor *state_of_charge_sensor) {
+    state_of_charge_sensor_ = state_of_charge_sensor;
+  }
+  void set_current_sensor(sensor::Sensor *current_sensor) { current_sensor_ = current_sensor; }
+  void set_battery_nominal_capacity_sensor(sensor::Sensor *battery_nominal_capacity_sensor) {
+    battery_nominal_capacity_sensor_ = battery_nominal_capacity_sensor;
+  }
+  void set_pv_voltage_sensor(sensor::Sensor *pv_voltage_sensor) { pv_voltage_sensor_ = pv_voltage_sensor; }
+  void set_pv_current_sensor(sensor::Sensor *pv_current_sensor) { pv_current_sensor_ = pv_current_sensor; }
+  void set_battery_status_bitmask_sensor(sensor::Sensor *battery_status_bitmask_sensor) {
+    battery_status_bitmask_sensor_ = battery_status_bitmask_sensor;
+  }
+  void set_controller_status_bitmask_sensor(sensor::Sensor *controller_status_bitmask_sensor) {
+    controller_status_bitmask_sensor_ = controller_status_bitmask_sensor;
+  }
+  void set_charged_capacity_sensor(sensor::Sensor *charged_capacity_sensor) {
+    charged_capacity_sensor_ = charged_capacity_sensor;
+  }
+  void set_charged_energy_sensor(sensor::Sensor *charged_energy_sensor) {
+    charged_energy_sensor_ = charged_energy_sensor;
+  }
+  void set_pv_power_sensor(sensor::Sensor *pv_power_sensor) { pv_power_sensor_ = pv_power_sensor; }
+
+  void set_battery_status_text_sensor(text_sensor::TextSensor *battery_status_text_sensor) {
+    battery_status_text_sensor_ = battery_status_text_sensor;
+  }
+  void set_controller_status_text_sensor(text_sensor::TextSensor *controller_status_text_sensor) {
+    controller_status_text_sensor_ = controller_status_text_sensor;
+  }
+
   void set_throttle(uint16_t throttle) { this->throttle_ = throttle; }
   void set_enable_fake_traffic(bool enable_fake_traffic) { enable_fake_traffic_ = enable_fake_traffic; }
 
  protected:
-  sensor::Sensor *total_voltage_sensor_;
+  sensor::Sensor *battery_voltage_sensor_;
+  sensor::Sensor *secondary_battery_voltage_sensor_;
+  sensor::Sensor *battery_capacity_sensor_;
+  sensor::Sensor *state_of_charge_sensor_;
   sensor::Sensor *current_sensor_;
-  sensor::Sensor *power_sensor_;
+  sensor::Sensor *battery_nominal_capacity_sensor_;
+  sensor::Sensor *pv_voltage_sensor_;
+  sensor::Sensor *pv_current_sensor_;
+  sensor::Sensor *battery_status_bitmask_sensor_;
+  sensor::Sensor *controller_status_bitmask_sensor_;
+  sensor::Sensor *charged_capacity_sensor_;
+  sensor::Sensor *charged_energy_sensor_;
+  sensor::Sensor *pv_power_sensor_;
 
-  text_sensor::TextSensor *operation_status_text_sensor_;
-  text_sensor::TextSensor *errors_text_sensor_;
+  text_sensor::TextSensor *battery_status_text_sensor_;
+  text_sensor::TextSensor *controller_status_text_sensor_;
 
   uint16_t char_battery_handle_;
   uint16_t char_photovoltaic_handle_;
