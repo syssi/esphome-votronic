@@ -67,19 +67,19 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   void set_enable_fake_traffic(bool enable_fake_traffic) { enable_fake_traffic_ = enable_fake_traffic; }
 
  protected:
-  sensor::Sensor *battery_voltage_;
-  sensor::Sensor *secondary_battery_voltage_;
-  sensor::Sensor *battery_capacity_;
-  sensor::Sensor *state_of_charge_;
-  sensor::Sensor *current_;
-  sensor::Sensor *battery_nominal_capacity_;
-  sensor::Sensor *pv_voltage_;
-  sensor::Sensor *pv_current_;
-  sensor::Sensor *battery_status_bitmask_;
-  sensor::Sensor *controller_status_bitmask_;
-  sensor::Sensor *charged_capacity_;
-  sensor::Sensor *charged_energy_;
-  sensor::Sensor *pv_power_;
+  sensor::Sensor *battery_voltage_sensor_;
+  sensor::Sensor *secondary_battery_voltage_sensor_;
+  sensor::Sensor *battery_capacity_sensor_;
+  sensor::Sensor *state_of_charge_sensor_;
+  sensor::Sensor *current_sensor_;
+  sensor::Sensor *battery_nominal_capacity_sensor_;
+  sensor::Sensor *pv_voltage_sensor_;
+  sensor::Sensor *pv_current_sensor_;
+  sensor::Sensor *battery_status_bitmask_sensor_;
+  sensor::Sensor *controller_status_bitmask_sensor_;
+  sensor::Sensor *charged_capacity_sensor_;
+  sensor::Sensor *charged_energy_sensor_;
+  sensor::Sensor *pv_power_sensor_;
 
   text_sensor::TextSensor *battery_status_text_sensor_;
   text_sensor::TextSensor *controller_status_text_sensor_;
