@@ -196,7 +196,7 @@ void VotronicBle::decode_photovoltaic_data_(const std::vector<uint8_t> &data) {
   ESP_LOGD(TAG, "  PV power? (Byte 16): %d W? (0x%02X)", data[16], data[16]);
   ESP_LOGD(TAG, "  PV power? (Byte 17): %d W? (0x%02X)", data[17], data[17]);
   ESP_LOGD(TAG, "  PV power? (Byte 18): %d W? (0x%02X)", data[18], data[18]);
-  ESP_LOGI(TAG, "  PV power? (Bytes 17-18: %d W", votronic_get_16bit(17));
+  ESP_LOGD(TAG, "  PV power? (Bytes 17-18: %d W", votronic_get_16bit(17));
 }
 
 void VotronicBle::dump_config() {
