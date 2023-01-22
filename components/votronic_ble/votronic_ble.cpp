@@ -108,6 +108,39 @@ void VotronicBle::on_votronic_ble_data_(const uint8_t &handle, const std::vector
   ESP_LOGW(TAG, "Unhandled frame received: %s", format_hex_pretty(&data.front(), data.size()).c_str());
 }
 
+void VotronicBle::decode_battery_data_(const std::vector<uint8_t> &data) {
+  if (data.size() != 20) {
+    ESP_LOGW(TAG, "Invalid frame size: %zu", data.size());
+    return;
+  }
+
+  const uint32_t now = millis();
+  if (now - this->last_battery_info_ < this->throttle_) {
+    return;
+  }
+  this->last_battery_info_ = now;
+
+  this->last_photovoltaic_info_ = now;
+  auto votronic_get_16bit = [&](size_t i) -> uint16_t {
+    return (uint16_t(data[i + 1]) << 8) | (uint16_t(data[i + 0]) << 0);
+  };
+
+  ESP_LOGI(TAG, "Battery data frame received");
+  ESP_LOGI(TAG, "  Primary battery voltage: %f V", votronic_get_16bit(0) * 0.01f);
+  ESP_LOGI(TAG, "  Secondary battery voltage: %f V", votronic_get_16bit(2) * 0.01f);
+  ESP_LOGI(TAG, "  Primary battery capacity: %d Ah", votronic_get_16bit(4));
+  ESP_LOGD(TAG, "  Unknown (Byte 6): %d (0x%02X)", data[6], data[6]);
+  ESP_LOGD(TAG, "  Unknown (Byte 7): %d (0x%02X)", data[7], data[7]);
+  ESP_LOGI(TAG, "  State of charge: %d %%", data[8]);
+  ESP_LOGD(TAG, "  Unknown (Byte 9): %d (0x%02X)", data[9], data[9]);
+  ESP_LOGI(TAG, "  Current: %f A", (float) ((int16_t) votronic_get_16bit(10)) * 0.001f);
+  ESP_LOGD(TAG, "  Unknown (Byte 12): %d (0x%02X)", data[12], data[12]);
+  ESP_LOGI(TAG, "  Primary battery nominal capacity: %f Ah", votronic_get_16bit(13) * 0.1f);
+  ESP_LOGD(TAG, "  Unknown (Byte 15): %d (0x%02X)", data[15], data[15]);
+  ESP_LOGD(TAG, "  Unknown (Byte 16-17): %d (0x%02X 0x%02X)", votronic_get_16bit(16), data[16], data[17]);
+  ESP_LOGD(TAG, "  Unknown (Byte 18-19): %d (0x%02X 0x%02X)", votronic_get_16bit(18), data[18], data[19]);
+}
+
 void VotronicBle::decode_photovoltaic_data_(const std::vector<uint8_t> &data) {
   if (data.size() != 19) {
     ESP_LOGW(TAG, "Invalid frame size: %zu", data.size());
@@ -145,39 +178,6 @@ void VotronicBle::decode_photovoltaic_data_(const std::vector<uint8_t> &data) {
   ESP_LOGD(TAG, "  PV power? (Byte 17): %d W? (0x%02X)", data[17], data[17]);
   ESP_LOGD(TAG, "  PV power? (Byte 18): %d W? (0x%02X)", data[18], data[18]);
   ESP_LOGI(TAG, "  PV power? (Bytes 17-18: %d W", votronic_get_16bit(17));
-}
-
-void VotronicBle::decode_battery_data_(const std::vector<uint8_t> &data) {
-  if (data.size() != 20) {
-    ESP_LOGW(TAG, "Invalid frame size: %zu", data.size());
-    return;
-  }
-
-  const uint32_t now = millis();
-  if (now - this->last_battery_info_ < this->throttle_) {
-    return;
-  }
-  this->last_battery_info_ = now;
-
-  this->last_photovoltaic_info_ = now;
-  auto votronic_get_16bit = [&](size_t i) -> uint16_t {
-    return (uint16_t(data[i + 1]) << 8) | (uint16_t(data[i + 0]) << 0);
-  };
-
-  ESP_LOGI(TAG, "Battery data frame received");
-  ESP_LOGI(TAG, "  Primary battery voltage: %f V", votronic_get_16bit(0) * 0.01f);
-  ESP_LOGI(TAG, "  Secondary battery voltage: %f V", votronic_get_16bit(2) * 0.01f);
-  ESP_LOGI(TAG, "  Primary battery capacity: %d Ah", votronic_get_16bit(4));
-  ESP_LOGD(TAG, "  Unknown (Byte 6): %d (0x%02X)", data[6], data[6]);
-  ESP_LOGD(TAG, "  Unknown (Byte 7): %d (0x%02X)", data[7], data[7]);
-  ESP_LOGI(TAG, "  State of charge: %d %%", data[8]);
-  ESP_LOGD(TAG, "  Unknown (Byte 9): %d (0x%02X)", data[9], data[9]);
-  ESP_LOGI(TAG, "  Current: %f A", (float) ((int16_t) votronic_get_16bit(10)) * 0.001f);
-  ESP_LOGD(TAG, "  Unknown (Byte 12): %d (0x%02X)", data[12], data[12]);
-  ESP_LOGI(TAG, "  Primary battery nominal capacity: %f Ah", votronic_get_16bit(13) * 0.1f);
-  ESP_LOGD(TAG, "  Unknown (Byte 15): %d (0x%02X)", data[15], data[15]);
-  ESP_LOGD(TAG, "  Unknown (Byte 16-17): %d (0x%02X 0x%02X)", votronic_get_16bit(16), data[16], data[17]);
-  ESP_LOGD(TAG, "  Unknown (Byte 18-19): %d (0x%02X 0x%02X)", votronic_get_16bit(18), data[18], data[19]);
 }
 
 void VotronicBle::dump_config() {

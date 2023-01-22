@@ -2,6 +2,7 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import sensor
 from esphome.const import (
+    CONF_BATTERY_VOLTAGE,
     CONF_CURRENT,
     CONF_POWER,
     DEVICE_CLASS_CURRENT,
@@ -27,11 +28,11 @@ CODEOWNERS = ["@syssi"]
 
 CONF_TOTAL_VOLTAGE = "total_voltage"
 
-CONF_BATTERY_VOLTAGE = "battery_voltage"
+# CONF_BATTERY_VOLTAGE = "battery_voltage"
 CONF_SECONDARY_BATTERY_VOLTAGE = "secondary_battery_voltage"
 CONF_BATTERY_CAPACITY = "battery_capacity"
 CONF_STATE_OF_CHARGE = "state_of_charge"
-# CONF_CURRENT = ""
+# CONF_CURRENT = "current"
 CONF_BATTERY_NOMINAL_CAPACITY = "battery_nominal_capacity"
 CONF_PV_VOLTAGE = "pv_voltage"
 CONF_PV_CURRENT = "pv_current"
@@ -106,14 +107,14 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(CONF_CURRENT): sensor.sensor_schema(
             unit_of_measurement=UNIT_AMPERE,
             icon=ICON_CURRENT_DC,
-            accuracy_decimals=2,
+            accuracy_decimals=3,
             device_class=DEVICE_CLASS_CURRENT,
             state_class=STATE_CLASS_MEASUREMENT,
         ),
         cv.Optional(CONF_BATTERY_NOMINAL_CAPACITY): sensor.sensor_schema(
             unit_of_measurement=UNIT_AMPERE_HOURS,
             icon=ICON_BATTERY_NOMINAL_CAPACITY,
-            accuracy_decimals=0,
+            accuracy_decimals=1,
             device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,
         ),
