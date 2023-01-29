@@ -36,7 +36,7 @@ CONF_BATTERY_NOMINAL_CAPACITY = "battery_nominal_capacity"
 CONF_PV_VOLTAGE = "pv_voltage"
 CONF_PV_CURRENT = "pv_current"
 CONF_BATTERY_STATUS_BITMASK = "battery_status_bitmask"
-CONF_CONTROLLER_STATUS_BITMASK = "controller_status_bitmask"
+CONF_PV_CONTROLLER_STATUS_BITMASK = "pv_controller_status_bitmask"
 CONF_CHARGED_CAPACITY = "charged_capacity"
 CONF_CHARGED_ENERGY = "charged_energy"
 CONF_PV_POWER = "pv_power"
@@ -50,7 +50,7 @@ ICON_STATE_OF_CHARGE = "mdi:battery-50"
 ICON_BATTERY_NOMINAL_CAPACITY = "mdi:battery-100"
 
 ICON_BATTERY_STATUS_BITMASK = "mdi:alert-circle-outline"
-ICON_CONTROLLER_STATUS_BITMASK = "mdi:alert-circle-outline"
+ICON_PV_CONTROLLER_STATUS_BITMASK = "mdi:alert-circle-outline"
 ICON_CHARGED_CAPACITY = "mdi:battery-charging"
 
 ICON_CHARGING_CYCLES = "mdi:battery-sync"
@@ -66,7 +66,7 @@ SENSORS = [
     CONF_PV_VOLTAGE,
     CONF_PV_CURRENT,
     CONF_BATTERY_STATUS_BITMASK,
-    CONF_CONTROLLER_STATUS_BITMASK,
+    CONF_PV_CONTROLLER_STATUS_BITMASK,
     CONF_CHARGED_CAPACITY,
     CONF_CHARGED_ENERGY,
     CONF_PV_POWER,
@@ -138,9 +138,9 @@ CONFIG_SCHEMA = cv.Schema(
             device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,
         ),
-        cv.Optional(CONF_CONTROLLER_STATUS_BITMASK): sensor.sensor_schema(
+        cv.Optional(CONF_PV_CONTROLLER_STATUS_BITMASK): sensor.sensor_schema(
             unit_of_measurement=UNIT_EMPTY,
-            icon=ICON_CONTROLLER_STATUS_BITMASK,
+            icon=ICON_PV_CONTROLLER_STATUS_BITMASK,
             accuracy_decimals=0,
             device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,
