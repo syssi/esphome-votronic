@@ -127,7 +127,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(CONF_PV_CURRENT): sensor.sensor_schema(
             unit_of_measurement=UNIT_AMPERE,
             icon=ICON_CURRENT_DC,
-            accuracy_decimals=2,
+            accuracy_decimals=1,
             device_class=DEVICE_CLASS_CURRENT,
             state_class=STATE_CLASS_MEASUREMENT,
         ),

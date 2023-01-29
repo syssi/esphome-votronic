@@ -175,7 +175,7 @@ void VotronicBle::decode_photovoltaic_data_(const std::vector<uint8_t> &data) {
   ESP_LOGI(TAG, "Photovoltaic data frame received");
   this->publish_state_(this->battery_voltage_sensor_, votronic_get_16bit(0) * 0.01f);
   this->publish_state_(this->pv_voltage_sensor_, votronic_get_16bit(2) * 0.01f);
-  this->publish_state_(this->pv_current_sensor_, votronic_get_16bit(4) * 0.01f);
+  this->publish_state_(this->pv_current_sensor_, votronic_get_16bit(4) * 0.1f);
   this->publish_state_(this->battery_status_bitmask_sensor_, data[8]);
   this->publish_state_(this->controller_status_bitmask_sensor_, data[12]);
   // this->publish_state_(this->battery_status_text_sensor_, data[8]);
