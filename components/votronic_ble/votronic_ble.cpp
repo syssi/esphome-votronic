@@ -143,7 +143,7 @@ void VotronicBle::decode_battery_data_(const std::vector<uint8_t> &data) {
   ESP_LOGD(TAG, "  Unknown (Byte     6): %d (0x%02X)", data[6], data[6]);
   ESP_LOGD(TAG, "  Unknown (Byte     7): %d (0x%02X)", data[7], data[7]);
   ESP_LOGD(TAG, "  Unknown (Byte     9): %d (0x%02X)", data[9], data[9]);
-  ESP_LOGD(TAG, "  Unknown (Byte    12): %d (0x%02X)", data[12], data[12]); // 3. byte of the current sensor?!
+  ESP_LOGD(TAG, "  Unknown (Byte    12): %d (0x%02X)", data[12], data[12]);  // 3. byte of the current sensor?!
   ESP_LOGD(TAG, "  Unknown (Byte    15): %d (0x%02X)", data[15], data[15]);
   ESP_LOGD(TAG, "  Unknown (Byte 16-17): %d (0x%02X 0x%02X)", votronic_get_16bit(16), data[16], data[17]);
   ESP_LOGD(TAG, "  Unknown (Byte 18-19): %d (0x%02X 0x%02X)", votronic_get_16bit(18), data[18], data[19]);
@@ -236,15 +236,15 @@ void VotronicBle::publish_state_(text_sensor::TextSensor *text_sensor, const std
 }
 
 std::string VotronicBle::pv_controller_status_to_string_(const uint8_t mask) {
-  if((mask & 24) == 24) {
+  if ((mask & 24) == 24) {
     return "Current reduction";
   }
 
-  if((mask & 8) == 8) {
+  if ((mask & 8) == 8) {
     return "Active";
   }
 
-  if((mask & 33) == 33) {
+  if ((mask & 33) == 33) {
     return "Standby";
   }
 
@@ -252,15 +252,15 @@ std::string VotronicBle::pv_controller_status_to_string_(const uint8_t mask) {
 }
 
 std::string VotronicBle::battery_status_to_string_(const uint8_t mask) {
-  if((mask & 25) == 25) {
+  if ((mask & 25) == 25) {
     return "Current reduction";
   }
 
-  if((mask & 32) == 32) {
+  if ((mask & 32) == 32) {
     return "Active";
   }
 
-  if((mask & 33) == 33) {
+  if ((mask & 33) == 33) {
     return "Standby";
   }
 
