@@ -45,8 +45,8 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   void set_battery_status_bitmask_sensor(sensor::Sensor *battery_status_bitmask_sensor) {
     battery_status_bitmask_sensor_ = battery_status_bitmask_sensor;
   }
-  void set_controller_status_bitmask_sensor(sensor::Sensor *controller_status_bitmask_sensor) {
-    controller_status_bitmask_sensor_ = controller_status_bitmask_sensor;
+  void set_pv_controller_status_bitmask_sensor(sensor::Sensor *pv_controller_status_bitmask_sensor) {
+    pv_controller_status_bitmask_sensor_ = pv_controller_status_bitmask_sensor;
   }
   void set_charged_capacity_sensor(sensor::Sensor *charged_capacity_sensor) {
     charged_capacity_sensor_ = charged_capacity_sensor;
@@ -59,8 +59,8 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   void set_battery_status_text_sensor(text_sensor::TextSensor *battery_status_text_sensor) {
     battery_status_text_sensor_ = battery_status_text_sensor;
   }
-  void set_controller_status_text_sensor(text_sensor::TextSensor *controller_status_text_sensor) {
-    controller_status_text_sensor_ = controller_status_text_sensor;
+  void set_pv_controller_status_text_sensor(text_sensor::TextSensor *pv_controller_status_text_sensor) {
+    pv_controller_status_text_sensor_ = pv_controller_status_text_sensor;
   }
 
   void set_throttle(uint16_t throttle) { this->throttle_ = throttle; }
@@ -76,13 +76,13 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   sensor::Sensor *pv_voltage_sensor_;
   sensor::Sensor *pv_current_sensor_;
   sensor::Sensor *battery_status_bitmask_sensor_;
-  sensor::Sensor *controller_status_bitmask_sensor_;
+  sensor::Sensor *pv_controller_status_bitmask_sensor_;
   sensor::Sensor *charged_capacity_sensor_;
   sensor::Sensor *charged_energy_sensor_;
   sensor::Sensor *pv_power_sensor_;
 
   text_sensor::TextSensor *battery_status_text_sensor_;
-  text_sensor::TextSensor *controller_status_text_sensor_;
+  text_sensor::TextSensor *pv_controller_status_text_sensor_;
 
   uint16_t char_battery_handle_;
   uint16_t char_photovoltaic_handle_;
@@ -113,6 +113,8 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   void decode_battery_data_(const std::vector<uint8_t> &data);
   void publish_state_(sensor::Sensor *sensor, float value);
   void publish_state_(text_sensor::TextSensor *text_sensor, const std::string &state);
+  std::string pv_controller_status_to_string_(uint8_t mask);
+  std::string battery_status_to_string_(uint8_t mask);
 };
 
 }  // namespace votronic_ble

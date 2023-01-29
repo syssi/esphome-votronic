@@ -31,7 +31,7 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
       this->publish_state_(this->pv_voltage_sensor_, NAN);
       this->publish_state_(this->pv_current_sensor_, NAN);
       this->publish_state_(this->battery_status_bitmask_sensor_, NAN);
-      this->publish_state_(this->controller_status_bitmask_sensor_, NAN);
+      this->publish_state_(this->pv_controller_status_bitmask_sensor_, NAN);
       this->publish_state_(this->charged_capacity_sensor_, NAN);
       this->publish_state_(this->charged_energy_sensor_, NAN);
       this->publish_state_(this->pv_power_sensor_, NAN);
@@ -140,11 +140,11 @@ void VotronicBle::decode_battery_data_(const std::vector<uint8_t> &data) {
   };
 
   ESP_LOGI(TAG, "Battery data frame received");
-  ESP_LOGD(TAG, "  Unknown (Byte 6): %d (0x%02X)", data[6], data[6]);
-  ESP_LOGD(TAG, "  Unknown (Byte 7): %d (0x%02X)", data[7], data[7]);
-  ESP_LOGD(TAG, "  Unknown (Byte 9): %d (0x%02X)", data[9], data[9]);
-  ESP_LOGD(TAG, "  Unknown (Byte 12): %d (0x%02X)", data[12], data[12]);
-  ESP_LOGD(TAG, "  Unknown (Byte 15): %d (0x%02X)", data[15], data[15]);
+  ESP_LOGD(TAG, "  Unknown (Byte     6): %d (0x%02X)", data[6], data[6]);
+  ESP_LOGD(TAG, "  Unknown (Byte     7): %d (0x%02X)", data[7], data[7]);
+  ESP_LOGD(TAG, "  Unknown (Byte     9): %d (0x%02X)", data[9], data[9]);
+  ESP_LOGD(TAG, "  Unknown (Byte    12): %d (0x%02X)", data[12], data[12]); // 3. byte of the current sensor?!
+  ESP_LOGD(TAG, "  Unknown (Byte    15): %d (0x%02X)", data[15], data[15]);
   ESP_LOGD(TAG, "  Unknown (Byte 16-17): %d (0x%02X 0x%02X)", votronic_get_16bit(16), data[16], data[17]);
   ESP_LOGD(TAG, "  Unknown (Byte 18-19): %d (0x%02X 0x%02X)", votronic_get_16bit(18), data[18], data[19]);
 
@@ -177,26 +177,22 @@ void VotronicBle::decode_photovoltaic_data_(const std::vector<uint8_t> &data) {
   this->publish_state_(this->pv_voltage_sensor_, votronic_get_16bit(2) * 0.01f);
   this->publish_state_(this->pv_current_sensor_, votronic_get_16bit(4) * 0.1f);
   this->publish_state_(this->battery_status_bitmask_sensor_, data[8]);
-  this->publish_state_(this->controller_status_bitmask_sensor_, data[12]);
-  // this->publish_state_(this->battery_status_text_sensor_, data[8]);
-  // this->publish_state_(this->controller_status_text_sensor_, data[12]);
+  this->publish_state_(this->battery_status_text_sensor_, this->battery_status_to_string_(data[8]));
+  this->publish_state_(this->pv_controller_status_bitmask_sensor_, data[12]);
+  this->publish_state_(this->pv_controller_status_text_sensor_, this->pv_controller_status_to_string_(data[12]));
   this->publish_state_(this->charged_capacity_sensor_, (float) votronic_get_16bit(13));
   this->publish_state_(this->charged_energy_sensor_, votronic_get_16bit(15) * 10.0f);
   this->publish_state_(this->pv_power_sensor_, (float) votronic_get_16bit(17) * 0.1f);
 
-  ESP_LOGD(TAG, "  Unknown (Byte 6): %d (0x%02X)", data[6], data[6]);
-  ESP_LOGD(TAG, "  Unknown (Byte 7): %d (0x%02X)", data[7], data[7]);
+  ESP_LOGD(TAG, "  Unknown (Byte  6): %d (0x%02X)", data[6], data[6]);
+  ESP_LOGD(TAG, "  Unknown (Byte  7): %d (0x%02X)", data[7], data[7]);
   ESP_LOGD(TAG, "  Battery status bitmask: %d (0x%02X)", data[8], data[8]);
-  ESP_LOGD(TAG, "  Controller status bitmask: %d (0?: Active, 1?: Standby, 2?: Reduce)", data[9]);
+  ESP_LOGD(TAG, "  Unknown (Byte  9): %d (0x%02X)", data[9], data[9]);
   ESP_LOGD(TAG, "  Unknown (Byte 10): %d (0x%02X)", data[10], data[10]);
   ESP_LOGD(TAG, "  Unknown (Byte 11): %d (0x%02X)", data[11], data[11]);
-  // Bit0: Standby, Bit1: Active, Bit2: Reduce
-  ESP_LOGD(TAG, "  Controller status bitmask? (Byte 12): %d (0x%02X) (8/9: Active, 25?: Standby, 2?: Reduce)", data[12],
-           data[12]);
-  ESP_LOGD(TAG, "  PV power? (Byte 16): %d W? (0x%02X)", data[16], data[16]);
-  ESP_LOGD(TAG, "  PV power? (Byte 17): %d W? (0x%02X)", data[17], data[17]);
-  ESP_LOGD(TAG, "  PV power? (Byte 18): %d W? (0x%02X)", data[18], data[18]);
-  ESP_LOGD(TAG, "  PV power? (Bytes 17-18: %d W", votronic_get_16bit(17));
+  ESP_LOGD(TAG, "  Unknown (Byte 16): %d (0x%02X)", data[16], data[16]);
+  ESP_LOGD(TAG, "  Unknown (Byte 17): %d (0x%02X)", data[17], data[17]);
+  ESP_LOGD(TAG, "  Unknown (Byte 18): %d (0x%02X)", data[18], data[18]);
 }
 
 void VotronicBle::dump_config() {
@@ -216,13 +212,13 @@ void VotronicBle::dump_config() {
   LOG_SENSOR("", "PV voltage", this->pv_voltage_sensor_);
   LOG_SENSOR("", "PV current", this->pv_current_sensor_);
   LOG_SENSOR("", "Battery status bitmask", this->battery_status_bitmask_sensor_);
-  LOG_SENSOR("", "Controller status bitmask", this->controller_status_bitmask_sensor_);
+  LOG_SENSOR("", "PV Controller status bitmask", this->pv_controller_status_bitmask_sensor_);
   LOG_SENSOR("", "Charged capacity", this->charged_capacity_sensor_);
   LOG_SENSOR("", "Charged energy", this->charged_energy_sensor_);
   LOG_SENSOR("", "PV power", this->pv_power_sensor_);
 
   LOG_TEXT_SENSOR("", "Battery status", this->battery_status_text_sensor_);
-  LOG_TEXT_SENSOR("", "Controller Status", this->controller_status_text_sensor_);
+  LOG_TEXT_SENSOR("", "PV Controller Status", this->pv_controller_status_text_sensor_);
 }
 
 void VotronicBle::publish_state_(sensor::Sensor *sensor, float value) {
@@ -237,6 +233,38 @@ void VotronicBle::publish_state_(text_sensor::TextSensor *text_sensor, const std
     return;
 
   text_sensor->publish_state(state);
+}
+
+std::string VotronicBle::pv_controller_status_to_string_(const uint8_t mask) {
+  if((mask & 24) == 24) {
+    return "Current reduction";
+  }
+
+  if((mask & 8) == 8) {
+    return "Active";
+  }
+
+  if((mask & 33) == 33) {
+    return "Standby";
+  }
+
+  return "Unknown";
+}
+
+std::string VotronicBle::battery_status_to_string_(const uint8_t mask) {
+  if((mask & 25) == 25) {
+    return "Current reduction";
+  }
+
+  if((mask & 32) == 32) {
+    return "Active";
+  }
+
+  if((mask & 33) == 33) {
+    return "Standby";
+  }
+
+  return "Unknown";
 }
 
 }  // namespace votronic_ble

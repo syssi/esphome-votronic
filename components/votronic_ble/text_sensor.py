@@ -10,14 +10,14 @@ DEPENDENCIES = ["votronic_ble"]
 CODEOWNERS = ["@syssi"]
 
 CONF_BATTERY_STATUS = "battery_status"
-CONF_CONTROLLER_STATUS = "controller_status"
+CONF_PV_CONTROLLER_STATUS = "pv_controller_status"
 
 ICON_BATTERY_STATUS = "mdi:alert-circle-outline"
-ICON_CONTROLLER_STATUS = "mdi:heart-pulse"
+ICON_PV_CONTROLLER_STATUS = "mdi:heart-pulse"
 
 TEXT_SENSORS = [
     CONF_BATTERY_STATUS,
-    CONF_CONTROLLER_STATUS,
+    CONF_PV_CONTROLLER_STATUS,
 ]
 
 CONFIG_SCHEMA = cv.Schema(
@@ -29,10 +29,10 @@ CONFIG_SCHEMA = cv.Schema(
                 cv.Optional(CONF_ICON, default=ICON_BATTERY_STATUS): cv.icon,
             }
         ),
-        cv.Optional(CONF_CONTROLLER_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
+        cv.Optional(CONF_PV_CONTROLLER_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
             {
                 cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default=ICON_CONTROLLER_STATUS): cv.icon,
+                cv.Optional(CONF_ICON, default=ICON_PV_CONTROLLER_STATUS): cv.icon,
             }
         ),
     }
