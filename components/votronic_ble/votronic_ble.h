@@ -4,6 +4,7 @@
 #include "esphome/core/hal.h"
 #include "esphome/components/ble_client/ble_client.h"
 #include "esphome/components/esp32_ble_tracker/esp32_ble_tracker.h"
+#include "esphome/components/binary_sensor/binary_sensor.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/text_sensor/text_sensor.h"
 
@@ -23,6 +24,13 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   void dump_config() override;
   void update() override;
   float get_setup_priority() const override { return setup_priority::DATA; }
+
+  void set_charging_binary_sensor(binary_sensor::BinarySensor *charging_binary_sensor) {
+    charging_binary_sensor_ = charging_binary_sensor;
+  }
+  void set_discharging_binary_sensor(binary_sensor::BinarySensor *discharging_binary_sensor) {
+    discharging_binary_sensor_ = discharging_binary_sensor;
+  }
 
   void set_battery_voltage_sensor(sensor::Sensor *battery_voltage_sensor) {
     battery_voltage_sensor_ = battery_voltage_sensor;
@@ -67,6 +75,9 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   void set_enable_fake_traffic(bool enable_fake_traffic) { enable_fake_traffic_ = enable_fake_traffic; }
 
  protected:
+  binary_sensor::BinarySensor *charging_binary_sensor_;
+  binary_sensor::BinarySensor *discharging_binary_sensor_;
+
   sensor::Sensor *battery_voltage_sensor_;
   sensor::Sensor *secondary_battery_voltage_sensor_;
   sensor::Sensor *battery_capacity_sensor_;
@@ -111,6 +122,7 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   void on_votronic_ble_data_(const uint8_t &handle, const std::vector<uint8_t> &data);
   void decode_photovoltaic_data_(const std::vector<uint8_t> &data);
   void decode_battery_data_(const std::vector<uint8_t> &data);
+  void publish_state_(binary_sensor::BinarySensor *binary_sensor, const bool &state);
   void publish_state_(sensor::Sensor *sensor, float value);
   void publish_state_(text_sensor::TextSensor *text_sensor, const std::string &state);
   std::string pv_controller_status_to_string_(uint8_t mask);

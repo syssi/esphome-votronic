@@ -152,7 +152,12 @@ void VotronicBle::decode_battery_data_(const std::vector<uint8_t> &data) {
   this->publish_state_(this->secondary_battery_voltage_sensor_, votronic_get_16bit(2) * 0.01f);
   this->publish_state_(this->battery_capacity_sensor_, (float) votronic_get_16bit(4));
   this->publish_state_(this->state_of_charge_sensor_, (float) data[8]);
-  this->publish_state_(this->current_sensor_, (float) ((int16_t) votronic_get_16bit(10)) * 0.001f);
+
+  float current = (float) ((int16_t) votronic_get_16bit(10)) * 0.001f;
+  this->publish_state_(this->current_sensor_, current);
+  this->publish_state_(this->charging_binary_sensor_, (current > 0.0f));
+  this->publish_state_(this->discharging_binary_sensor_, (current < 0.0f));
+
   this->publish_state_(this->battery_nominal_capacity_sensor_, votronic_get_16bit(13) * 0.1f);
 }
 
@@ -203,6 +208,9 @@ void VotronicBle::dump_config() {
   ESP_LOGCONFIG(TAG, "  Photovoltaic Characteristic UUID : %s", this->char_photovoltaic_uuid_.to_string().c_str());
   ESP_LOGCONFIG(TAG, "  Fake traffic enabled: %s", YESNO(this->enable_fake_traffic_));
 
+  LOG_BINARY_SENSOR("", "Charging", this->charging_binary_sensor_);
+  LOG_BINARY_SENSOR("", "Discharging", this->discharging_binary_sensor_);
+
   LOG_SENSOR("", "Battery voltage", this->battery_voltage_sensor_);
   LOG_SENSOR("", "Secondary battery voltage", this->secondary_battery_voltage_sensor_);
   LOG_SENSOR("", "Battery capacity", this->battery_capacity_sensor_);
@@ -219,6 +227,13 @@ void VotronicBle::dump_config() {
 
   LOG_TEXT_SENSOR("", "Battery status", this->battery_status_text_sensor_);
   LOG_TEXT_SENSOR("", "PV Controller Status", this->pv_controller_status_text_sensor_);
+}
+
+void JkBmsBle::publish_state_(binary_sensor::BinarySensor *binary_sensor, const bool &state) {
+  if (binary_sensor == nullptr)
+    return;
+
+  binary_sensor->publish_state(state);
 }
 
 void VotronicBle::publish_state_(sensor::Sensor *sensor, float value) {

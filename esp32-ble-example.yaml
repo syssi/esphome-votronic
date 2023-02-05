@@ -50,6 +50,14 @@ votronic_ble:
     id: votronic0
     throttle: 5s
 
+binary_sensor:
+  - platform: votronic_ble
+    votronic_ble_id: votronic0
+    charging:
+      name: "${name} charging"
+    discharging:
+      name: "${name} discharging"
+
 sensor:
   - platform: votronic_ble
     votronic_ble_id: votronic0
