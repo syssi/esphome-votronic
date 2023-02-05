@@ -265,7 +265,7 @@ std::string VotronicBle::pv_controller_status_to_string_(const uint8_t mask) {
     return "Standby";
   }
 
-  return "Unknown";
+  return str_snprintf("Unknown (0x%02X)", 15, mask);
 }
 
 std::string VotronicBle::battery_status_to_string_(const uint8_t mask) {
@@ -281,7 +281,7 @@ std::string VotronicBle::battery_status_to_string_(const uint8_t mask) {
     return "Standby";
   }
 
-  return "Unknown";
+  return str_snprintf("Unknown (0x%02X)", 15, mask);
 }
 
 }  // namespace votronic_ble
