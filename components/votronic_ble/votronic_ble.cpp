@@ -229,7 +229,7 @@ void VotronicBle::dump_config() {
   LOG_TEXT_SENSOR("", "PV Controller Status", this->pv_controller_status_text_sensor_);
 }
 
-void JkBmsBle::publish_state_(binary_sensor::BinarySensor *binary_sensor, const bool &state) {
+void VotronicBle::publish_state_(binary_sensor::BinarySensor *binary_sensor, const bool &state) {
   if (binary_sensor == nullptr)
     return;
 
