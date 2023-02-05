@@ -59,27 +59,33 @@ esphome run esp32-ble-example.yaml
 
 ## Pairing / Bonding
 
-TODO: Explain how to pair the ESP with the Votronic Bluetooth Connector.
+1. Turn `off` the `enable bluetooth connection` switch or remove the power from the ESP
+2. Short press the pairing button (`key`) of the Bluetooth Connector
+3. Turn `on` the `enable bluetooth connection` switch or power on the ESP
+4. If pairing was successful, both LEDs will light up simultaneously
 
 ## Example response all sensors enabled
 
 ```
 # Battery computer
-[sensor:127]: 'votronic battery voltage': Sending state 12.56000 V with 2 decimals of accuracy
-[sensor:127]: 'votronic secondary battery voltage': Sending state 12.15000 V with 2 decimals of accuracy
 [sensor:127]: 'votronic battery capacity': Sending state 265.00000 Ah with 0 decimals of accuracy
 [sensor:127]: 'votronic state of charge': Sending state 95.00000 % with 0 decimals of accuracy
 [sensor:127]: 'votronic current': Sending state -0.35800 A with 3 decimals of accuracy
+[binary_sensor:036]: 'votronic charging': Sending state OFF
+[binary_sensor:036]: 'votronic discharging': Sending state ON
 [sensor:127]: 'votronic battery nominal capacity': Sending state 280.00000 Ah with 1 decimals of accuracy
+[sensor:127]: 'votronic secondary battery voltage': Sending state 12.15000 V with 2 decimals of accuracy
 [sensor:127]: 'votronic battery voltage': Sending state 12.56000 V with 2 decimals of accuracy
+
 # Solar charger
-[sensor:127]: 'votronic pv voltage': Sending state 13.98000 V with 2 decimals of accuracy
-[sensor:127]: 'votronic pv current': Sending state 0.00000 A with 2 decimals of accuracy
+[sensor:127]: 'votronic pv current': Sending state 0.00000 A with 1 decimals of accuracy
 [sensor:127]: 'votronic battery status bitmask': Sending state 0.00000  with 0 decimals of accuracy
-[sensor:127]: 'votronic controller status bitmask': Sending state 9.00000  with 0 decimals of accuracy
+[text_sensor:067]: 'votronic battery status': Sending state 'Unknown (0x00)'
+[sensor:127]: 'votronic pv controller status bitmask': Sending state 9.00000  with 0 decimals of accuracy
+[text_sensor:067]: 'votronic pv controller status': Sending state 'Active'
 [sensor:127]: 'votronic charged capacity': Sending state 24.00000 Ah with 0 decimals of accuracy
 [sensor:127]: 'votronic charged energy': Sending state 340.00000 Wh with 0 decimals of accuracy
-[sensor:127]: 'votronic pv power': Sending state 0.00000 W with 0 decimals of accuracy
+[sensor:127]: 'votronic pv power': Sending state 0.00000 W with 1 decimals of accuracy
 ```
 
 ## Protocol
