@@ -110,7 +110,7 @@ void VotronicBle::update() {
 
 void VotronicBle::on_votronic_ble_data_(const uint8_t &handle, const std::vector<uint8_t> &data) {
   if (handle == this->char_photovoltaic_handle_) {
-    this->decode_photovoltaic_data_(data);
+    this->decode_solar_charger_data_(data);
     return;
   }
 
@@ -163,7 +163,7 @@ void VotronicBle::decode_battery_data_(const std::vector<uint8_t> &data) {
   this->publish_state_(this->battery_nominal_capacity_sensor_, votronic_get_16bit(13) * 0.1f);
 }
 
-void VotronicBle::decode_photovoltaic_data_(const std::vector<uint8_t> &data) {
+void VotronicBle::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   if (data.size() != 19) {
     ESP_LOGW(TAG, "Invalid frame size: %zu", data.size());
     return;
@@ -221,14 +221,14 @@ void VotronicBle::dump_config() {
   LOG_SENSOR("", "Battery nominal capacity", this->battery_nominal_capacity_sensor_);
   LOG_SENSOR("", "PV voltage", this->pv_voltage_sensor_);
   LOG_SENSOR("", "PV current", this->pv_current_sensor_);
+  LOG_SENSOR("", "PV power", this->pv_power_sensor_);
   LOG_SENSOR("", "Battery status bitmask", this->battery_status_bitmask_sensor_);
-  LOG_SENSOR("", "PV Controller status bitmask", this->pv_controller_status_bitmask_sensor_);
+  LOG_SENSOR("", "PV controller status bitmask", this->pv_controller_status_bitmask_sensor_);
   LOG_SENSOR("", "Charged capacity", this->charged_capacity_sensor_);
   LOG_SENSOR("", "Charged energy", this->charged_energy_sensor_);
-  LOG_SENSOR("", "PV power", this->pv_power_sensor_);
 
   LOG_TEXT_SENSOR("", "Battery status", this->battery_status_text_sensor_);
-  LOG_TEXT_SENSOR("", "PV Controller Status", this->pv_controller_status_text_sensor_);
+  LOG_TEXT_SENSOR("", "PV controller status", this->pv_controller_status_text_sensor_);
 }
 
 void VotronicBle::publish_state_(binary_sensor::BinarySensor *binary_sensor, const bool &state) {

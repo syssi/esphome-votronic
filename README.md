@@ -122,5 +122,9 @@ logger:
 
 ## References
 
+* https://github.com/heeplr/votronic
+* https://github.com/TheRealMoeder/vosodi
+* https://github.com/crathje/VotronicSRDuoDig
+* https://github.com/SirReal-surreal/SirReal-surreal/blob/main/2021_08_16_Votronic.json
 * https://codeberg.org/scy/votonic
 * https://cumulumbus.de/smart-camper-auslesen-der-batterie-und-solarinformationen-aus-dem-votronic-bluetooth-connector/

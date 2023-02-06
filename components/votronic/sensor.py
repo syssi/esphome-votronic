@@ -6,7 +6,6 @@ from esphome.const import (
     CONF_CURRENT,
     DEVICE_CLASS_CURRENT,
     DEVICE_CLASS_EMPTY,
-    DEVICE_CLASS_ENERGY,
     DEVICE_CLASS_POWER,
     DEVICE_CLASS_VOLTAGE,
     ICON_EMPTY,
@@ -16,12 +15,14 @@ from esphome.const import (
     UNIT_PERCENT,
     UNIT_VOLT,
     UNIT_WATT,
-    UNIT_WATT_HOURS,
+    UNIT_CELSIUS,
+    DEVICE_CLASS_TEMPERATURE,
+    ENTITY_CATEGORY_DIAGNOSTIC,
 )
 
-from . import CONF_VOTRONIC_BLE_ID, VotronicBle
+from . import CONF_VOTRONIC_ID, Votronic
 
-DEPENDENCIES = ["votronic_ble"]
+DEPENDENCIES = ["votronic"]
 
 CODEOWNERS = ["@syssi"]
 
@@ -34,45 +35,41 @@ CONF_BATTERY_NOMINAL_CAPACITY = "battery_nominal_capacity"
 CONF_PV_VOLTAGE = "pv_voltage"
 CONF_PV_CURRENT = "pv_current"
 CONF_BATTERY_STATUS_BITMASK = "battery_status_bitmask"
+CONF_CHARGING_CONTROLLER_STATUS_BITMASK = "charging_controller_status_bitmask"
 CONF_PV_CONTROLLER_STATUS_BITMASK = "pv_controller_status_bitmask"
 CONF_CHARGED_CAPACITY = "charged_capacity"
 CONF_CHARGED_ENERGY = "charged_energy"
 CONF_PV_POWER = "pv_power"
+CONF_CHARGING_MODE_SETTING_ID = "charging_mode_setting_id"
+CONF_CONTROLLER_TEMPERATURE = "controller_temperature"
 
 ICON_CURRENT_DC = "mdi:current-dc"
+ICON_STATE_OF_CHARGE = "mdi:battery-50"
+ICON_BATTERY_STATUS_BITMASK = "mdi:alert-circle-outline"
+ICON_CHARGING_CONTROLLER_STATUS_BITMASK = "mdi:alert-circle-outline"
+ICON_PV_CONTROLLER_STATUS_BITMASK = "mdi:alert-circle-outline"
+ICON_CHARGING_MODE_SETTING_ID = "mdi:car-battery"
 
 UNIT_AMPERE_HOURS = "Ah"
-
-ICON_BATTERY_CAPACITY = "mdi:battery-medium"
-ICON_STATE_OF_CHARGE = "mdi:battery-50"
-ICON_BATTERY_NOMINAL_CAPACITY = "mdi:battery-100"
-
-ICON_BATTERY_STATUS_BITMASK = "mdi:alert-circle-outline"
-ICON_PV_CONTROLLER_STATUS_BITMASK = "mdi:alert-circle-outline"
-ICON_CHARGED_CAPACITY = "mdi:battery-charging"
-
-ICON_CHARGING_CYCLES = "mdi:battery-sync"
-ICON_ERRORS_BITMASK = "mdi:alert-circle-outline"
 
 SENSORS = [
     CONF_BATTERY_VOLTAGE,
     CONF_SECONDARY_BATTERY_VOLTAGE,
-    CONF_BATTERY_CAPACITY,
     CONF_STATE_OF_CHARGE,
     CONF_CURRENT,
-    CONF_BATTERY_NOMINAL_CAPACITY,
     CONF_PV_VOLTAGE,
     CONF_PV_CURRENT,
     CONF_PV_POWER,
     CONF_BATTERY_STATUS_BITMASK,
+    CONF_CHARGING_CONTROLLER_STATUS_BITMASK,
     CONF_PV_CONTROLLER_STATUS_BITMASK,
-    CONF_CHARGED_CAPACITY,
-    CONF_CHARGED_ENERGY,
+    CONF_CHARGING_MODE_SETTING_ID,
+    CONF_CONTROLLER_TEMPERATURE,
 ]
 
 CONFIG_SCHEMA = cv.Schema(
     {
-        cv.GenerateID(CONF_VOTRONIC_BLE_ID): cv.use_id(VotronicBle),
+        cv.GenerateID(CONF_VOTRONIC_ID): cv.use_id(Votronic),
         cv.Optional(CONF_BATTERY_VOLTAGE): sensor.sensor_schema(
             unit_of_measurement=UNIT_VOLT,
             icon=ICON_EMPTY,
@@ -87,13 +84,6 @@ CONFIG_SCHEMA = cv.Schema(
             device_class=DEVICE_CLASS_VOLTAGE,
             state_class=STATE_CLASS_MEASUREMENT,
         ),
-        cv.Optional(CONF_BATTERY_CAPACITY): sensor.sensor_schema(
-            unit_of_measurement=UNIT_AMPERE_HOURS,
-            icon=ICON_BATTERY_CAPACITY,
-            accuracy_decimals=0,
-            device_class=DEVICE_CLASS_EMPTY,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
         cv.Optional(CONF_STATE_OF_CHARGE): sensor.sensor_schema(
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_STATE_OF_CHARGE,
@@ -106,13 +96,6 @@ CONFIG_SCHEMA = cv.Schema(
             icon=ICON_CURRENT_DC,
             accuracy_decimals=3,
             device_class=DEVICE_CLASS_CURRENT,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_BATTERY_NOMINAL_CAPACITY): sensor.sensor_schema(
-            unit_of_measurement=UNIT_AMPERE_HOURS,
-            icon=ICON_BATTERY_NOMINAL_CAPACITY,
-            accuracy_decimals=1,
-            device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,
         ),
         cv.Optional(CONF_PV_VOLTAGE): sensor.sensor_schema(
@@ -142,6 +125,15 @@ CONFIG_SCHEMA = cv.Schema(
             accuracy_decimals=0,
             device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+        ),
+        cv.Optional(CONF_CHARGING_CONTROLLER_STATUS_BITMASK): sensor.sensor_schema(
+            unit_of_measurement=UNIT_EMPTY,
+            icon=ICON_CHARGING_CONTROLLER_STATUS_BITMASK,
+            accuracy_decimals=0,
+            device_class=DEVICE_CLASS_EMPTY,
+            state_class=STATE_CLASS_MEASUREMENT,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(CONF_PV_CONTROLLER_STATUS_BITMASK): sensor.sensor_schema(
             unit_of_measurement=UNIT_EMPTY,
@@ -149,27 +141,30 @@ CONFIG_SCHEMA = cv.Schema(
             accuracy_decimals=0,
             device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
-        cv.Optional(CONF_CHARGED_CAPACITY): sensor.sensor_schema(
-            unit_of_measurement=UNIT_AMPERE_HOURS,
-            icon=ICON_CHARGED_CAPACITY,
+        cv.Optional(CONF_CHARGING_MODE_SETTING_ID): sensor.sensor_schema(
+            unit_of_measurement=UNIT_EMPTY,
+            icon=ICON_CHARGING_MODE_SETTING_ID,
             accuracy_decimals=0,
             device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
-        cv.Optional(CONF_CHARGED_ENERGY): sensor.sensor_schema(
-            unit_of_measurement=UNIT_WATT_HOURS,
-            icon=ICON_CHARGED_CAPACITY,
+        cv.Optional(CONF_CONTROLLER_TEMPERATURE): sensor.sensor_schema(
+            unit_of_measurement=UNIT_CELSIUS,
+            icon=ICON_EMPTY,
             accuracy_decimals=0,
-            device_class=DEVICE_CLASS_ENERGY,
+            device_class=DEVICE_CLASS_TEMPERATURE,
             state_class=STATE_CLASS_MEASUREMENT,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
     }
 )
 
 
 async def to_code(config):
-    hub = await cg.get_variable(config[CONF_VOTRONIC_BLE_ID])
+    hub = await cg.get_variable(config[CONF_VOTRONIC_ID])
     for key in SENSORS:
         if key in config:
             conf = config[key]
