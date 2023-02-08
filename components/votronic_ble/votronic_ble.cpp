@@ -39,31 +39,32 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
       break;
     }
     case ESP_GATTC_SEARCH_CMPL_EVT: {
-      auto *char_battery = this->parent_->get_characteristic(this->service_monitoring_uuid_, this->char_battery_uuid_);
-      if (char_battery == nullptr) {
-        ESP_LOGW(TAG, "[%s] No battery characteristic found at device, no battery computer attached?",
+      auto *char_battery_computer =
+          this->parent_->get_characteristic(this->service_monitoring_uuid_, this->char_battery_computer_uuid_);
+      if (char_battery_computer == nullptr) {
+        ESP_LOGW(TAG, "[%s] No battery computer characteristic found at device. No battery computer attached?",
                  this->parent_->address_str().c_str());
         break;
       }
-      this->char_battery_handle_ = char_battery->handle;
+      this->char_battery_computer_handle_ = char_battery_computer->handle;
 
       auto status = esp_ble_gattc_register_for_notify(this->parent()->get_gattc_if(), this->parent()->get_remote_bda(),
-                                                      char_battery->handle);
+                                                      char_battery_computer->handle);
       if (status) {
         ESP_LOGW(TAG, "esp_ble_gattc_register_for_notify failed, status=%d", status);
       }
 
-      auto *char_photovoltaic =
-          this->parent_->get_characteristic(this->service_monitoring_uuid_, this->char_photovoltaic_uuid_);
-      if (char_photovoltaic == nullptr) {
-        ESP_LOGW(TAG, "[%s] No Photovoltaic characteristic found at device, no Photovoltaic solar charger attached?",
+      auto *char_solar_charger =
+          this->parent_->get_characteristic(this->service_monitoring_uuid_, this->char_solar_charger_uuid_);
+      if (char_solar_charger == nullptr) {
+        ESP_LOGW(TAG, "[%s] No solar charger characteristic found at device. No solar charger attached?",
                  this->parent_->address_str().c_str());
         break;
       }
-      this->char_photovoltaic_handle_ = char_photovoltaic->handle;
+      this->char_solar_charger_handle_ = char_solar_charger->handle;
 
       auto status2 = esp_ble_gattc_register_for_notify(this->parent()->get_gattc_if(), this->parent()->get_remote_bda(),
-                                                       char_photovoltaic->handle);
+                                                       char_solar_charger->handle);
       if (status2) {
         ESP_LOGW(TAG, "esp_ble_gattc_register_for_notify failed, status=%d", status2);
       }
@@ -90,14 +91,14 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
 
 void VotronicBle::update() {
   if (this->enable_fake_traffic_) {
-    this->char_photovoltaic_handle_ = 0x25;
-    this->char_battery_handle_ = 0x22;
+    this->char_solar_charger_handle_ = 0x25;
+    this->char_battery_computer_handle_ = 0x22;
 
-    // Photovoltaic status frame
+    // Solar charger status frame
     this->on_votronic_ble_data_(0x25, {0xE8, 0x04, 0x76, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x56, 0x00, 0x09,
                                        0x18, 0x00, 0x22, 0x00, 0x00, 0x00});
 
-    // Battery status frame
+    // Battery computer status frame
     this->on_votronic_ble_data_(0x22, {0xE8, 0x04, 0xBF, 0x04, 0x09, 0x01, 0x60, 0x00, 0x5F, 0x00,
                                        0x9A, 0xFE, 0xFF, 0xF0, 0x0A, 0x5E, 0x14, 0x54, 0x02, 0x04});
   }
@@ -109,32 +110,34 @@ void VotronicBle::update() {
 }
 
 void VotronicBle::on_votronic_ble_data_(const uint8_t &handle, const std::vector<uint8_t> &data) {
-  if (handle == this->char_photovoltaic_handle_) {
-    this->decode_photovoltaic_data_(data);
+  if (handle == this->char_solar_charger_handle_) {
+    this->decode_solar_charger_data_(data);
     return;
   }
 
-  if (handle == this->char_battery_handle_) {
-    this->decode_battery_data_(data);
+  if (handle == this->char_battery_computer_handle_) {
+    this->decode_battery_computer_data_(data);
     return;
   }
 
-  ESP_LOGW(TAG, "Unhandled frame received: %s", format_hex_pretty(&data.front(), data.size()).c_str());
+  ESP_LOGW(TAG, "Your device is probably not supported. Please create an issue here: "
+                "https://github.com/syssi/esphome-votronic/issues");
+  ESP_LOGW(TAG, "Please provide the following unhandled message data: %s",
+           format_hex_pretty(&data.front(), data.size()).c_str());
 }
 
-void VotronicBle::decode_battery_data_(const std::vector<uint8_t> &data) {
+void VotronicBle::decode_battery_computer_data_(const std::vector<uint8_t> &data) {
   if (data.size() != 20) {
     ESP_LOGW(TAG, "Invalid frame size: %zu", data.size());
     return;
   }
 
   const uint32_t now = millis();
-  if (now - this->last_battery_info_ < this->throttle_) {
+  if (now - this->last_battery_computer_data_ < this->throttle_) {
     return;
   }
-  this->last_battery_info_ = now;
+  this->last_battery_computer_data_ = now;
 
-  this->last_photovoltaic_info_ = now;
   auto votronic_get_16bit = [&](size_t i) -> uint16_t {
     return (uint16_t(data[i + 1]) << 8) | (uint16_t(data[i + 0]) << 0);
   };
@@ -142,7 +145,7 @@ void VotronicBle::decode_battery_data_(const std::vector<uint8_t> &data) {
     return (uint32_t(data[i + 2]) << 16) | (uint32_t(data[i + 1]) << 8) | (uint32_t(data[i + 0]) << 0);
   };
 
-  ESP_LOGI(TAG, "Battery data frame received");
+  ESP_LOGI(TAG, "Battery computer data received");
   ESP_LOGD(TAG, "  Unknown (Byte     6): %d (0x%02X)", data[6], data[6]);
   ESP_LOGD(TAG, "  Unknown (Byte     7): %d (0x%02X)", data[7], data[7]);
   ESP_LOGD(TAG, "  Unknown (Byte     9): %d (0x%02X)", data[9], data[9]);
@@ -163,23 +166,23 @@ void VotronicBle::decode_battery_data_(const std::vector<uint8_t> &data) {
   this->publish_state_(this->battery_nominal_capacity_sensor_, votronic_get_16bit(13) * 0.1f);
 }
 
-void VotronicBle::decode_photovoltaic_data_(const std::vector<uint8_t> &data) {
+void VotronicBle::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   if (data.size() != 19) {
     ESP_LOGW(TAG, "Invalid frame size: %zu", data.size());
     return;
   }
 
   const uint32_t now = millis();
-  if (now - this->last_photovoltaic_info_ < this->throttle_) {
+  if (now - this->last_solar_charger_data_ < this->throttle_) {
     return;
   }
-  this->last_photovoltaic_info_ = now;
+  this->last_solar_charger_data_ = now;
 
   auto votronic_get_16bit = [&](size_t i) -> uint16_t {
     return (uint16_t(data[i + 1]) << 8) | (uint16_t(data[i + 0]) << 0);
   };
 
-  ESP_LOGI(TAG, "Photovoltaic data frame received");
+  ESP_LOGI(TAG, "Solar charger data received");
   this->publish_state_(this->battery_voltage_sensor_, votronic_get_16bit(0) * 0.01f);
   this->publish_state_(this->pv_voltage_sensor_, votronic_get_16bit(2) * 0.01f);
   this->publish_state_(this->pv_current_sensor_, votronic_get_16bit(4) * 0.1f);
@@ -204,10 +207,11 @@ void VotronicBle::decode_photovoltaic_data_(const std::vector<uint8_t> &data) {
 
 void VotronicBle::dump_config() {
   ESP_LOGCONFIG(TAG, "VotronicBle:");
-  ESP_LOGCONFIG(TAG, "  MAC address                      : %s", this->parent_->address_str().c_str());
-  ESP_LOGCONFIG(TAG, "  Monitoring Service UUID          : %s", this->service_monitoring_uuid_.to_string().c_str());
-  ESP_LOGCONFIG(TAG, "  Battery Characteristic UUID      : %s", this->char_battery_uuid_.to_string().c_str());
-  ESP_LOGCONFIG(TAG, "  Photovoltaic Characteristic UUID : %s", this->char_photovoltaic_uuid_.to_string().c_str());
+  ESP_LOGCONFIG(TAG, "  MAC address                         : %s", this->parent_->address_str().c_str());
+  ESP_LOGCONFIG(TAG, "  Monitoring Service UUID             : %s", this->service_monitoring_uuid_.to_string().c_str());
+  ESP_LOGCONFIG(TAG, "  Battery Computer Characteristic UUID: %s",
+                this->char_battery_computer_uuid_.to_string().c_str());
+  ESP_LOGCONFIG(TAG, "  Solar Charger Characteristic UUID   : %s", this->char_solar_charger_uuid_.to_string().c_str());
   ESP_LOGCONFIG(TAG, "  Fake traffic enabled: %s", YESNO(this->enable_fake_traffic_));
 
   LOG_BINARY_SENSOR("", "Charging", this->charging_binary_sensor_);
@@ -221,14 +225,14 @@ void VotronicBle::dump_config() {
   LOG_SENSOR("", "Battery nominal capacity", this->battery_nominal_capacity_sensor_);
   LOG_SENSOR("", "PV voltage", this->pv_voltage_sensor_);
   LOG_SENSOR("", "PV current", this->pv_current_sensor_);
+  LOG_SENSOR("", "PV power", this->pv_power_sensor_);
   LOG_SENSOR("", "Battery status bitmask", this->battery_status_bitmask_sensor_);
-  LOG_SENSOR("", "PV Controller status bitmask", this->pv_controller_status_bitmask_sensor_);
+  LOG_SENSOR("", "PV controller status bitmask", this->pv_controller_status_bitmask_sensor_);
   LOG_SENSOR("", "Charged capacity", this->charged_capacity_sensor_);
   LOG_SENSOR("", "Charged energy", this->charged_energy_sensor_);
-  LOG_SENSOR("", "PV power", this->pv_power_sensor_);
 
   LOG_TEXT_SENSOR("", "Battery status", this->battery_status_text_sensor_);
-  LOG_TEXT_SENSOR("", "PV Controller Status", this->pv_controller_status_text_sensor_);
+  LOG_TEXT_SENSOR("", "PV controller status", this->pv_controller_status_text_sensor_);
 }
 
 void VotronicBle::publish_state_(binary_sensor::BinarySensor *binary_sensor, const bool &state) {

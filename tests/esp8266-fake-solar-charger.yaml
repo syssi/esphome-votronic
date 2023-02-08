@@ -1,5 +1,5 @@
 substitutions:
-  name: fake-solarcharger
+  name: fake-solar-charger
   device_description: "Emulate the Display-Link port traffic of a Votronic Solar Charger"
   tx_pin: GPIO4
   rx_pin: GPIO5
