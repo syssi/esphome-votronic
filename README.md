@@ -8,23 +8,6 @@
 
 ESPHome component to monitor votronic devices via BLE or Display Link
 
-## Supported devices
-
-* Bluetooth Connector S-BC
-  * Solar Charger SR/MPP since 2014 (S/N 14Vxx.xxxxx)
-  * Battery Computer S + Smart Shunt
-
-## Untested devices
-
-* Battery Charger VBCS-Triple
-* VPC Jupiter + Smart Shunt
-
-## Requirements
-
-* [ESPHome 2022.12.0 or higher](https://github.com/esphome/esphome/releases).
-* A cable with rj11 western connector
-* Generic ESP32 or ESP8266 board
-
 ## Setup
 
 * [BLE communication via the Bluetooth Controller](votronic_bluetooth.md)

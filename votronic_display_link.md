@@ -21,6 +21,7 @@ ESPHome component to monitor votronic devices via Display Link
 ## Requirements
 
 * [ESPHome 2022.12.0 or higher](https://github.com/esphome/esphome/releases).
+* A wire with RJ11 western connector
 * Generic ESP32 or ESP8266 board
 
 ## Installation
