@@ -3,5 +3,6 @@
 votronic_ble:
   - ble_client_id: client0
     id: votronic0
+    throttle: 0ms
     update_interval: 1s
     enable_fake_traffic: true

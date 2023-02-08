@@ -101,6 +101,13 @@ void VotronicBle::update() {
     // Battery computer status frame
     this->on_votronic_ble_data_(0x22, {0xE8, 0x04, 0xBF, 0x04, 0x09, 0x01, 0x60, 0x00, 0x5F, 0x00,
                                        0x9A, 0xFE, 0xFF, 0xF0, 0x0A, 0x5E, 0x14, 0x54, 0x02, 0x04});
+
+    // Battery computer status frame (max current: +8388.607 A)
+    this->on_votronic_ble_data_(0x22, {0xE8, 0x04, 0xBF, 0x04, 0x09, 0x01, 0x60, 0x00, 0x5F, 0x00,
+                                       0xFF, 0xFF, 0x7F, 0xF0, 0x0A, 0x5E, 0x14, 0x54, 0x02, 0x04});
+    // Battery computer status frame (min current: -8388.608 A)
+    this->on_votronic_ble_data_(0x22, {0xE8, 0x04, 0xBF, 0x04, 0x09, 0x01, 0x60, 0x00, 0x5F, 0x00,
+                                       0x00, 0x00, 0x80, 0xF0, 0x0A, 0x5E, 0x14, 0x54, 0x02, 0x04});
   }
 
   if (this->node_state != espbt::ClientState::ESTABLISHED) {
@@ -164,6 +171,7 @@ void VotronicBle::decode_battery_computer_data_(const std::vector<uint8_t> &data
   this->publish_state_(this->state_of_charge_sensor_, (float) data[8]);
 
   float current = (float) ((int32_t) votronic_get_24bit(10)) * 0.001f;
+  ESP_LOGV(TAG, "  Current (raw): 0x%02X%02X%02X (%.3f A)", data[12], data[11], data[10], current);
   this->publish_state_(this->current_sensor_, current);
   this->publish_state_(this->charging_binary_sensor_, (current > 0.0f));
   this->publish_state_(this->discharging_binary_sensor_, (current < 0.0f));
