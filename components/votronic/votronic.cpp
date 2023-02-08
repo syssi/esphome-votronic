@@ -18,6 +18,10 @@ static const uint8_t VOTRONIC_FRAME_TYPE_BATTERY_COMPUTER_INFO1 = 0xCA;
 static const uint8_t VOTRONIC_FRAME_TYPE_BATTERY_COMPUTER_INFO2 = 0xDA;
 static const uint8_t VOTRONIC_FRAME_TYPE_UNNAMED = 0xFA;
 
+static const uint8_t VOTRONIC_FRAME_TYPE_CONTROL_CHARGER = 0x7A;             // Incorrect protocol description?
+static const uint8_t VOTRONIC_FRAME_TYPE_CONTROL_CHARGING_CONVERTER = 0x3A;  // Incorrect protocol description?
+static const uint8_t VOTRONIC_FRAME_TYPE_CONTROL_BATTERY_COMPUTER = 0xEA;
+
 static const uint8_t BATTERY_STATUS_SIZE = 8;
 static const char *const BATTERY_STATUS[BATTERY_STATUS_SIZE] = {
     "I phase",         // 0000 0001
@@ -146,7 +150,9 @@ void Votronic::on_votronic_data_(const std::vector<uint8_t> &data) {
     case VOTRONIC_FRAME_TYPE_BATTERY_COMPUTER_INFO2:
     case VOTRONIC_FRAME_TYPE_UNNAMED:
     default:
-      ESP_LOGW(TAG, "Unhandled response (0x%02X) received: %s", data[1],
+      ESP_LOGW(TAG, "Your device is probably not supported. Please create an issue here: "
+                    "https://github.com/syssi/esphome-votronic/issues");
+      ESP_LOGW(TAG, "Please provide the following unhandled message data (0x%02X): %s", frame_type,
                format_hex_pretty(&data.front(), data.size()).c_str());
   }
 }
