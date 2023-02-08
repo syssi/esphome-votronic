@@ -96,9 +96,9 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   text_sensor::TextSensor *pv_controller_status_text_sensor_;
 
   uint16_t char_battery_handle_;
-  uint16_t char_photovoltaic_handle_;
+  uint16_t char_solar_charger_handle_;
   uint32_t last_battery_info_{0};
-  uint32_t last_photovoltaic_info_{0};
+  uint32_t last_solar_charger_info_{0};
   uint16_t throttle_;
   bool enable_fake_traffic_;
 
@@ -111,7 +111,7 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
 
   esp32_ble_tracker::ESPBTUUID char_battery_uuid_ =
       esp32_ble_tracker::ESPBTUUID::from_raw("9a082a4e-5bcc-4b1d-9958-a97cfccfa5ec");
-  esp32_ble_tracker::ESPBTUUID char_photovoltaic_uuid_ =
+  esp32_ble_tracker::ESPBTUUID char_solar_charger_uuid_ =
       esp32_ble_tracker::ESPBTUUID::from_raw("971ccec2-521d-42fd-b570-cf46fe5ceb65");
 
   esp32_ble_tracker::ESPBTUUID char_management_uuid_ =
