@@ -39,16 +39,17 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
       break;
     }
     case ESP_GATTC_SEARCH_CMPL_EVT: {
-      auto *char_battery = this->parent_->get_characteristic(this->service_monitoring_uuid_, this->char_battery_uuid_);
-      if (char_battery == nullptr) {
+      auto *char_battery_computer =
+          this->parent_->get_characteristic(this->service_monitoring_uuid_, this->char_battery_computer_uuid_);
+      if (char_battery_computer == nullptr) {
         ESP_LOGW(TAG, "[%s] No battery computer characteristic found at device. No battery computer attached?",
                  this->parent_->address_str().c_str());
         break;
       }
-      this->char_battery_handle_ = char_battery->handle;
+      this->char_battery_computer_handle_ = char_battery_computer->handle;
 
       auto status = esp_ble_gattc_register_for_notify(this->parent()->get_gattc_if(), this->parent()->get_remote_bda(),
-                                                      char_battery->handle);
+                                                      char_battery_computer->handle);
       if (status) {
         ESP_LOGW(TAG, "esp_ble_gattc_register_for_notify failed, status=%d", status);
       }
@@ -91,7 +92,7 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
 void VotronicBle::update() {
   if (this->enable_fake_traffic_) {
     this->char_solar_charger_handle_ = 0x25;
-    this->char_battery_handle_ = 0x22;
+    this->char_battery_computer_handle_ = 0x22;
 
     // Solar charger status frame
     this->on_votronic_ble_data_(0x25, {0xE8, 0x04, 0x76, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x56, 0x00, 0x09,
@@ -114,8 +115,8 @@ void VotronicBle::on_votronic_ble_data_(const uint8_t &handle, const std::vector
     return;
   }
 
-  if (handle == this->char_battery_handle_) {
-    this->decode_battery_data_(data);
+  if (handle == this->char_battery_computer_handle_) {
+    this->decode_battery_computer_data_(data);
     return;
   }
 
@@ -125,19 +126,18 @@ void VotronicBle::on_votronic_ble_data_(const uint8_t &handle, const std::vector
            format_hex_pretty(&data.front(), data.size()).c_str());
 }
 
-void VotronicBle::decode_battery_data_(const std::vector<uint8_t> &data) {
+void VotronicBle::decode_battery_computer_data_(const std::vector<uint8_t> &data) {
   if (data.size() != 20) {
     ESP_LOGW(TAG, "Invalid frame size: %zu", data.size());
     return;
   }
 
   const uint32_t now = millis();
-  if (now - this->last_battery_info_ < this->throttle_) {
+  if (now - this->last_battery_computer_data_ < this->throttle_) {
     return;
   }
-  this->last_battery_info_ = now;
+  this->last_battery_computer_data_ = now;
 
-  this->last_solar_charger_info_ = now;
   auto votronic_get_16bit = [&](size_t i) -> uint16_t {
     return (uint16_t(data[i + 1]) << 8) | (uint16_t(data[i + 0]) << 0);
   };
@@ -173,10 +173,10 @@ void VotronicBle::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   }
 
   const uint32_t now = millis();
-  if (now - this->last_solar_charger_info_ < this->throttle_) {
+  if (now - this->last_solar_charger_data_ < this->throttle_) {
     return;
   }
-  this->last_solar_charger_info_ = now;
+  this->last_solar_charger_data_ = now;
 
   auto votronic_get_16bit = [&](size_t i) -> uint16_t {
     return (uint16_t(data[i + 1]) << 8) | (uint16_t(data[i + 0]) << 0);
@@ -209,7 +209,8 @@ void VotronicBle::dump_config() {
   ESP_LOGCONFIG(TAG, "VotronicBle:");
   ESP_LOGCONFIG(TAG, "  MAC address                         : %s", this->parent_->address_str().c_str());
   ESP_LOGCONFIG(TAG, "  Monitoring Service UUID             : %s", this->service_monitoring_uuid_.to_string().c_str());
-  ESP_LOGCONFIG(TAG, "  Battery Computer Characteristic UUID: %s", this->char_battery_uuid_.to_string().c_str());
+  ESP_LOGCONFIG(TAG, "  Battery Computer Characteristic UUID: %s",
+                this->char_battery_computer_uuid_.to_string().c_str());
   ESP_LOGCONFIG(TAG, "  Solar Charger Characteristic UUID   : %s", this->char_solar_charger_uuid_.to_string().c_str());
   ESP_LOGCONFIG(TAG, "  Fake traffic enabled: %s", YESNO(this->enable_fake_traffic_));
 
