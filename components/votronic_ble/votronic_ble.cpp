@@ -143,11 +143,11 @@ void VotronicBle::decode_battery_computer_data_(const std::vector<uint8_t> &data
   };
 
   auto votronic_get_24bit = [&](size_t i) -> uint32_t {
-    uint32_t i = (uint32_t(data[i + 2]) << 16) | (uint32_t(data[i + 1]) << 8) | (uint32_t(data[i + 0]) << 0);
-    if (i & 0x800000) {
-      i |= ~0xffffff;
+    uint32_t val = (uint32_t(data[i + 2]) << 16) | (uint32_t(data[i + 1]) << 8) | (uint32_t(data[i + 0]) << 0);
+    if (val & 0x800000) {
+      val |= ~0xffffff;
     }
-    return i;
+    return val;
   };
 
   ESP_LOGI(TAG, "Battery computer data received");
