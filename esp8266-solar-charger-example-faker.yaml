@@ -1,0 +1,18 @@
+<<: !include esp8266-solar-charger-example-debug.yaml
+
+uart:
+  - id: uart0
+    baud_rate: 1000
+    tx_pin: ${tx_pin}
+    rx_pin: ${rx_pin}
+    debug:
+      direction: BOTH
+      dummy_receiver: false
+
+votronic:
+  - id: votronic0
+    uart_id: uart0
+    rx_timeout: ${rx_timeout}
+    throttle: 0ms
+    update_interval: 1s
+    enable_fake_traffic: true
