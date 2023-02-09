@@ -4,20 +4,21 @@ from esphome.components import sensor
 from esphome.const import (
     CONF_BATTERY_VOLTAGE,
     CONF_CURRENT,
+    CONF_POWER,
     DEVICE_CLASS_CURRENT,
     DEVICE_CLASS_EMPTY,
     DEVICE_CLASS_POWER,
+    DEVICE_CLASS_TEMPERATURE,
     DEVICE_CLASS_VOLTAGE,
+    ENTITY_CATEGORY_DIAGNOSTIC,
     ICON_EMPTY,
     STATE_CLASS_MEASUREMENT,
     UNIT_AMPERE,
+    UNIT_CELSIUS,
     UNIT_EMPTY,
     UNIT_PERCENT,
     UNIT_VOLT,
     UNIT_WATT,
-    UNIT_CELSIUS,
-    DEVICE_CLASS_TEMPERATURE,
-    ENTITY_CATEGORY_DIAGNOSTIC,
 )
 
 from . import CONF_VOTRONIC_ID, Votronic
@@ -57,6 +58,7 @@ SENSORS = [
     CONF_SECONDARY_BATTERY_VOLTAGE,
     CONF_STATE_OF_CHARGE,
     CONF_CURRENT,
+    CONF_POWER,
     CONF_PV_VOLTAGE,
     CONF_PV_CURRENT,
     CONF_PV_POWER,
@@ -96,6 +98,13 @@ CONFIG_SCHEMA = cv.Schema(
             icon=ICON_CURRENT_DC,
             accuracy_decimals=3,
             device_class=DEVICE_CLASS_CURRENT,
+            state_class=STATE_CLASS_MEASUREMENT,
+        ),
+        cv.Optional(CONF_POWER): sensor.sensor_schema(
+            unit_of_measurement=UNIT_WATT,
+            icon=ICON_EMPTY,
+            accuracy_decimals=2,
+            device_class=DEVICE_CLASS_POWER,
             state_class=STATE_CLASS_MEASUREMENT,
         ),
         cv.Optional(CONF_PV_VOLTAGE): sensor.sensor_schema(

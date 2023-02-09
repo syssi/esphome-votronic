@@ -26,6 +26,7 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
       this->publish_state_(this->battery_capacity_sensor_, NAN);
       this->publish_state_(this->state_of_charge_sensor_, NAN);
       this->publish_state_(this->current_sensor_, NAN);
+      this->publish_state_(this->power_sensor_, NAN);
       this->publish_state_(this->battery_nominal_capacity_sensor_, NAN);
       this->publish_state_(this->battery_voltage_sensor_, NAN);
       this->publish_state_(this->pv_voltage_sensor_, NAN);
@@ -165,7 +166,8 @@ void VotronicBle::decode_battery_computer_data_(const std::vector<uint8_t> &data
   ESP_LOGD(TAG, "  Unknown (Byte 16-17): %d (0x%02X 0x%02X)", votronic_get_16bit(16), data[16], data[17]);
   ESP_LOGD(TAG, "  Unknown (Byte 18-19): %d (0x%02X 0x%02X)", votronic_get_16bit(18), data[18], data[19]);
 
-  this->publish_state_(this->battery_voltage_sensor_, votronic_get_16bit(0) * 0.01f);
+  float battery_voltage = votronic_get_16bit(0) * 0.01f;
+  this->publish_state_(this->battery_voltage_sensor_, battery_voltage);
   this->publish_state_(this->secondary_battery_voltage_sensor_, votronic_get_16bit(2) * 0.01f);
   this->publish_state_(this->battery_capacity_sensor_, (float) votronic_get_16bit(4));
   this->publish_state_(this->state_of_charge_sensor_, (float) data[8]);
@@ -173,6 +175,7 @@ void VotronicBle::decode_battery_computer_data_(const std::vector<uint8_t> &data
   float current = (float) ((int32_t) votronic_get_24bit(10)) * 0.001f;
   ESP_LOGV(TAG, "  Current (raw): 0x%02X%02X%02X (%.3f A)", data[12], data[11], data[10], current);
   this->publish_state_(this->current_sensor_, current);
+  this->publish_state_(this->power_sensor_, current * battery_voltage);
   this->publish_state_(this->charging_binary_sensor_, (current > 0.0f));
   this->publish_state_(this->discharging_binary_sensor_, (current < 0.0f));
 
@@ -235,6 +238,7 @@ void VotronicBle::dump_config() {
   LOG_SENSOR("", "Battery capacity", this->battery_capacity_sensor_);
   LOG_SENSOR("", "State of charge", this->state_of_charge_sensor_);
   LOG_SENSOR("", "Current", this->current_sensor_);
+  LOG_SENSOR("", "Power", this->power_sensor_);
   LOG_SENSOR("", "Battery nominal capacity", this->battery_nominal_capacity_sensor_);
   LOG_SENSOR("", "PV voltage", this->pv_voltage_sensor_);
   LOG_SENSOR("", "PV current", this->pv_current_sensor_);

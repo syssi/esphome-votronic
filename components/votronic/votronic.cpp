@@ -200,12 +200,14 @@ void Votronic::decode_charger_data_(const uint8_t &frame_type, const std::vector
   //   0   1  0xAA        Sync Byte
   //   1   1  0x3A        Frame Type
   //   2   2  0xA0 0x05   Battery Voltage                    V    U16 10mV/Bit
-  this->publish_state_(this->battery_voltage_sensor_, votronic_get_16bit(2) * 0.01f);
+  float battery_voltage = votronic_get_16bit(2) * 0.01f;
+  this->publish_state_(this->battery_voltage_sensor_, battery_voltage);
   //   4   2  0xA4 0x06   Second Battery Voltage             V    U16 10mV/Bit
   this->publish_state_(this->secondary_battery_voltage_sensor_, votronic_get_16bit(4) * 0.01f);
   //   6   2  0x78 0x00   Charging Current                   A    S16 100mA/Bit
   float current = (float) ((int16_t) votronic_get_16bit(6)) * 0.1f;
   this->publish_state_(this->current_sensor_, current);
+  this->publish_state_(this->power_sensor_, current * battery_voltage);
   this->publish_state_(this->charging_binary_sensor_, (current > 0.0f));
   this->publish_state_(this->discharging_binary_sensor_, (current < 0.0f));
   //   8   1  0x00        Reserved
@@ -238,6 +240,7 @@ void Votronic::dump_config() {
   LOG_SENSOR("", "Secondary battery voltage", this->secondary_battery_voltage_sensor_);
   LOG_SENSOR("", "State of charge", this->state_of_charge_sensor_);
   LOG_SENSOR("", "Current", this->current_sensor_);
+  LOG_SENSOR("", "Power", this->power_sensor_);
   LOG_SENSOR("", "PV voltage", this->pv_voltage_sensor_);
   LOG_SENSOR("", "PV current", this->pv_current_sensor_);
   LOG_SENSOR("", "PV power", this->pv_power_sensor_);

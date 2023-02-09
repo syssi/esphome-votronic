@@ -33,6 +33,7 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
     state_of_charge_sensor_ = state_of_charge_sensor;
   }
   void set_current_sensor(sensor::Sensor *current_sensor) { current_sensor_ = current_sensor; }
+  void set_power_sensor(sensor::Sensor *power_sensor) { power_sensor_ = power_sensor; }
   void set_pv_voltage_sensor(sensor::Sensor *pv_voltage_sensor) { pv_voltage_sensor_ = pv_voltage_sensor; }
   void set_pv_current_sensor(sensor::Sensor *pv_current_sensor) { pv_current_sensor_ = pv_current_sensor; }
   void set_pv_power_sensor(sensor::Sensor *pv_power_sensor) { pv_power_sensor_ = pv_power_sensor; }
@@ -77,6 +78,7 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   sensor::Sensor *secondary_battery_voltage_sensor_;
   sensor::Sensor *state_of_charge_sensor_;
   sensor::Sensor *current_sensor_;
+  sensor::Sensor *power_sensor_;
   sensor::Sensor *pv_voltage_sensor_;
   sensor::Sensor *pv_current_sensor_;
   sensor::Sensor *pv_power_sensor_;
