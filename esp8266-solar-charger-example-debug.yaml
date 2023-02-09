@@ -1,0 +1,10 @@
+<<: !include esp8266-solar-charger-example.yaml
+
+logger:
+  level: VERY_VERBOSE
+  logs:
+    component: DEBUG
+    scheduler: INFO
+    binary_sensor: DEBUG
+    sensor: DEBUG
+    text_sensor: DEBUG

@@ -27,7 +27,7 @@ CONFIG_SCHEMA = (
             ): cv.positive_time_period_milliseconds,
         }
     )
-    .extend(cv.polling_component_schema("2s"))
+    .extend(cv.polling_component_schema("never"))
     .extend(uart.UART_DEVICE_SCHEMA)
 )
 
