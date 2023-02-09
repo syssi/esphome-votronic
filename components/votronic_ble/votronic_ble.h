@@ -45,6 +45,7 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
     state_of_charge_sensor_ = state_of_charge_sensor;
   }
   void set_current_sensor(sensor::Sensor *current_sensor) { current_sensor_ = current_sensor; }
+  void set_power_sensor(sensor::Sensor *power_sensor) { power_sensor_ = power_sensor; }
   void set_battery_nominal_capacity_sensor(sensor::Sensor *battery_nominal_capacity_sensor) {
     battery_nominal_capacity_sensor_ = battery_nominal_capacity_sensor;
   }
@@ -83,6 +84,7 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   sensor::Sensor *battery_capacity_sensor_;
   sensor::Sensor *state_of_charge_sensor_;
   sensor::Sensor *current_sensor_;
+  sensor::Sensor *power_sensor_;
   sensor::Sensor *battery_nominal_capacity_sensor_;
   sensor::Sensor *pv_voltage_sensor_;
   sensor::Sensor *pv_current_sensor_;

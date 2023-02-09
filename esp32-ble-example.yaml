@@ -72,6 +72,8 @@ sensor:
       name: "${name} state of charge"
     current:
       name: "${name} current"
+    power:
+      name: "${name} power"
     battery_nominal_capacity:
       name: "${name} battery nominal capacity"
 
