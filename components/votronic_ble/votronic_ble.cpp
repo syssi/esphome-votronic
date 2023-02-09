@@ -7,6 +7,30 @@ namespace votronic_ble {
 
 static const char *const TAG = "votronic_ble";
 
+static const uint8_t BATTERY_STATUS_SIZE = 8;
+static const char *const BATTERY_STATUS[BATTERY_STATUS_SIZE] = {
+    "I phase",         // 0000 0001
+    "U1 phase",        // 0000 0010
+    "U2 phase",        // 0000 0100
+    "U3 phase",        // 0000 1000
+    "Unused (Bit 4)",  // 0001 0000
+    "Unused (Bit 5)",  // 0010 0000
+    "Unused (Bit 6)",  // 0100 0000
+    "Unused (Bit 7)",  // 1000 0000
+};
+
+static const uint8_t SOLAR_CHARGER_STATUS_SIZE = 8;
+static const char *const SOLAR_CHARGER_STATUS[SOLAR_CHARGER_STATUS_SIZE] = {
+    "Unused (Bit 0)",  // 0000 0001
+    "Unused (Bit 1)",  // 0000 0010
+    "Unused (Bit 2)",  // 0000 0100
+    "Active",          // 0000 1000
+    "Reduced",         // 0001 0000
+    "AES active",      // 0010 0000
+    "Unused (Bit 6)",  // 0100 0000
+    "Unused (Bit 7)",  // 1000 0000
+};
+
 void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if,
                                       esp_ble_gattc_cb_param_t *param) {
   switch (event) {
@@ -203,9 +227,10 @@ void VotronicBle::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   this->publish_state_(this->pv_voltage_sensor_, votronic_get_16bit(2) * 0.01f);
   this->publish_state_(this->pv_current_sensor_, votronic_get_16bit(4) * 0.1f);
   this->publish_state_(this->battery_status_bitmask_sensor_, data[8]);
-  this->publish_state_(this->battery_status_text_sensor_, this->battery_status_to_string_(data[8]));
+  this->publish_state_(this->battery_status_text_sensor_, this->battery_status_bitmask_to_string_(data[8]));
   this->publish_state_(this->pv_controller_status_bitmask_sensor_, data[12]);
-  this->publish_state_(this->pv_controller_status_text_sensor_, this->pv_controller_status_to_string_(data[12]));
+  this->publish_state_(this->pv_controller_status_text_sensor_,
+                       this->solar_charger_status_bitmask_to_string_(data[12]));
   this->publish_state_(this->charged_capacity_sensor_, (float) votronic_get_16bit(13));
   this->publish_state_(this->charged_energy_sensor_, votronic_get_16bit(15) * 10.0f);
   this->publish_state_(this->pv_power_sensor_, (float) votronic_get_16bit(17) * 0.1f);
@@ -271,36 +296,44 @@ void VotronicBle::publish_state_(text_sensor::TextSensor *text_sensor, const std
   text_sensor->publish_state(state);
 }
 
-std::string VotronicBle::pv_controller_status_to_string_(const uint8_t mask) {
-  if ((mask & 24) == 24) {
-    return "Current reduction";
-  }
-
-  if ((mask & 8) == 8) {
-    return "Active";
-  }
-
-  if ((mask & 33) == 33) {
+std::string Votronic::battery_status_bitmask_to_string_(const uint8_t mask) {
+  if (mask == 0x00) {
     return "Standby";
+  }
+
+  if (mask) {
+    for (uint8_t i = 0; i < BATTERY_STATUS_SIZE; i++) {
+      if (mask & (1 << i)) {
+        return BATTERY_STATUS[i];
+      }
+    }
   }
 
   return str_snprintf("Unknown (0x%02X)", 15, mask);
 }
 
-std::string VotronicBle::battery_status_to_string_(const uint8_t mask) {
-  if ((mask & 25) == 25) {
-    return "Current reduction";
-  }
+std::string Votronic::solar_charger_status_bitmask_to_string_(const uint8_t mask) {
+  bool first = true;
+  std::string errors_list = "";
 
-  if ((mask & 32) == 32) {
-    return "Active";
-  }
-
-  if ((mask & 33) == 33) {
+  if (mask == 0x00) {
     return "Standby";
   }
 
-  return str_snprintf("Unknown (0x%02X)", 15, mask);
+  if (mask) {
+    for (uint8_t i = 0; i < SOLAR_CHARGER_STATUS_SIZE; i++) {
+      if (mask & (1 << i)) {
+        if (first) {
+          first = false;
+        } else {
+          errors_list.append(";");
+        }
+        errors_list.append(SOLAR_CHARGER_STATUS[i]);
+      }
+    }
+  }
+
+  return errors_list;
 }
 
 }  // namespace votronic_ble
