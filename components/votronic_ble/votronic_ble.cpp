@@ -296,7 +296,7 @@ void VotronicBle::publish_state_(text_sensor::TextSensor *text_sensor, const std
   text_sensor->publish_state(state);
 }
 
-std::string Votronic::battery_status_bitmask_to_string_(const uint8_t mask) {
+std::string VotronicBle::battery_status_bitmask_to_string_(const uint8_t mask) {
   if (mask == 0x00) {
     return "Standby";
   }
@@ -312,7 +312,7 @@ std::string Votronic::battery_status_bitmask_to_string_(const uint8_t mask) {
   return str_snprintf("Unknown (0x%02X)", 15, mask);
 }
 
-std::string Votronic::solar_charger_status_bitmask_to_string_(const uint8_t mask) {
+std::string VotronicBle::solar_charger_status_bitmask_to_string_(const uint8_t mask) {
   bool first = true;
   std::string errors_list = "";
 
