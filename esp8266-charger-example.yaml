@@ -65,6 +65,8 @@ sensor:
       name: "${name} secondary battery voltage"
     current:
       name: "${name} current"
+    current:
+      name: "${name} current"
     state_of_charge:
       name: "${name} state of charge"
     controller_temperature:
