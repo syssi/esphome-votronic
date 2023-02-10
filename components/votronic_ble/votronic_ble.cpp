@@ -306,7 +306,7 @@ std::string VotronicBle::solar_charger_status_bitmask_to_string_(const uint8_t m
   }
 
   if (mask & (1 << 5)) {
-    return "Reduced";
+    return "AES active";
   }
 
   if (mask & (1 << 4)) {
