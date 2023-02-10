@@ -7,18 +7,6 @@ namespace votronic_ble {
 
 static const char *const TAG = "votronic_ble";
 
-static const uint8_t BATTERY_STATUS_SIZE = 8;
-static const char *const BATTERY_STATUS[BATTERY_STATUS_SIZE] = {
-    "I phase",         // 0000 0001
-    "U1 phase",        // 0000 0010
-    "U2 phase",        // 0000 0100
-    "U3 phase",        // 0000 1000
-    "Unused (Bit 4)",  // 0001 0000
-    "Unused (Bit 5)",  // 0010 0000
-    "Unused (Bit 6)",  // 0100 0000
-    "Unused (Bit 7)",  // 1000 0000
-};
-
 void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if,
                                       esp_ble_gattc_cb_param_t *param) {
   switch (event) {
@@ -289,15 +277,24 @@ std::string VotronicBle::battery_status_bitmask_to_string_(const uint8_t mask) {
     return "Standby";
   }
 
-  if (mask) {
-    for (uint8_t i = 0; i < BATTERY_STATUS_SIZE; i++) {
-      if (mask & (1 << i)) {
-        return BATTERY_STATUS[i];
-      }
-    }
+  if (mask & (1 << 3)) {
+    return "U3 phase";
+  }
+
+  if (mask & (1 << 2)) {
+    return "U2 phase";
+  }
+
+  if (mask & (1 << 1)) {
+    return "U1 phase";
+  }
+
+  if (mask & (1 << 0)) {
+    return "I phase";
   }
 
   return str_snprintf("Unknown (0x%02X)", 15, mask);
+
 }
 
 std::string VotronicBle::solar_charger_status_bitmask_to_string_(const uint8_t mask) {
