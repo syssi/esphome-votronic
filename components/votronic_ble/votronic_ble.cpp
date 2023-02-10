@@ -19,18 +19,6 @@ static const char *const BATTERY_STATUS[BATTERY_STATUS_SIZE] = {
     "Unused (Bit 7)",  // 1000 0000
 };
 
-static const uint8_t SOLAR_CHARGER_STATUS_SIZE = 8;
-static const char *const SOLAR_CHARGER_STATUS[SOLAR_CHARGER_STATUS_SIZE] = {
-    "Unused (Bit 0)",  // 0000 0001
-    "Unused (Bit 1)",  // 0000 0010
-    "Unused (Bit 2)",  // 0000 0100
-    "Active",          // 0000 1000
-    "Reduced",         // 0001 0000
-    "AES active",      // 0010 0000
-    "Unused (Bit 6)",  // 0100 0000
-    "Unused (Bit 7)",  // 1000 0000
-};
-
 void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if,
                                       esp_ble_gattc_cb_param_t *param) {
   switch (event) {
@@ -313,27 +301,23 @@ std::string VotronicBle::battery_status_bitmask_to_string_(const uint8_t mask) {
 }
 
 std::string VotronicBle::solar_charger_status_bitmask_to_string_(const uint8_t mask) {
-  bool first = true;
-  std::string errors_list = "";
-
   if (mask == 0x00) {
     return "Standby";
   }
 
-  if (mask) {
-    for (uint8_t i = 0; i < SOLAR_CHARGER_STATUS_SIZE; i++) {
-      if (mask & (1 << i)) {
-        if (first) {
-          first = false;
-        } else {
-          errors_list.append(";");
-        }
-        errors_list.append(SOLAR_CHARGER_STATUS[i]);
-      }
-    }
+  if (mask & (1 << 5)) {
+    return "Reduced";
   }
 
-  return errors_list;
+  if (mask & (1 << 4)) {
+    return "Reduced";
+  }
+
+  if (mask & (1 << 3)) {
+    return "Active";
+  }
+
+  return str_snprintf("Unknown (0x%02X)", 15, mask);
 }
 
 }  // namespace votronic_ble
