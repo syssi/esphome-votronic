@@ -216,7 +216,6 @@ void VotronicBle::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   ESP_LOGD(TAG, "  Unknown (Byte  9): %d (0x%02X)", data[9], data[9]);
   ESP_LOGD(TAG, "  Unknown (Byte 10): %d (0x%02X)", data[10], data[10]);
   ESP_LOGD(TAG, "  Unknown (Byte 11): %d (0x%02X)", data[11], data[11]);
-  ESP_LOGD(TAG, "  Unknown (Byte 18): %d (0x%02X)", data[18], data[18]);
 }
 
 void VotronicBle::dump_config() {
