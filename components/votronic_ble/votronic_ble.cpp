@@ -203,9 +203,10 @@ void VotronicBle::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   this->publish_state_(this->pv_voltage_sensor_, votronic_get_16bit(2) * 0.01f);
   this->publish_state_(this->pv_current_sensor_, votronic_get_16bit(4) * 0.1f);
   this->publish_state_(this->battery_status_bitmask_sensor_, data[8]);
-  this->publish_state_(this->battery_status_text_sensor_, this->battery_status_to_string_(data[8]));
+  this->publish_state_(this->battery_status_text_sensor_, this->battery_status_bitmask_to_string_(data[8]));
   this->publish_state_(this->pv_controller_status_bitmask_sensor_, data[12]);
-  this->publish_state_(this->pv_controller_status_text_sensor_, this->pv_controller_status_to_string_(data[12]));
+  this->publish_state_(this->pv_controller_status_text_sensor_,
+                       this->solar_charger_status_bitmask_to_string_(data[12]));
   this->publish_state_(this->charged_capacity_sensor_, (float) votronic_get_16bit(13));
   this->publish_state_(this->charged_energy_sensor_, votronic_get_16bit(15) * 10.0f);
   this->publish_state_(this->pv_power_sensor_, (float) votronic_get_16bit(17) * 0.1f);
@@ -270,33 +271,45 @@ void VotronicBle::publish_state_(text_sensor::TextSensor *text_sensor, const std
   text_sensor->publish_state(state);
 }
 
-std::string VotronicBle::pv_controller_status_to_string_(const uint8_t mask) {
-  if ((mask & 24) == 24) {
-    return "Current reduction";
-  }
-
-  if ((mask & 8) == 8) {
-    return "Active";
-  }
-
-  if ((mask & 33) == 33) {
+std::string VotronicBle::battery_status_bitmask_to_string_(const uint8_t mask) {
+  if (mask == 0x00) {
     return "Standby";
+  }
+
+  if (mask & (1 << 3)) {
+    return "U3 phase";
+  }
+
+  if (mask & (1 << 2)) {
+    return "U2 phase";
+  }
+
+  if (mask & (1 << 1)) {
+    return "U1 phase";
+  }
+
+  if (mask & (1 << 0)) {
+    return "I phase";
   }
 
   return str_snprintf("Unknown (0x%02X)", 15, mask);
 }
 
-std::string VotronicBle::battery_status_to_string_(const uint8_t mask) {
-  if ((mask & 25) == 25) {
-    return "Current reduction";
-  }
-
-  if ((mask & 32) == 32) {
-    return "Active";
-  }
-
-  if ((mask & 33) == 33) {
+std::string VotronicBle::solar_charger_status_bitmask_to_string_(const uint8_t mask) {
+  if (mask == 0x00) {
     return "Standby";
+  }
+
+  if (mask & (1 << 5)) {
+    return "AES active";
+  }
+
+  if (mask & (1 << 4)) {
+    return "Reduced";
+  }
+
+  if (mask & (1 << 3)) {
+    return "Active";
   }
 
   return str_snprintf("Unknown (0x%02X)", 15, mask);

@@ -127,8 +127,8 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   void publish_state_(binary_sensor::BinarySensor *binary_sensor, const bool &state);
   void publish_state_(sensor::Sensor *sensor, float value);
   void publish_state_(text_sensor::TextSensor *text_sensor, const std::string &state);
-  std::string pv_controller_status_to_string_(uint8_t mask);
-  std::string battery_status_to_string_(uint8_t mask);
+  std::string battery_status_bitmask_to_string_(uint8_t mask);
+  std::string solar_charger_status_bitmask_to_string_(uint8_t mask);
 };
 
 }  // namespace votronic_ble
