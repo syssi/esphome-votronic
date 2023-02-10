@@ -294,7 +294,6 @@ std::string VotronicBle::battery_status_bitmask_to_string_(const uint8_t mask) {
   }
 
   return str_snprintf("Unknown (0x%02X)", 15, mask);
-
 }
 
 std::string VotronicBle::solar_charger_status_bitmask_to_string_(const uint8_t mask) {

@@ -309,39 +309,43 @@ std::string Votronic::battery_status_bitmask_to_string_(const uint8_t mask) {
     return "Standby";
   }
 
-  if (mask) {
-    for (uint8_t i = 0; i < BATTERY_STATUS_SIZE; i++) {
-      if (mask & (1 << i)) {
-        return BATTERY_STATUS[i];
-      }
-    }
+  if (mask & (1 << 3)) {
+    return "U3 phase";
+  }
+
+  if (mask & (1 << 2)) {
+    return "U2 phase";
+  }
+
+  if (mask & (1 << 1)) {
+    return "U1 phase";
+  }
+
+  if (mask & (1 << 0)) {
+    return "I phase";
   }
 
   return str_snprintf("Unknown (0x%02X)", 15, mask);
 }
 
 std::string Votronic::solar_charger_status_bitmask_to_string_(const uint8_t mask) {
-  bool first = true;
-  std::string errors_list = "";
-
   if (mask == 0x00) {
     return "Standby";
   }
 
-  if (mask) {
-    for (uint8_t i = 0; i < SOLAR_CHARGER_STATUS_SIZE; i++) {
-      if (mask & (1 << i)) {
-        if (first) {
-          first = false;
-        } else {
-          errors_list.append(";");
-        }
-        errors_list.append(SOLAR_CHARGER_STATUS[i]);
-      }
-    }
+  if (mask & (1 << 5)) {
+    return "AES active";
   }
 
-  return errors_list;
+  if (mask & (1 << 4)) {
+    return "Reduced";
+  }
+
+  if (mask & (1 << 3)) {
+    return "Active";
+  }
+
+  return str_snprintf("Unknown (0x%02X)", 15, mask);
 }
 
 std::string Votronic::charger_status_bitmask_to_string_(const uint8_t mask) {
