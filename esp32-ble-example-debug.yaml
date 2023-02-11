@@ -3,11 +3,15 @@
 logger:
   level: VERY_VERBOSE
   logs:
+    esp32_ble_tracker: VERY_VERBOSE
+    votronic_ble: VERY_VERBOSE
+    scheduler: DEBUG
     component: DEBUG
-    scheduler: INFO
+    sensor: DEBUG
     mqtt: INFO
     mqtt.idf: INFO
     mqtt.component: INFO
     mqtt.sensor: INFO
     mqtt.switch: INFO
-    esp32_ble_tracker: DEBUG
+    api.service: INFO
+    api: INFO

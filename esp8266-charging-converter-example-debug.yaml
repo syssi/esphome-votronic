@@ -3,8 +3,16 @@
 logger:
   level: VERY_VERBOSE
   logs:
+    votronic: VERY_VERBOSE
     component: DEBUG
     scheduler: INFO
     binary_sensor: DEBUG
     sensor: DEBUG
     text_sensor: DEBUG
+    mqtt: INFO
+    mqtt.idf: INFO
+    mqtt.component: INFO
+    mqtt.sensor: INFO
+    mqtt.switch: INFO
+    api.service: INFO
+    api: INFO
