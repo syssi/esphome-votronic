@@ -150,12 +150,12 @@ void VotronicBle::decode_battery_computer_data_(const std::vector<uint8_t> &data
     return (uint16_t(data[i + 1]) << 8) | (uint16_t(data[i + 0]) << 0);
   };
 
-  auto votronic_get_24bit = [&](size_t i) -> uint32_t {
+  auto votronic_get_24bit_signed = [&](size_t i) -> int32_t {
     uint32_t val = (uint32_t(data[i + 2]) << 16) | (uint32_t(data[i + 1]) << 8) | (uint32_t(data[i + 0]) << 0);
     if (val & 0x800000) {
       val |= ~0xffffff;
     }
-    return val;
+    return (int32_t) val;
   };
 
   ESP_LOGI(TAG, "Battery computer data received");
@@ -172,7 +172,7 @@ void VotronicBle::decode_battery_computer_data_(const std::vector<uint8_t> &data
   this->publish_state_(this->battery_capacity_sensor_, (float) votronic_get_16bit(4));
   this->publish_state_(this->state_of_charge_sensor_, (float) data[8]);
 
-  float current = (float) ((int32_t) votronic_get_24bit(10)) * 0.001f;
+  float current = votronic_get_24bit_signed(10) * 0.001f;
   ESP_LOGV(TAG, "  Current (raw): 0x%02X%02X%02X (%.3f A)", data[12], data[11], data[10], current);
   this->publish_state_(this->current_sensor_, current);
   this->publish_state_(this->power_sensor_, current * battery_voltage);
