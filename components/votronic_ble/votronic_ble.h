@@ -31,6 +31,15 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   void set_discharging_binary_sensor(binary_sensor::BinarySensor *discharging_binary_sensor) {
     discharging_binary_sensor_ = discharging_binary_sensor;
   }
+  void set_controller_active_binary_sensor(binary_sensor::BinarySensor *controller_active_binary_sensor) {
+    controller_active_binary_sensor_ = controller_active_binary_sensor;
+  }
+  void set_current_reduction_binary_sensor(binary_sensor::BinarySensor *current_reduction_binary_sensor) {
+    current_reduction_binary_sensor_ = current_reduction_binary_sensor;
+  }
+  void set_aes_active_binary_sensor(binary_sensor::BinarySensor *aes_active_binary_sensor) {
+    aes_active_binary_sensor_ = aes_active_binary_sensor;
+  }
 
   void set_battery_voltage_sensor(sensor::Sensor *battery_voltage_sensor) {
     battery_voltage_sensor_ = battery_voltage_sensor;
@@ -78,6 +87,9 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
  protected:
   binary_sensor::BinarySensor *charging_binary_sensor_;
   binary_sensor::BinarySensor *discharging_binary_sensor_;
+  binary_sensor::BinarySensor *controller_active_binary_sensor_;
+  binary_sensor::BinarySensor *current_reduction_binary_sensor_;
+  binary_sensor::BinarySensor *aes_active_binary_sensor_;
 
   sensor::Sensor *battery_voltage_sensor_;
   sensor::Sensor *secondary_battery_voltage_sensor_;
