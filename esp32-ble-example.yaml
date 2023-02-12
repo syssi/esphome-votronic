@@ -57,6 +57,10 @@ binary_sensor:
       name: "${name} charging"
     discharging:
       name: "${name} discharging"
+    aes_active:
+      name: "${name} aes active"
+    current_reduction:
+      name: "${name} current reduction"
 
 sensor:
   - platform: votronic_ble
