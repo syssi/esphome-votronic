@@ -11,19 +11,22 @@ CODEOWNERS = ["@syssi"]
 
 CONF_CHARGING = "charging"
 CONF_DISCHARGING = "discharging"
-CONF_AES_ACTIVE = "aes_active"
+CONF_CONTROLLER_ACTIVE = "controller_active"
 CONF_CURRENT_REDUCTION = "current_reduction"
+CONF_AES_ACTIVE = "aes_active"
 
 ICON_CHARGING = "mdi:battery-charging"
 ICON_DISCHARGING = "mdi:power-plug"
-ICON_AES_ACTIVE = "mdi:export"
+ICON_CONTROLLER_ACTIVE = "mdi:power"
 ICON_CURRENT_REDUCTION = "mdi:car-speed-limiter"
+ICON_AES_ACTIVE = "mdi:export"
 
 BINARY_SENSORS = [
     CONF_CHARGING,
     CONF_DISCHARGING,
-    CONF_AES_ACTIVE,
+    CONF_CONTROLLER_ACTIVE,
     CONF_CURRENT_REDUCTION,
+    CONF_AES_ACTIVE,
 ]
 
 CONFIG_SCHEMA = cv.Schema(
@@ -41,16 +44,22 @@ CONFIG_SCHEMA = cv.Schema(
                 cv.Optional(CONF_ICON, default=ICON_DISCHARGING): cv.icon,
             }
         ),
-        cv.Optional(CONF_AES_ACTIVE): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
+        cv.Optional(CONF_CONTROLLER_ACTIVE): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
             {
                 cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
-                cv.Optional(CONF_ICON, default=ICON_AES_ACTIVE): cv.icon,
+                cv.Optional(CONF_ICON, default=ICON_CONTROLLER_ACTIVE): cv.icon,
             }
         ),
         cv.Optional(CONF_CURRENT_REDUCTION): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
             {
                 cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
                 cv.Optional(CONF_ICON, default=ICON_CURRENT_REDUCTION): cv.icon,
+            }
+        ),
+        cv.Optional(CONF_AES_ACTIVE): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
+            {
+                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
+                cv.Optional(CONF_ICON, default=ICON_AES_ACTIVE): cv.icon,
             }
         ),
     }
