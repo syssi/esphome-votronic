@@ -24,6 +24,34 @@ ESPHome component to monitor votronic devices via Display Link
 * A wire with RJ11 western connector
 * Generic ESP32 or ESP8266 board
 
+## Schematics
+
+```
+                UART-TTL
+┌──────────┐                  ┌─────────┐
+│          │TX ──────────── RX│         │
+│ Votronic │RX ──────────── TX│ ESP32/  │
+│  Device  │GND ────────── GND│ ESP8266 │── 3.3V
+│          │                  │         │── GND
+└──────────┘                  └─────────┘
+
+ RJ11 plug
+(front view)
+   ┌──┐
+┌──┘  └──┐
+│        │                      ESP8266
+└─OOOOOO─┘
+  ││││││
+  │││││└────── 6 GND ────────── GND
+  ││││└─────── 5 RXD ────────── GPIO4 (`tx_pin`)
+  │││└──────── 4 GND
+  ││└───────── 3 DNC
+  │└────────── 2 VBAT+
+  └─────────── 1 TXD ────────── GPIO5 (`rx_pin`)
+```
+
+The connector is a 6 Pin RJ11 western connector. It's important to not connect pin 3. It must be floating. The maximum allowed current of all pins is 50 mA. Please don't try to power the ESP using VBAT+.
+
 ## Installation
 
 You can install this component with [ESPHome external components feature](https://esphome.io/components/external_components.html) like this:
