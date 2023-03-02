@@ -8,6 +8,8 @@
 
 ESPHome component to monitor votronic devices via BLE or Display Link
 
+![Lovelace entities card of the Solar charger](images/lovelace-entities-card-solar-charger.png "Lovelace entities card of the Solar charger")
+
 ## Setup
 
 * [BLE communication via the Bluetooth Controller](votronic_bluetooth.md)
