@@ -8,6 +8,8 @@
 
 ESPHome component to monitor votronic devices via Display Link
 
+![Lovelace entities card of the Solar charger](images/lovelace-entities-card-solar-charger.png "Lovelace entities card of the Solar charger")
+
 ## Supported devices
 
 * Solar Charger SR (1610, 1615, 1620, 1625) (since mid 2014)
