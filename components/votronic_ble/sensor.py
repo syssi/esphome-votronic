@@ -44,9 +44,9 @@ ICON_CURRENT_DC = "mdi:current-dc"
 
 UNIT_AMPERE_HOURS = "Ah"
 
-ICON_BATTERY_CAPACITY = "mdi:battery-medium"
+ICON_BATTERY_CAPACITY = "mdi:battery-50"
 ICON_STATE_OF_CHARGE = "mdi:battery-50"
-ICON_BATTERY_NOMINAL_CAPACITY = "mdi:battery-100"
+ICON_BATTERY_NOMINAL_CAPACITY = "mdi:battery"
 
 ICON_BATTERY_STATUS_BITMASK = "mdi:alert-circle-outline"
 ICON_PV_CONTROLLER_STATUS_BITMASK = "mdi:alert-circle-outline"
