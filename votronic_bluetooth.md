@@ -8,6 +8,8 @@
 
 ESPHome component to monitor votronic devices via BLE or Display Link
 
+![Lovelace entities card of the Bluetooth Controller](images/lovelace-entities-card-bluetooth.png "Lovelace entities card of the Bluetooth Controller")
+
 ## Supported devices
 
 * Bluetooth Connector S-BC
