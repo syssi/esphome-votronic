@@ -110,7 +110,7 @@ bool Votronic::parse_votronic_byte_(uint8_t byte) {
   uint8_t computed_crc = chksum_(raw + 1, frame_len - 2);
   uint8_t remote_crc = raw[frame_len - 1];
   if (computed_crc != remote_crc) {
-    ESP_LOGW(TAG, "CRC Check failed! 0x%02X != 0x%02X", computed_crc, remote_crc);
+    ESP_LOGW(TAG, "CRC check failed! 0x%02X != 0x%02X", computed_crc, remote_crc);
     return false;
   }
 
