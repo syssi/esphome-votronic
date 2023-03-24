@@ -82,7 +82,7 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
 
       std::vector<uint8_t> data(param->notify.value, param->notify.value + param->notify.value_len);
 
-      this->on_votronic_ble_data_(param->notify.handle, data);
+      this->on_votronic_ble_data(param->notify.handle, data);
       break;
     }
     default:
@@ -91,33 +91,13 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
 }
 
 void VotronicBle::update() {
-  if (this->enable_fake_traffic_) {
-    this->char_solar_charger_handle_ = 0x25;
-    this->char_battery_computer_handle_ = 0x22;
-
-    // Solar charger status frame
-    this->on_votronic_ble_data_(0x25, {0xE8, 0x04, 0x76, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x56, 0x00, 0x09,
-                                       0x18, 0x00, 0x22, 0x00, 0x00, 0x00});
-
-    // Battery computer status frame
-    this->on_votronic_ble_data_(0x22, {0xE8, 0x04, 0xBF, 0x04, 0x09, 0x01, 0x60, 0x00, 0x5F, 0x00,
-                                       0x9A, 0xFE, 0xFF, 0xF0, 0x0A, 0x5E, 0x14, 0x54, 0x02, 0x04});
-
-    // Battery computer status frame (max current: +8388.607 A)
-    this->on_votronic_ble_data_(0x22, {0xE8, 0x04, 0xBF, 0x04, 0x09, 0x01, 0x60, 0x00, 0x5F, 0x00,
-                                       0xFF, 0xFF, 0x7F, 0xF0, 0x0A, 0x5E, 0x14, 0x54, 0x02, 0x04});
-    // Battery computer status frame (min current: -8388.608 A)
-    this->on_votronic_ble_data_(0x22, {0xE8, 0x04, 0xBF, 0x04, 0x09, 0x01, 0x60, 0x00, 0x5F, 0x00,
-                                       0x00, 0x00, 0x80, 0xF0, 0x0A, 0x5E, 0x14, 0x54, 0x02, 0x04});
-  }
-
   if (this->node_state != espbt::ClientState::ESTABLISHED) {
     ESP_LOGW(TAG, "[%s] Not connected", this->parent_->address_str().c_str());
     return;
   }
 }
 
-void VotronicBle::on_votronic_ble_data_(const uint8_t &handle, const std::vector<uint8_t> &data) {
+void VotronicBle::on_votronic_ble_data(const uint8_t &handle, const std::vector<uint8_t> &data) {
   if (handle == this->char_solar_charger_handle_) {
     this->decode_solar_charger_data_(data);
     return;
@@ -229,7 +209,6 @@ void VotronicBle::dump_config() {
   ESP_LOGCONFIG(TAG, "  Battery Computer Characteristic UUID: %s",
                 this->char_battery_computer_uuid_.to_string().c_str());
   ESP_LOGCONFIG(TAG, "  Solar Charger Characteristic UUID   : %s", this->char_solar_charger_uuid_.to_string().c_str());
-  ESP_LOGCONFIG(TAG, "  Fake traffic enabled: %s", YESNO(this->enable_fake_traffic_));
 
   LOG_BINARY_SENSOR("", "Charging", this->charging_binary_sensor_);
   LOG_BINARY_SENSOR("", "Discharging", this->discharging_binary_sensor_);
