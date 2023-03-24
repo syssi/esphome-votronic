@@ -76,7 +76,6 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   }
 
   void set_throttle(uint16_t throttle) { this->throttle_ = throttle; }
-  void set_enable_fake_traffic(bool enable_fake_traffic) { enable_fake_traffic_ = enable_fake_traffic; }
   void set_rx_timeout(uint16_t rx_timeout) { rx_timeout_ = rx_timeout; }
 
  protected:
@@ -110,7 +109,6 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   uint32_t last_frame_{0};
   uint16_t throttle_;
   uint16_t rx_timeout_{150};
-  bool enable_fake_traffic_;
 
   void on_votronic_data_(const std::vector<uint8_t> &data);
   void decode_solar_charger_data_(const std::vector<uint8_t> &data);

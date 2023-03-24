@@ -77,9 +77,7 @@ void Votronic::loop() {
   }
 }
 
-void Votronic::update() {
-  // @TODO: No polling required?
-}
+void Votronic::update() {}
 
 bool Votronic::parse_votronic_byte_(uint8_t byte) {
   size_t at = this->rx_buffer_.size();
@@ -230,7 +228,6 @@ void Votronic::decode_charger_data_(const uint8_t &frame_type, const std::vector
 void Votronic::dump_config() {
   ESP_LOGCONFIG(TAG, "Votronic:");
   ESP_LOGCONFIG(TAG, "  RX timeout: %d ms", this->rx_timeout_);
-  ESP_LOGCONFIG(TAG, "  Fake traffic enabled: %s", YESNO(this->enable_fake_traffic_));
 
   LOG_BINARY_SENSOR("", "Charging", this->charging_binary_sensor_);
   LOG_BINARY_SENSOR("", "Discharging", this->discharging_binary_sensor_);
