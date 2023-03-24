@@ -81,8 +81,8 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
     pv_controller_status_text_sensor_ = pv_controller_status_text_sensor;
   }
 
+  void on_votronic_ble_data(const uint8_t &handle, const std::vector<uint8_t> &data);
   void set_throttle(uint16_t throttle) { this->throttle_ = throttle; }
-  void set_enable_fake_traffic(bool enable_fake_traffic) { enable_fake_traffic_ = enable_fake_traffic; }
 
  protected:
   binary_sensor::BinarySensor *charging_binary_sensor_;
@@ -109,12 +109,11 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   text_sensor::TextSensor *battery_status_text_sensor_;
   text_sensor::TextSensor *pv_controller_status_text_sensor_;
 
-  uint16_t char_battery_computer_handle_;
-  uint16_t char_solar_charger_handle_;
+  uint16_t char_battery_computer_handle_{0x22};
+  uint16_t char_solar_charger_handle_{0x25};
   uint32_t last_battery_computer_data_{0};
   uint32_t last_solar_charger_data_{0};
   uint16_t throttle_;
-  bool enable_fake_traffic_;
 
   esp32_ble_tracker::ESPBTUUID service_bond_uuid_ =
       esp32_ble_tracker::ESPBTUUID::from_raw("70521e61-022d-f899-d046-4885a76acbd0");
@@ -133,7 +132,6 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   esp32_ble_tracker::ESPBTUUID char_bulk_data_uuid_ =
       esp32_ble_tracker::ESPBTUUID::from_raw("b8a37ffe-c57b-4007-b3c1-ca05a6b7f0c6");
 
-  void on_votronic_ble_data_(const uint8_t &handle, const std::vector<uint8_t> &data);
   void decode_solar_charger_data_(const std::vector<uint8_t> &data);
   void decode_battery_computer_data_(const std::vector<uint8_t> &data);
   void publish_state_(binary_sensor::BinarySensor *binary_sensor, const bool &state);
