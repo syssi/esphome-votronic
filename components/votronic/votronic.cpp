@@ -78,14 +78,7 @@ void Votronic::loop() {
 }
 
 void Votronic::update() {
-  if (this->enable_fake_traffic_) {
-    this->on_votronic_data_(
-        {0xAA, 0x1A, 0x17, 0x05, 0xEA, 0x06, 0x22, 0x00, 0x00, 0x00, 0x00, 0x22, 0x22, 0x00, 0x09});  // 0xCF
-    this->on_votronic_data_(
-        {0xAA, 0x3A, 0xA0, 0x05, 0xA4, 0x06, 0x78, 0x00, 0x00, 0x00, 0xA0, 0x15, 0x03, 0x00, 0x00});  // 0xF3
-    this->on_votronic_data_(
-        {0xAA, 0x7A, 0xA0, 0x05, 0xA4, 0x06, 0x78, 0x00, 0x00, 0x00, 0xA0, 0x15, 0x03, 0x00, 0x00});  // 0xB3
-  }
+  // @TODO: No polling required?
 }
 
 bool Votronic::parse_votronic_byte_(uint8_t byte) {
@@ -116,15 +109,15 @@ bool Votronic::parse_votronic_byte_(uint8_t byte) {
 
   ESP_LOGVV(TAG, "RX <- %s", format_hex_pretty(raw, at + 1).c_str());
 
-  std::vector<uint8_t> data(this->rx_buffer_.begin(), this->rx_buffer_.begin() + frame_len - 1);
+  std::vector<uint8_t> data(this->rx_buffer_.begin(), this->rx_buffer_.begin() + frame_len);
 
-  this->on_votronic_data_(data);
+  this->on_votronic_data(data);
 
   // return false to reset buffer
   return false;
 }
 
-void Votronic::on_votronic_data_(const std::vector<uint8_t> &data) {
+void Votronic::on_votronic_data(const std::vector<uint8_t> &data) {
   const uint32_t now = millis();
   if (now - this->last_frame_ < this->throttle_) {
     return;
@@ -132,7 +125,7 @@ void Votronic::on_votronic_data_(const std::vector<uint8_t> &data) {
   this->last_frame_ = now;
 
   uint8_t data_len = data.size();
-  if (data_len != VOTRONIC_FRAME_LENGTH - 1) {
+  if (data_len != VOTRONIC_FRAME_LENGTH) {
     ESP_LOGW(TAG, "Skipping frame because of invalid length: %d", data_len);
     return;
   }

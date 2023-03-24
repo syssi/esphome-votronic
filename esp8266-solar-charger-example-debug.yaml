@@ -16,3 +16,12 @@ logger:
     mqtt.switch: INFO
     api.service: INFO
     api: INFO
+
+uart:
+  - id: uart0
+    baud_rate: 1000
+    tx_pin: ${tx_pin}
+    rx_pin: ${rx_pin}
+    debug:
+      direction: BOTH
+      dummy_receiver: false
