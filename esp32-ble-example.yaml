@@ -79,6 +79,20 @@ binary_sensor:
     aes_active:
       name: "${name} aes active"
 
+button:
+  - platform: votronic_ble
+    votronic_ble_id: votronic0
+    retrieve_daily_operating_statistics:
+      name: "${name} retrieve daily operating statistics"
+    retrieve_weekly_operating_statistics:
+      name: "${name} retrieve weekly operating statistics"
+    retrieve_monthly_operating_statistics:
+      name: "${name} retrieve monthly operating statistics"
+    retrieve_operating_statistics:
+      name: "${name} retrieve operating statistics"
+    reset_accumulator:
+      name: "${name} reset accumulator"
+
 sensor:
   - platform: votronic_ble
     votronic_ble_id: votronic0
