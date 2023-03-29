@@ -3,8 +3,10 @@ import esphome.config_validation as cv
 from esphome.components import uart
 from esphome.const import CONF_ID, CONF_THROTTLE
 
-DEPENDENCIES = ["uart", "binary_sensor", "sensor", "text_sensor"]
 CODEOWNERS = ["@syssi"]
+
+DEPENDENCIES = ["uart"]
+AUTO_LOAD = ["binary_sensor", "sensor", "text_sensor"]
 MULTI_CONF = True
 
 CONF_VOTRONIC_ID = "votronic_id"
