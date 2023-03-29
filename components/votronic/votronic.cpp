@@ -278,8 +278,8 @@ void Votronic::decode_battery_computer_info1_data_(const std::vector<uint8_t> &d
   ESP_LOGI(TAG, "i1 State of charge: %.0f %%", votronic_get_16bit(10) * 1.0f);
   this->publish_state_(this->state_of_charge_sensor_, (float) data[10]);
   //  12   2  0x7B 0xFE
-  ESP_LOGI(TAG, "i1 Current: %.2f A", ((int16_t) votronic_get_16bit(12)) * 0.01f);
-  float current = ((int16_t) votronic_get_16bit(12)) * 0.01f;
+  ESP_LOGI(TAG, "i1 Current: %.3f A", ((int16_t) votronic_get_16bit(12)) * 0.001f);
+  float current = ((int16_t) votronic_get_16bit(12)) * 0.001f;
   this->publish_state_(this->current_sensor_, current);
   this->publish_state_(this->power_sensor_, current * battery_voltage);
   this->publish_state_(this->charging_binary_sensor_, (current > 0.0f));
@@ -315,15 +315,16 @@ void Votronic::decode_battery_computer_info2_data_(const std::vector<uint8_t> &d
   //   4   2  0x00 0x00
   ESP_LOGI(TAG, "i2 Byte   4-5: 0x%02X 0x%02X / %d %d / %d", data[4], data[5], data[4], data[5], votronic_get_16bit(4));
   //   6   2  0xF8 0x11
-  ESP_LOGI(TAG, "i2 Battery capacity: %.1f Ah", votronic_get_16bit(6) * 0.1f);
+  ESP_LOGI(TAG, "i2 Nominal capacity: %.1f Ah", votronic_get_16bit(6) * 0.1f);
   //   8   2  0x5E 0x07
   ESP_LOGI(TAG, "i2 Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9], votronic_get_16bit(8));
   //  10   2  0x00 0x00
   ESP_LOGI(TAG, "i2 Byte 10-11: 0x%02X 0x%02X / %d %d / %d", data[10], data[11], data[10], data[11],
            votronic_get_16bit(10));
-  //  12   2  0x2F 0x04
-  ESP_LOGI(TAG, "i2 Byte 12-13: 0x%02X 0x%02X / %d %d / %d", data[12], data[13], data[12], data[13],
-           votronic_get_16bit(12));
+  //  12   1  0x2F
+  ESP_LOGI(TAG, "i2 Battery setting: 0x%02X / %d", data[12], data[12]);
+  //  13   1  0x04
+  ESP_LOGI(TAG, "i2 Byte 13: 0x%02X / %d", data[13], data[13]);
   //  14   1  0x02
   ESP_LOGI(TAG, "i2 Byte    14: 0x%02X / %d", data[14], data[14]);
   //  15   1  0x43        CRC
