@@ -116,12 +116,6 @@ bool Votronic::parse_votronic_byte_(uint8_t byte) {
 }
 
 void Votronic::on_votronic_data(const std::vector<uint8_t> &data) {
-  const uint32_t now = millis();
-  if (now - this->last_frame_ < this->throttle_) {
-    return;
-  }
-  this->last_frame_ = now;
-
   uint8_t data_len = data.size();
   if (data_len != VOTRONIC_FRAME_LENGTH) {
     ESP_LOGW(TAG, "Skipping frame because of invalid length: %d", data_len);
@@ -149,6 +143,12 @@ void Votronic::on_votronic_data(const std::vector<uint8_t> &data) {
 }
 
 void Votronic::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
+  const uint32_t now = millis();
+  if (now - this->last_solar_charger_data_ < this->throttle_) {
+    return;
+  }
+  this->last_solar_charger_data_ = now;
+
   auto votronic_get_16bit = [&](size_t i) -> uint16_t {
     return (uint16_t(data[i + 1]) << 8) | (uint16_t(data[i + 0]) << 0);
   };
@@ -186,6 +186,12 @@ void Votronic::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
 }
 
 void Votronic::decode_charger_data_(const uint8_t &frame_type, const std::vector<uint8_t> &data) {
+  const uint32_t now = millis();
+  if (now - this->last_charger_data_ < this->throttle_) {
+    return;
+  }
+  this->last_charger_data_ = now;
+
   auto votronic_get_16bit = [&](size_t i) -> uint16_t {
     return (uint16_t(data[i + 1]) << 8) | (uint16_t(data[i + 0]) << 0);
   };
