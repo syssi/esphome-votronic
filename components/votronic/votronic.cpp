@@ -226,7 +226,7 @@ void Votronic::decode_charger_data_(const uint8_t &frame_type, const std::vector
   //   9   1  0x00        Reserved
   //  10   1  0xA0        Charging Power                     %    0-100% 1%/Bit
   this->publish_state_(this->state_of_charge_sensor_, (float) data[10]);
-  //  11   1  0x15        Reserved
+  //  11   1  0x15        Controller temperature
   this->publish_state_(this->controller_temperature_sensor_, (float) data[11]);
   //  12   1  0x03        Charging mode setting (dip switches)
   this->publish_state_(this->charging_mode_setting_id_sensor_, data[12]);
@@ -263,18 +263,28 @@ void Votronic::decode_battery_computer_info1_data_(const std::vector<uint8_t> &d
   // Byte Len Payload     Description                      Unit  Precision
   //   0   1  0xAA        Sync Byte
   //   1   1  0xCA        Frame Type
-  //   2   2  0x03 0x05
+  //   2   2  0x03 0x05   Battery Voltage
   ESP_LOGI(TAG, "i1 Battery voltage: %.2f V", votronic_get_16bit(2) * 0.01f);
-  //   4   2  0x0F 0x05
+  float battery_voltage = votronic_get_16bit(2) * 0.01f;
+  this->publish_state_(this->battery_voltage_sensor_, battery_voltage);
+  //   4   2  0x0F 0x05   Second Battery Voltage
   ESP_LOGI(TAG, "i1 Second battery voltage: %.2f V", votronic_get_16bit(4) * 0.01f);
+  this->publish_state_(this->secondary_battery_voltage_sensor_, votronic_get_16bit(4) * 0.01f);
   //   6   2  0xC7 0x01
   ESP_LOGI(TAG, "i1 Capacity remaining: %.0f Ah", votronic_get_16bit(6) * 1.0f);
   //   8   2  0x20 0x00
   ESP_LOGI(TAG, "i1 Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9], votronic_get_16bit(8));
   //  10   2  0x63 0x00
   ESP_LOGI(TAG, "i1 State of charge: %.0f %%", votronic_get_16bit(10) * 1.0f);
+  this->publish_state_(this->state_of_charge_sensor_, (float) data[10]);
   //  12   2  0x7B 0xFE
   ESP_LOGI(TAG, "i1 Current: %.2f A", ((int16_t) votronic_get_16bit(12)) * 0.01f);
+  float current = ((int16_t) votronic_get_16bit(12)) * 0.01f;
+  this->publish_state_(this->current_sensor_, current);
+  this->publish_state_(this->power_sensor_, current * battery_voltage);
+  this->publish_state_(this->charging_binary_sensor_, (current > 0.0f));
+  this->publish_state_(this->discharging_binary_sensor_, (current < 0.0f));
+
   //  14   1  0xFF
   ESP_LOGI(TAG, "i1 Byte    14: 0x%02X / %d", data[14], data[14]);
   //  15   1  0x39        CRC

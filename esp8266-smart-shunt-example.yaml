@@ -47,3 +47,25 @@ votronic:
     uart_id: uart0
     rx_timeout: ${rx_timeout}
     throttle: 2s
+
+binary_sensor:
+  - platform: votronic
+    votronic_id: votronic0
+    charging:
+      name: "${name} charging"
+    discharging:
+      name: "${name} discharging"
+
+sensor:
+  - platform: votronic
+    votronic_id: votronic0
+    battery_voltage:
+      name: "${name} battery voltage"
+    secondary_battery_voltage:
+      name: "${name} secondary battery voltage"
+    current:
+      name: "${name} current"
+    power:
+      name: "${name} power"
+    state_of_charge:
+      name: "${name} state of charge"
