@@ -107,7 +107,8 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
 
   std::vector<uint8_t> rx_buffer_;
   uint32_t last_byte_{0};
-  uint32_t last_frame_{0};
+  uint32_t last_solar_charger_data_{0};
+  uint32_t last_charger_data_{0};
   uint16_t throttle_;
   uint16_t rx_timeout_{150};
 
