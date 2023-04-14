@@ -261,17 +261,15 @@ void Votronic::decode_battery_computer_info1_data_(const std::vector<uint8_t> &d
   // 0xAA 0xCA 0x03 0x05 0x0F 0x05 0xC7 0x01 0x20 0x00 0x63 0x00 0x7B 0xFE 0xFF 0x39
 
   ESP_LOGI(TAG, "Battery computer info1 data received");
-  ESP_LOGVV(TAG, "i1  %s", format_hex_pretty(&data.front(), data.size()).c_str());
+  ESP_LOGVV(TAG, "  %s", format_hex_pretty(&data.front(), data.size()).c_str());
 
   // Byte Len Payload     Description                      Unit  Precision
   //   0   1  0xAA        Sync Byte
   //   1   1  0xCA        Frame Type
   //   2   2  0x03 0x05   Battery Voltage
-  ESP_LOGI(TAG_INFO1, "Battery voltage: %.2f V", votronic_get_16bit(2) * 0.01f);
   float battery_voltage = votronic_get_16bit(2) * 0.01f;
   this->publish_state_(this->battery_voltage_sensor_, battery_voltage);
   //   4   2  0x0F 0x05   Second Battery Voltage
-  ESP_LOGI(TAG_INFO1, "Second battery voltage: %.2f V", votronic_get_16bit(4) * 0.01f);
   this->publish_state_(this->secondary_battery_voltage_sensor_, votronic_get_16bit(4) * 0.01f);
   //   6   2  0xC7 0x01
   ESP_LOGI(TAG_INFO1, "Capacity remaining: %.0f Ah", votronic_get_16bit(6) * 1.0f);
@@ -279,10 +277,8 @@ void Votronic::decode_battery_computer_info1_data_(const std::vector<uint8_t> &d
   ESP_LOGI(TAG_INFO1, "Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9],
            votronic_get_16bit(8));
   //  10   2  0x63 0x00
-  ESP_LOGI(TAG_INFO1, "State of charge: %.0f %%", votronic_get_16bit(10) * 1.0f);
   this->publish_state_(this->state_of_charge_sensor_, (float) data[10]);
   //  12   2  0x7B 0xFE
-  ESP_LOGI(TAG_INFO1, "Current: %.3f A", ((int16_t) votronic_get_16bit(12)) * 0.001f);
   float current = ((int16_t) votronic_get_16bit(12)) * 0.001f;
   this->publish_state_(this->current_sensor_, current);
   this->publish_state_(this->power_sensor_, current * battery_voltage);
@@ -309,7 +305,7 @@ void Votronic::decode_battery_computer_info2_data_(const std::vector<uint8_t> &d
   // 0xAA 0xDA 0x00 0x00 0x00 0x00 0xF8 0x11 0x5E 0x07 0x00 0x00 0x2F 0x04 0x02 0x43
 
   ESP_LOGI(TAG, "Battery computer info2 data received");
-  ESP_LOGVV(TAG, "i2  %s", format_hex_pretty(&data.front(), data.size()).c_str());
+  ESP_LOGVV(TAG, "  %s", format_hex_pretty(&data.front(), data.size()).c_str());
 
   // Byte Len Payload     Description                      Unit  Precision
   //   0   1  0xAA        Sync Byte
@@ -352,7 +348,7 @@ void Votronic::decode_battery_computer_info3_data_(const std::vector<uint8_t> &d
   // 0xAA 0xFA 0x2F 0x00 0x00 0x00 0xD2 0x02 0x00 0x0A 0x00 0x00 0x28 0xD0 0x00 0xF7
 
   ESP_LOGI(TAG, "Battery computer info3 data received");
-  ESP_LOGVV(TAG, "i3  %s", format_hex_pretty(&data.front(), data.size()).c_str());
+  ESP_LOGVV(TAG, "  %s", format_hex_pretty(&data.front(), data.size()).c_str());
 
   // Byte Len Payload     Description                      Unit  Precision
   //   0   1  0xAA        Sync Byte
