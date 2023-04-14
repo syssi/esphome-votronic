@@ -6,6 +6,9 @@ namespace esphome {
 namespace votronic {
 
 static const char *const TAG = "votronic";
+static const char *const TAG_INFO1 = "votronic.i1";
+static const char *const TAG_INFO2 = "votronic.i2";
+static const char *const TAG_INFO3 = "votronic.i3";
 
 static const uint8_t VOTRONIC_FRAME_START = 0xAA;
 static const uint8_t VOTRONIC_FRAME_LENGTH = 16;
@@ -264,21 +267,22 @@ void Votronic::decode_battery_computer_info1_data_(const std::vector<uint8_t> &d
   //   0   1  0xAA        Sync Byte
   //   1   1  0xCA        Frame Type
   //   2   2  0x03 0x05   Battery Voltage
-  ESP_LOGI(TAG, "i1 Battery voltage: %.2f V", votronic_get_16bit(2) * 0.01f);
+  ESP_LOGI(TAG_INFO1, "Battery voltage: %.2f V", votronic_get_16bit(2) * 0.01f);
   float battery_voltage = votronic_get_16bit(2) * 0.01f;
   this->publish_state_(this->battery_voltage_sensor_, battery_voltage);
   //   4   2  0x0F 0x05   Second Battery Voltage
-  ESP_LOGI(TAG, "i1 Second battery voltage: %.2f V", votronic_get_16bit(4) * 0.01f);
+  ESP_LOGI(TAG_INFO1, "Second battery voltage: %.2f V", votronic_get_16bit(4) * 0.01f);
   this->publish_state_(this->secondary_battery_voltage_sensor_, votronic_get_16bit(4) * 0.01f);
   //   6   2  0xC7 0x01
-  ESP_LOGI(TAG, "i1 Capacity remaining: %.0f Ah", votronic_get_16bit(6) * 1.0f);
+  ESP_LOGI(TAG_INFO1, "Capacity remaining: %.0f Ah", votronic_get_16bit(6) * 1.0f);
   //   8   2  0x20 0x00
-  ESP_LOGI(TAG, "i1 Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9], votronic_get_16bit(8));
+  ESP_LOGI(TAG_INFO1, "Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9],
+           votronic_get_16bit(8));
   //  10   2  0x63 0x00
-  ESP_LOGI(TAG, "i1 State of charge: %.0f %%", votronic_get_16bit(10) * 1.0f);
+  ESP_LOGI(TAG_INFO1, "State of charge: %.0f %%", votronic_get_16bit(10) * 1.0f);
   this->publish_state_(this->state_of_charge_sensor_, (float) data[10]);
   //  12   2  0x7B 0xFE
-  ESP_LOGI(TAG, "i1 Current: %.3f A", ((int16_t) votronic_get_16bit(12)) * 0.001f);
+  ESP_LOGI(TAG_INFO1, "Current: %.3f A", ((int16_t) votronic_get_16bit(12)) * 0.001f);
   float current = ((int16_t) votronic_get_16bit(12)) * 0.001f;
   this->publish_state_(this->current_sensor_, current);
   this->publish_state_(this->power_sensor_, current * battery_voltage);
@@ -286,7 +290,7 @@ void Votronic::decode_battery_computer_info1_data_(const std::vector<uint8_t> &d
   this->publish_state_(this->discharging_binary_sensor_, (current < 0.0f));
 
   //  14   1  0xFF
-  ESP_LOGI(TAG, "i1 Byte    14: 0x%02X / %d", data[14], data[14]);
+  ESP_LOGI(TAG_INFO1, "Byte    14: 0x%02X / %d", data[14], data[14]);
   //  15   1  0x39        CRC
 }
 
@@ -311,22 +315,25 @@ void Votronic::decode_battery_computer_info2_data_(const std::vector<uint8_t> &d
   //   0   1  0xAA        Sync Byte
   //   1   1  0xDA        Frame Type
   //   2   2  0x00 0x00
-  ESP_LOGI(TAG, "i2 Byte   2-3: 0x%02X 0x%02X / %d %d / %d", data[2], data[3], data[2], data[3], votronic_get_16bit(2));
+  ESP_LOGI(TAG_INFO2, "Byte   2-3: 0x%02X 0x%02X / %d %d / %d", data[2], data[3], data[2], data[3],
+           votronic_get_16bit(2));
   //   4   2  0x00 0x00
-  ESP_LOGI(TAG, "i2 Byte   4-5: 0x%02X 0x%02X / %d %d / %d", data[4], data[5], data[4], data[5], votronic_get_16bit(4));
+  ESP_LOGI(TAG_INFO2, "Byte   4-5: 0x%02X 0x%02X / %d %d / %d", data[4], data[5], data[4], data[5],
+           votronic_get_16bit(4));
   //   6   2  0xF8 0x11
-  ESP_LOGI(TAG, "i2 Nominal capacity: %.1f Ah", votronic_get_16bit(6) * 0.1f);
+  ESP_LOGI(TAG_INFO2, "Nominal capacity: %.1f Ah", votronic_get_16bit(6) * 0.1f);
   //   8   2  0x5E 0x07
-  ESP_LOGI(TAG, "i2 Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9], votronic_get_16bit(8));
+  ESP_LOGI(TAG_INFO2, "Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9],
+           votronic_get_16bit(8));
   //  10   2  0x00 0x00
-  ESP_LOGI(TAG, "i2 Byte 10-11: 0x%02X 0x%02X / %d %d / %d", data[10], data[11], data[10], data[11],
+  ESP_LOGI(TAG_INFO2, "Byte 10-11: 0x%02X 0x%02X / %d %d / %d", data[10], data[11], data[10], data[11],
            votronic_get_16bit(10));
   //  12   1  0x2F
-  ESP_LOGI(TAG, "i2 Battery setting: 0x%02X / %d", data[12], data[12]);
+  ESP_LOGI(TAG_INFO2, "Battery setting: 0x%02X / %d", data[12], data[12]);
   //  13   1  0x04
-  ESP_LOGI(TAG, "i2 Byte 13: 0x%02X / %d", data[13], data[13]);
+  ESP_LOGI(TAG_INFO2, "Byte    13: 0x%02X / %d", data[13], data[13]);
   //  14   1  0x02
-  ESP_LOGI(TAG, "i2 Byte    14: 0x%02X / %d", data[14], data[14]);
+  ESP_LOGI(TAG_INFO2, "Byte    14: 0x%02X / %d", data[14], data[14]);
   //  15   1  0x43        CRC
 }
 
@@ -351,21 +358,25 @@ void Votronic::decode_battery_computer_info3_data_(const std::vector<uint8_t> &d
   //   0   1  0xAA        Sync Byte
   //   1   1  0xFA        Frame Type
   //   2   2  0x2F 0x00
-  ESP_LOGI(TAG, "i3 Byte   2-3: 0x%02X 0x%02X / %d %d / %d", data[2], data[3], data[2], data[3], votronic_get_16bit(2));
+  ESP_LOGI(TAG_INFO3, "Byte   2-3: 0x%02X 0x%02X / %d %d / %d", data[2], data[3], data[2], data[3],
+           votronic_get_16bit(2));
   //   4   2  0x00 0x00
-  ESP_LOGI(TAG, "i3 Byte   4-5: 0x%02X 0x%02X / %d %d / %d", data[4], data[5], data[4], data[5], votronic_get_16bit(4));
+  ESP_LOGI(TAG_INFO3, "Byte   4-5: 0x%02X 0x%02X / %d %d / %d", data[4], data[5], data[4], data[5],
+           votronic_get_16bit(4));
   //   6   2  0xD2 0x02
-  ESP_LOGI(TAG, "i3 Byte   6-7: 0x%02X 0x%02X / %d %d / %d", data[6], data[7], data[6], data[7], votronic_get_16bit(6));
+  ESP_LOGI(TAG_INFO3, "Byte   6-7: 0x%02X 0x%02X / %d %d / %d", data[6], data[7], data[6], data[7],
+           votronic_get_16bit(6));
   //   8   2  0x00 0x0A
-  ESP_LOGI(TAG, "i3 Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9], votronic_get_16bit(8));
+  ESP_LOGI(TAG_INFO3, "Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9],
+           votronic_get_16bit(8));
   //  10   2  0x00 0x00
-  ESP_LOGI(TAG, "i3 Byte 10-11: 0x%02X 0x%02X / %d %d / %d", data[10], data[11], data[10], data[11],
+  ESP_LOGI(TAG_INFO3, "Byte 10-11: 0x%02X 0x%02X / %d %d / %d", data[10], data[11], data[10], data[11],
            votronic_get_16bit(10));
   //  12   2  0x28 0xD0
-  ESP_LOGI(TAG, "i3 Byte 12-13: 0x%02X 0x%02X / %d %d / %d", data[12], data[13], data[12], data[13],
+  ESP_LOGI(TAG_INFO3, "Byte 12-13: 0x%02X 0x%02X / %d %d / %d", data[12], data[13], data[12], data[13],
            votronic_get_16bit(12));
   //  14   1  0x00
-  ESP_LOGI(TAG, "i3 Byte    14: 0x%02X / %d", data[14], data[14]);
+  ESP_LOGI(TAG_INFO3, "Byte    14: 0x%02X / %d", data[14], data[14]);
   //  15   1  0xF7        CRC
 }
 
