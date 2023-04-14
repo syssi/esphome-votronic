@@ -109,11 +109,17 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   uint32_t last_byte_{0};
   uint32_t last_solar_charger_data_{0};
   uint32_t last_charger_data_{0};
+  uint32_t last_battery_computer_info1_data_{0};
+  uint32_t last_battery_computer_info2_data_{0};
+  uint32_t last_battery_computer_info3_data_{0};
   uint16_t throttle_;
   uint16_t rx_timeout_{150};
 
   void decode_solar_charger_data_(const std::vector<uint8_t> &data);
   void decode_charger_data_(const uint8_t &frame_type, const std::vector<uint8_t> &data);
+  void decode_battery_computer_info1_data_(const std::vector<uint8_t> &data);
+  void decode_battery_computer_info2_data_(const std::vector<uint8_t> &data);
+  void decode_battery_computer_info3_data_(const std::vector<uint8_t> &data);
   bool parse_votronic_byte_(uint8_t byte);
   void publish_state_(binary_sensor::BinarySensor *binary_sensor, const bool &state);
   void publish_state_(sensor::Sensor *sensor, float value);
