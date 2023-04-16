@@ -324,8 +324,18 @@ void Votronic::decode_battery_computer_info2_data_(const std::vector<uint8_t> &d
   //  10   2  0x00 0x00
   ESP_LOGD(TAG_INFO2, "Byte 10-11: 0x%02X 0x%02X / %d %d / %d", data[10], data[11], data[10], data[11],
            votronic_get_16bit(10));
-  //  12   1  0x2F
-  ESP_LOGI(TAG_INFO2, "Battery setting: 0x%02X / %d", data[12], data[12]);
+  //  12   1  0x2F        Battery type
+  //                                         U1     12V system  24V system
+  //                        Lead Acid        14.4        24    124
+  //                        Gel              14.4        53    153
+  //                        AGM 14.4V        14.4        34    134
+  //                        AGM 14.7-14.8V   14.7-14.8   47    147
+  //                        LiFePo4 13.9V    13.9        89    189
+  //                        LiFePo4 14.2V    14.2        82    182
+  //                        LiFePo4 14.4V    14.4        84    184
+  //                        LiFePo4 14.6V    14.6        86    186
+  //                        LiFePo4 14.8V    14.8        88    188
+  ESP_LOGI(TAG_INFO2, "Battery type: 0x%02X / %d", data[12], data[12]);
   //  13   1  0x04
   ESP_LOGD(TAG_INFO2, "Byte    13: 0x%02X / %d", data[13], data[13]);
   //  14   1  0x02
@@ -353,18 +363,9 @@ void Votronic::decode_battery_computer_info3_data_(const std::vector<uint8_t> &d
   // Byte Len Payload     Description                      Unit  Precision
   //   0   1  0xAA        Sync Byte
   //   1   1  0xFA        Frame Type
-  //   2   2  0x2F 0x00   Battery type       U1
-  //                                         U1     12V system  24V system
-  //                        Lead Acid        14.4        24    124
-  //                        Gel              14.4        53    153
-  //                        AGM 14.4V        14.4        34    134
-  //                        AGM 14.7-14.8V   14.7-14.8   47    147
-  //                        LiFePo4 13.9V    13.9        89    189
-  //                        LiFePo4 14.2V    14.2        82    182
-  //                        LiFePo4 14.4V    14.4        84    184
-  //                        LiFePo4 14.6V    14.6        86    186
-  //                        LiFePo4 14.8V    14.8        88    188
-  ESP_LOGD(TAG_INFO3, "Battery type: %d", votronic_get_16bit(2));
+  //   2   2  0x2F 0x00
+  ESP_LOGD(TAG_INFO3, "Byte   2-3: 0x%02X 0x%02X / %d %d / %d", data[2], data[3], data[2], data[3],
+           votronic_get_16bit(2));
   //   4   2  0x00 0x00
   ESP_LOGD(TAG_INFO3, "Byte   4-5: 0x%02X 0x%02X / %d %d / %d", data[4], data[5], data[4], data[5],
            votronic_get_16bit(4));
