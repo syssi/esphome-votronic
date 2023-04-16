@@ -335,7 +335,7 @@ void Votronic::decode_battery_computer_info2_data_(const std::vector<uint8_t> &d
   //                        LiFePo4 14.4V    14.4        84    184
   //                        LiFePo4 14.6V    14.6        86    186
   //                        LiFePo4 14.8V    14.8        88    188
-  ESP_LOGI(TAG_INFO2, "Battery type: 0x%02X / %d", data[12], data[12]);
+  ESP_LOGI(TAG_INFO2, "Battery type: %d", data[12]);
   //  13   1  0x04
   ESP_LOGD(TAG_INFO2, "Byte    13: 0x%02X / %d", data[13], data[13]);
   //  14   1  0x02
