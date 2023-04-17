@@ -324,7 +324,7 @@ void Votronic::decode_battery_computer_info2_data_(const std::vector<uint8_t> &d
   //  10   2  0x00 0x00
   ESP_LOGD(TAG_INFO2, "Byte 10-11: 0x%02X 0x%02X / %d %d / %d", data[10], data[11], data[10], data[11],
            votronic_get_16bit(10));
-  //  12   1  0x2F        Battery type
+  //  12   1  0x2F        Battery type / Charging mode setting
   //                                         U1     12V system  24V system
   //                        Lead Acid        14.4        24    124
   //                        Gel              14.4        53    153
@@ -335,11 +335,14 @@ void Votronic::decode_battery_computer_info2_data_(const std::vector<uint8_t> &d
   //                        LiFePo4 14.4V    14.4        84    184
   //                        LiFePo4 14.6V    14.6        86    186
   //                        LiFePo4 14.8V    14.8        88    188
-  ESP_LOGI(TAG_INFO2, "Battery type: %d", data[12]);
+  this->publish_state_(this->charging_mode_setting_id_sensor_, data[12]);
+  this->publish_state_(this->charging_mode_setting_text_sensor_, this->charging_mode_setting_to_string_(data[12]));
   //  13   1  0x04
-  ESP_LOGD(TAG_INFO2, "Byte    13: 0x%02X / %d", data[13], data[13]);
+  this->publish_state_(this->battery_status_bitmask_sensor_, data[13]);
+  this->publish_state_(this->battery_status_text_sensor_, this->battery_status_bitmask_to_string_(data[13]));
+  ESP_LOGD(TAG_INFO2, "Battery status bitmask: 0x%02X / %d", data[13], data[13]);
   //  14   1  0x02
-  ESP_LOGD(TAG_INFO2, "Byte    14: 0x%02X / %d", data[14], data[14]);
+  ESP_LOGD(TAG_INFO2, "Controller Status Bitmask?: 0x%02X / %d", data[14], data[14]);
   //  15   1  0x43        CRC
 }
 
@@ -446,21 +449,32 @@ void Votronic::publish_state_(text_sensor::TextSensor *text_sensor, const std::s
 
 std::string Votronic::charging_mode_setting_to_string_(const uint8_t charging_mode_setting) {
   switch (charging_mode_setting) {
-    case 0x35:
-      return "Lead GEL";
-    case 0x22:
-      return "Lead AGM1";
-    case 0x2f:
-      return "Lead AGM2";
-    case 0x50:
+    case 24:
+    case 124:
+      return "Lead Acid";
+    case 53:
+    case 153:
+      return "Lead Gel";
+    case 34:
+    case 134:
+      return "AGM 14.4V";
+    case 47:
+    case 147:
+      return "AGM 14.7-14.8V";
+    case 89:
+    case 189:
       return "LiFePo4 13.9V";
-    case 0x52:
+    case 82:
+    case 182:
       return "LiFePo4 14.2V";
-    case 0x54:
+    case 84:
+    case 184:
       return "LiFePo4 14.4V";
-    case 0x56:
+    case 86:
+    case 186:
       return "LiFePo4 14.6V";
-    case 0x58:
+    case 88:
+    case 188:
       return "LiFePo4 14.8V";
   }
 
