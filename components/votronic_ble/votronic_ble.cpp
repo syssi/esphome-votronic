@@ -23,7 +23,7 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
 
       this->publish_state_(this->battery_voltage_sensor_, NAN);
       this->publish_state_(this->secondary_battery_voltage_sensor_, NAN);
-      this->publish_state_(this->battery_capacity_sensor_, NAN);
+      this->publish_state_(this->battery_capacity_remaining_sensor_, NAN);
       this->publish_state_(this->state_of_charge_sensor_, NAN);
       this->publish_state_(this->current_sensor_, NAN);
       this->publish_state_(this->power_sensor_, NAN);
@@ -149,7 +149,7 @@ void VotronicBle::decode_battery_computer_data_(const std::vector<uint8_t> &data
   float battery_voltage = votronic_get_16bit(0) * 0.01f;
   this->publish_state_(this->battery_voltage_sensor_, battery_voltage);
   this->publish_state_(this->secondary_battery_voltage_sensor_, votronic_get_16bit(2) * 0.01f);
-  this->publish_state_(this->battery_capacity_sensor_, (float) votronic_get_16bit(4));
+  this->publish_state_(this->battery_capacity_remaining_sensor_, (float) votronic_get_16bit(4));
   this->publish_state_(this->state_of_charge_sensor_, (float) data[8]);
 
   float current = votronic_get_24bit_signed(10) * 0.001f;
@@ -218,7 +218,7 @@ void VotronicBle::dump_config() {
 
   LOG_SENSOR("", "Battery voltage", this->battery_voltage_sensor_);
   LOG_SENSOR("", "Secondary battery voltage", this->secondary_battery_voltage_sensor_);
-  LOG_SENSOR("", "Battery capacity", this->battery_capacity_sensor_);
+  LOG_SENSOR("", "Battery capacity remaining", this->battery_capacity_remaining_sensor_);
   LOG_SENSOR("", "State of charge", this->state_of_charge_sensor_);
   LOG_SENSOR("", "Current", this->current_sensor_);
   LOG_SENSOR("", "Power", this->power_sensor_);

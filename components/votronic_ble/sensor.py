@@ -28,7 +28,7 @@ CODEOWNERS = ["@syssi"]
 
 # CONF_BATTERY_VOLTAGE = "battery_voltage"
 CONF_SECONDARY_BATTERY_VOLTAGE = "secondary_battery_voltage"
-CONF_BATTERY_CAPACITY = "battery_capacity"
+CONF_BATTERY_CAPACITY_REMAINING = "battery_capacity_remaining"
 CONF_STATE_OF_CHARGE = "state_of_charge"
 # CONF_CURRENT = "current"
 CONF_BATTERY_NOMINAL_CAPACITY = "battery_nominal_capacity"
@@ -40,12 +40,9 @@ CONF_CHARGED_CAPACITY = "charged_capacity"
 CONF_CHARGED_ENERGY = "charged_energy"
 CONF_PV_POWER = "pv_power"
 
-ICON_CURRENT_DC = "mdi:current-dc"
-
-UNIT_AMPERE_HOURS = "Ah"
-
-ICON_BATTERY_CAPACITY = "mdi:battery-50"
+ICON_BATTERY_CAPACITY_REMAINING = "mdi:battery-50"
 ICON_STATE_OF_CHARGE = "mdi:battery-50"
+ICON_CURRENT_DC = "mdi:current-dc"
 ICON_BATTERY_NOMINAL_CAPACITY = "mdi:battery"
 
 ICON_BATTERY_STATUS_BITMASK = "mdi:alert-circle-outline"
@@ -55,10 +52,12 @@ ICON_CHARGED_CAPACITY = "mdi:battery-charging"
 ICON_CHARGING_CYCLES = "mdi:battery-sync"
 ICON_ERRORS_BITMASK = "mdi:alert-circle-outline"
 
+UNIT_AMPERE_HOURS = "Ah"
+
 SENSORS = [
     CONF_BATTERY_VOLTAGE,
     CONF_SECONDARY_BATTERY_VOLTAGE,
-    CONF_BATTERY_CAPACITY,
+    CONF_BATTERY_CAPACITY_REMAINING,
     CONF_STATE_OF_CHARGE,
     CONF_CURRENT,
     CONF_POWER,
@@ -89,9 +88,9 @@ CONFIG_SCHEMA = cv.Schema(
             device_class=DEVICE_CLASS_VOLTAGE,
             state_class=STATE_CLASS_MEASUREMENT,
         ),
-        cv.Optional(CONF_BATTERY_CAPACITY): sensor.sensor_schema(
+        cv.Optional(CONF_BATTERY_CAPACITY_REMAINING): sensor.sensor_schema(
             unit_of_measurement=UNIT_AMPERE_HOURS,
-            icon=ICON_BATTERY_CAPACITY,
+            icon=ICON_BATTERY_CAPACITY_REMAINING,
             accuracy_decimals=0,
             device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,
