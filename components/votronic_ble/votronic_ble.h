@@ -47,8 +47,8 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   void set_secondary_battery_voltage_sensor(sensor::Sensor *secondary_battery_voltage_sensor) {
     secondary_battery_voltage_sensor_ = secondary_battery_voltage_sensor;
   }
-  void set_battery_capacity_sensor(sensor::Sensor *battery_capacity_sensor) {
-    battery_capacity_sensor_ = battery_capacity_sensor;
+  void set_battery_capacity_remaining_sensor(sensor::Sensor *battery_capacity_remaining_sensor) {
+    battery_capacity_remaining_sensor_ = battery_capacity_remaining_sensor;
   }
   void set_state_of_charge_sensor(sensor::Sensor *state_of_charge_sensor) {
     state_of_charge_sensor_ = state_of_charge_sensor;
@@ -93,7 +93,7 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
 
   sensor::Sensor *battery_voltage_sensor_;
   sensor::Sensor *secondary_battery_voltage_sensor_;
-  sensor::Sensor *battery_capacity_sensor_;
+  sensor::Sensor *battery_capacity_remaining_sensor_;
   sensor::Sensor *state_of_charge_sensor_;
   sensor::Sensor *current_sensor_;
   sensor::Sensor *power_sensor_;
