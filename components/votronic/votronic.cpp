@@ -272,7 +272,7 @@ void Votronic::decode_battery_computer_info1_data_(const std::vector<uint8_t> &d
   //   4   2  0x0F 0x05   Second Battery Voltage
   this->publish_state_(this->secondary_battery_voltage_sensor_, votronic_get_16bit(4) * 0.01f);
   //   6   2  0xC7 0x01
-  ESP_LOGI(TAG_INFO1, "Capacity remaining: %.0f Ah", votronic_get_16bit(6) * 1.0f);
+  this->publish_state_(this->battery_capacity_remaining_sensor_, votronic_get_16bit(6) * 1.0f);
   //   8   2  0x20 0x00
   ESP_LOGD(TAG_INFO1, "Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9],
            votronic_get_16bit(8));
@@ -317,7 +317,7 @@ void Votronic::decode_battery_computer_info2_data_(const std::vector<uint8_t> &d
   ESP_LOGD(TAG_INFO2, "Byte   4-5: 0x%02X 0x%02X / %d %d / %d", data[4], data[5], data[4], data[5],
            votronic_get_16bit(4));
   //   6   2  0xF8 0x11
-  ESP_LOGI(TAG_INFO2, "Nominal capacity: %.1f Ah", votronic_get_16bit(6) * 0.1f);
+  this->publish_state_(this->battery_nominal_capacity_sensor_, votronic_get_16bit(6) * 0.1f);
   //   8   2  0x5E 0x07
   ESP_LOGD(TAG_INFO2, "Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9],
            votronic_get_16bit(8));
@@ -401,9 +401,11 @@ void Votronic::dump_config() {
 
   LOG_SENSOR("", "Battery voltage", this->battery_voltage_sensor_);
   LOG_SENSOR("", "Secondary battery voltage", this->secondary_battery_voltage_sensor_);
+  LOG_SENSOR("", "Battery capacity remaining", this->battery_capacity_remaining_sensor_);
   LOG_SENSOR("", "State of charge", this->state_of_charge_sensor_);
   LOG_SENSOR("", "Current", this->current_sensor_);
   LOG_SENSOR("", "Power", this->power_sensor_);
+  LOG_SENSOR("", "Battery nominal capacity", this->battery_nominal_capacity_sensor_);
   LOG_SENSOR("", "PV voltage", this->pv_voltage_sensor_);
   LOG_SENSOR("", "PV current", this->pv_current_sensor_);
   LOG_SENSOR("", "PV power", this->pv_power_sensor_);

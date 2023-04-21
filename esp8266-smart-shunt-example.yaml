@@ -63,10 +63,14 @@ sensor:
       name: "${name} battery voltage"
     secondary_battery_voltage:
       name: "${name} secondary battery voltage"
+    battery_capacity_remaining:
+      name: "${name} battery capacity remaining"
     current:
       name: "${name} current"
     power:
       name: "${name} power"
+    battery_nominal_capacity:
+      name: "${name} battery nominal capacity"
     state_of_charge:
       name: "${name} state of charge"
     charging_mode_setting_id:

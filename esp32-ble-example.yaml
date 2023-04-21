@@ -87,8 +87,8 @@ sensor:
       name: "${name} battery voltage"
     secondary_battery_voltage:
       name: "${name} secondary battery voltage"
-    battery_capacity:
-      name: "${name} battery capacity"
+    battery_capacity_remaining:
+      name: "${name} battery capacity remaining"
     state_of_charge:
       name: "${name} state of charge"
     current:

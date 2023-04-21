@@ -61,6 +61,12 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   void set_controller_temperature_sensor(sensor::Sensor *controller_temperature_sensor) {
     controller_temperature_sensor_ = controller_temperature_sensor;
   }
+  void set_battery_capacity_remaining_sensor(sensor::Sensor *battery_capacity_remaining_sensor) {
+    battery_capacity_remaining_sensor_ = battery_capacity_remaining_sensor;
+  }
+  void set_battery_nominal_capacity_sensor(sensor::Sensor *battery_nominal_capacity_sensor) {
+    battery_nominal_capacity_sensor_ = battery_nominal_capacity_sensor;
+  }
 
   void set_battery_status_text_sensor(text_sensor::TextSensor *battery_status_text_sensor) {
     battery_status_text_sensor_ = battery_status_text_sensor;
@@ -99,6 +105,8 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   sensor::Sensor *pv_controller_status_bitmask_sensor_;
   sensor::Sensor *charging_mode_setting_id_sensor_;
   sensor::Sensor *controller_temperature_sensor_;
+  sensor::Sensor *battery_capacity_remaining_sensor_;
+  sensor::Sensor *battery_nominal_capacity_sensor_;
 
   text_sensor::TextSensor *battery_status_text_sensor_;
   text_sensor::TextSensor *charging_controller_status_text_sensor_;

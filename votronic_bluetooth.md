@@ -70,7 +70,7 @@ esphome run esp32-ble-example.yaml
 
 ```
 # Battery computer
-[sensor:127]: 'votronic battery capacity': Sending state 265.00000 Ah with 0 decimals of accuracy
+[sensor:127]: 'votronic battery capacity remaining': Sending state 265.00000 Ah with 0 decimals of accuracy
 [sensor:127]: 'votronic state of charge': Sending state 95.00000 % with 0 decimals of accuracy
 [sensor:127]: 'votronic current': Sending state -0.35800 A with 3 decimals of accuracy
 [binary_sensor:036]: 'votronic charging': Sending state OFF

@@ -29,7 +29,7 @@ CODEOWNERS = ["@syssi"]
 
 # CONF_BATTERY_VOLTAGE = "battery_voltage"
 CONF_SECONDARY_BATTERY_VOLTAGE = "secondary_battery_voltage"
-CONF_BATTERY_CAPACITY = "battery_capacity"
+CONF_BATTERY_CAPACITY_REMAINING = "battery_capacity_remaining"
 CONF_STATE_OF_CHARGE = "state_of_charge"
 # CONF_CURRENT = "current"
 CONF_BATTERY_NOMINAL_CAPACITY = "battery_nominal_capacity"
@@ -44,8 +44,11 @@ CONF_PV_POWER = "pv_power"
 CONF_CHARGING_MODE_SETTING_ID = "charging_mode_setting_id"
 CONF_CONTROLLER_TEMPERATURE = "controller_temperature"
 
-ICON_CURRENT_DC = "mdi:current-dc"
+ICON_BATTERY_CAPACITY_REMAINING = "mdi:battery-50"
 ICON_STATE_OF_CHARGE = "mdi:battery-50"
+ICON_CURRENT_DC = "mdi:current-dc"
+ICON_BATTERY_NOMINAL_CAPACITY = "mdi:battery"
+
 ICON_BATTERY_STATUS_BITMASK = "mdi:alert-circle-outline"
 ICON_CHARGING_CONTROLLER_STATUS_BITMASK = "mdi:alert-circle-outline"
 ICON_PV_CONTROLLER_STATUS_BITMASK = "mdi:alert-circle-outline"
@@ -56,9 +59,11 @@ UNIT_AMPERE_HOURS = "Ah"
 SENSORS = [
     CONF_BATTERY_VOLTAGE,
     CONF_SECONDARY_BATTERY_VOLTAGE,
+    CONF_BATTERY_CAPACITY_REMAINING,
     CONF_STATE_OF_CHARGE,
     CONF_CURRENT,
     CONF_POWER,
+    CONF_BATTERY_NOMINAL_CAPACITY,
     CONF_PV_VOLTAGE,
     CONF_PV_CURRENT,
     CONF_PV_POWER,
@@ -86,6 +91,13 @@ CONFIG_SCHEMA = cv.Schema(
             device_class=DEVICE_CLASS_VOLTAGE,
             state_class=STATE_CLASS_MEASUREMENT,
         ),
+        cv.Optional(CONF_BATTERY_CAPACITY_REMAINING): sensor.sensor_schema(
+            unit_of_measurement=UNIT_AMPERE_HOURS,
+            icon=ICON_BATTERY_CAPACITY_REMAINING,
+            accuracy_decimals=0,
+            device_class=DEVICE_CLASS_EMPTY,
+            state_class=STATE_CLASS_MEASUREMENT,
+        ),
         cv.Optional(CONF_STATE_OF_CHARGE): sensor.sensor_schema(
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_STATE_OF_CHARGE,
@@ -105,6 +117,13 @@ CONFIG_SCHEMA = cv.Schema(
             icon=ICON_EMPTY,
             accuracy_decimals=2,
             device_class=DEVICE_CLASS_POWER,
+            state_class=STATE_CLASS_MEASUREMENT,
+        ),
+        cv.Optional(CONF_BATTERY_NOMINAL_CAPACITY): sensor.sensor_schema(
+            unit_of_measurement=UNIT_AMPERE_HOURS,
+            icon=ICON_BATTERY_NOMINAL_CAPACITY,
+            accuracy_decimals=1,
+            device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,
         ),
         cv.Optional(CONF_PV_VOLTAGE): sensor.sensor_schema(
