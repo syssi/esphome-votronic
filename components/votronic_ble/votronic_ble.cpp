@@ -127,8 +127,12 @@ void VotronicBle::update() {
 
 bool VotronicBle::send_command(uint8_t command) {
   ESP_LOGD(TAG, "Send command: 0x%02X", command);
+
+  uint8_t frame[1];
+  frame[0] = command;
+
   auto status = esp_ble_gattc_write_char(this->parent_->get_gattc_if(), this->parent_->get_conn_id(),
-                                         this->char_management_handle_, sizeof(command), command,
+                                         this->char_management_handle_, sizeof(frame), frame,
                                          ESP_GATT_WRITE_TYPE_NO_RSP, ESP_GATT_AUTH_REQ_NONE);
 
   if (status) {
