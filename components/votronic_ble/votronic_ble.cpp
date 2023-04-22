@@ -90,7 +90,13 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
         ESP_LOGW(TAG, "esp_ble_gattc_register_for_notify failed, status=%d", status2);
       }
 
-      // @TODO: Lookup char_management_handle_
+      auto *char_management =
+          this->parent_->get_characteristic(this->service_monitoring_uuid_, this->char_management_uuid_);
+      if (char_management == nullptr) {
+        ESP_LOGW(TAG, "[%s] No management characteristic found at device.", this->parent_->address_str().c_str());
+        break;
+      }
+      this->char_management_handle_ = char_management->handle;
 
       break;
     }
