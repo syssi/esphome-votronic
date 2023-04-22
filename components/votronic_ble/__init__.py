@@ -14,6 +14,12 @@ VotronicBle = votronic_ble_ns.class_(
     "VotronicBle", ble_client.BLEClientNode, cg.PollingComponent
 )
 
+VOTRONIC_BLE_COMPONENT_SCHEMA = cv.Schema(
+    {
+        cv.GenerateID(CONF_VOTRONIC_BLE_ID): cv.use_id(VotronicBle),
+    }
+)
+
 CONFIG_SCHEMA = (
     cv.Schema(
         {
