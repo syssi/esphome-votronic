@@ -58,7 +58,11 @@ esp32_ble_tracker:
 ble_client:
   - mac_address: ${mac_address}
     id: client0
-    pin_code: 173928
+    on_passkey_request:
+      then:
+        - ble_client.passkey_reply:
+            id: client0
+            passkey: 173928
 
 votronic_ble:
   - ble_client_id: client0
