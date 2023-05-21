@@ -39,8 +39,10 @@ mqtt:
 
 # api:
 
-esp32_ble_tracker:
+esp32_ble:
   io_capability: keyboard_only
+
+esp32_ble_tracker:
   on_ble_advertise:
     then:
       - lambda: |-
