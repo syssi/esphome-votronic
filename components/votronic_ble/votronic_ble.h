@@ -82,7 +82,7 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   }
 
   void on_votronic_ble_data(const uint8_t &handle, const std::vector<uint8_t> &data);
-  void set_throttle(uint16_t throttle) { this->throttle_ = throttle; }
+  void set_throttle(uint32_t throttle) { this->throttle_ = throttle; }
 
  protected:
   binary_sensor::BinarySensor *charging_binary_sensor_;
@@ -113,7 +113,7 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   uint16_t char_solar_charger_handle_{0x25};
   uint32_t last_battery_computer_data_{0};
   uint32_t last_solar_charger_data_{0};
-  uint16_t throttle_;
+  uint32_t throttle_;
 
   esp32_ble_tracker::ESPBTUUID service_bond_uuid_ =
       esp32_ble_tracker::ESPBTUUID::from_raw("70521e61-022d-f899-d046-4885a76acbd0");
