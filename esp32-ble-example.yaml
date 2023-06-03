@@ -1,7 +1,7 @@
 substitutions:
   name: votronic
   device_description: "Monitor a votronic device via BLE"
-  external_components_source: github://syssi/esphome-votronic@main
+  external_components_source: github://syssi/esphome-votronic@drop-patched-ble-stack
   mac_address: 60:A4:23:91:8F:55
 
 esphome:
@@ -39,8 +39,10 @@ mqtt:
 
 # api:
 
-esp32_ble_tracker:
+esp32_ble:
   io_capability: keyboard_only
+
+esp32_ble_tracker:
   on_ble_advertise:
     then:
       - lambda: |-
@@ -58,7 +60,11 @@ esp32_ble_tracker:
 ble_client:
   - mac_address: ${mac_address}
     id: client0
-    pin_code: 173928
+    on_passkey_request:
+      then:
+        - ble_client.passkey_reply:
+            id: client0
+            passkey: 173928
 
 votronic_ble:
   - ble_client_id: client0
