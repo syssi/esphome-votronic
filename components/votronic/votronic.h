@@ -82,7 +82,7 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   }
 
   void on_votronic_data(const std::vector<uint8_t> &data);
-  void set_throttle(uint16_t throttle) { this->throttle_ = throttle; }
+  void set_throttle(uint32_t throttle) { this->throttle_ = throttle; }
   void set_rx_timeout(uint16_t rx_timeout) { rx_timeout_ = rx_timeout; }
 
  protected:
@@ -120,7 +120,7 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   uint32_t last_battery_computer_info1_data_{0};
   uint32_t last_battery_computer_info2_data_{0};
   uint32_t last_battery_computer_info3_data_{0};
-  uint16_t throttle_;
+  uint32_t throttle_;
   uint16_t rx_timeout_{150};
 
   void decode_solar_charger_data_(const std::vector<uint8_t> &data);
