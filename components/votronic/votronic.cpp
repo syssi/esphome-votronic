@@ -23,6 +23,7 @@ static const uint8_t VOTRONIC_FRAME_TYPE_BATTERY_COMPUTER_INFO3 = 0xFA;
 
 static const uint8_t VOTRONIC_FRAME_TYPE_CONTROL_CHARGER = 0x7A;             // Incorrect protocol description?
 static const uint8_t VOTRONIC_FRAME_TYPE_CONTROL_CHARGING_CONVERTER = 0x3A;  // Incorrect protocol description?
+static const uint8_t VOTRONIC_FRAME_TYPE_CONTROL_CHARGING_CONVERTER2 = 0x4A;
 static const uint8_t VOTRONIC_FRAME_TYPE_CONTROL_BATTERY_COMPUTER = 0xEA;
 
 static const uint8_t BATTERY_STATUS_SIZE = 8;
@@ -66,7 +67,7 @@ void Votronic::loop() {
 
   if (now - this->last_byte_ > this->rx_timeout_) {
     ESP_LOGVV(TAG, "Buffer cleared due to timeout: %s",
-             format_hex_pretty(&this->rx_buffer_.front(), this->rx_buffer_.size()).c_str());
+              format_hex_pretty(&this->rx_buffer_.front(), this->rx_buffer_.size()).c_str());
     this->rx_buffer_.clear();
     this->last_byte_ = now;
   }
@@ -78,7 +79,7 @@ void Votronic::loop() {
       this->last_byte_ = now;
     } else {
       ESP_LOGVV(TAG, "Buffer cleared due to reset: %s",
-               format_hex_pretty(&this->rx_buffer_.front(), this->rx_buffer_.size()).c_str());
+                format_hex_pretty(&this->rx_buffer_.front(), this->rx_buffer_.size()).c_str());
       this->rx_buffer_.clear();
     }
   }
@@ -144,6 +145,12 @@ void Votronic::on_votronic_data(const std::vector<uint8_t> &data) {
     case VOTRONIC_FRAME_TYPE_BATTERY_COMPUTER_INFO3:
       this->decode_battery_computer_info3_data_(data);
       break;
+    case VOTRONIC_FRAME_TYPE_CONTROL_CHARGING_CONVERTER2:
+      // Skip empty frame silently
+      // 0xAA 0x4A 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x4A
+      if (data[VOTRONIC_FRAME_LENGTH - 1] == VOTRONIC_FRAME_TYPE_CONTROL_CHARGING_CONVERTER2) {
+        break;
+      }
     default:
       ESP_LOGW(TAG, "Your device is probably not supported. Please create an issue here: "
                     "https://github.com/syssi/esphome-votronic/issues");
