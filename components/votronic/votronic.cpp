@@ -65,7 +65,7 @@ void Votronic::loop() {
   const uint32_t now = millis();
 
   if (now - this->last_byte_ > this->rx_timeout_) {
-    ESP_LOGW(TAG, "Buffer cleared due to timeout: %s",
+    ESP_LOGVV(TAG, "Buffer cleared due to timeout: %s",
              format_hex_pretty(&this->rx_buffer_.front(), this->rx_buffer_.size()).c_str());
     this->rx_buffer_.clear();
     this->last_byte_ = now;
@@ -77,7 +77,7 @@ void Votronic::loop() {
     if (this->parse_votronic_byte_(byte)) {
       this->last_byte_ = now;
     } else {
-      ESP_LOGW(TAG, "Buffer cleared due to reset: %s",
+      ESP_LOGVV(TAG, "Buffer cleared due to reset: %s",
                format_hex_pretty(&this->rx_buffer_.front(), this->rx_buffer_.size()).c_str());
       this->rx_buffer_.clear();
     }
@@ -92,11 +92,8 @@ bool Votronic::parse_votronic_byte_(uint8_t byte) {
   const uint8_t *raw = &this->rx_buffer_[0];
   const uint8_t frame_len = VOTRONIC_FRAME_LENGTH;
 
-  if (at == 0)
-    return true;
-
-  if (raw[0] != VOTRONIC_FRAME_START) {
-    ESP_LOGW(TAG, "Invalid header: 0x%02X", raw[0]);
+  if (at == 0 && raw[0] != VOTRONIC_FRAME_START) {
+    ESP_LOGW(TAG, "Invalid header (0x%02X)", raw[0]);
 
     // return false to reset buffer
     return false;
