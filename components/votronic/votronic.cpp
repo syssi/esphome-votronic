@@ -191,8 +191,8 @@ void Votronic::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   //  11   1  0x15        Reserved
   this->publish_state_(this->pv_controller_temperature_sensor_, (float) data[11]);
   //  12   1  0x03        Charging mode setting (dip switches)
-  this->publish_state_(this->pv_charging_mode_setting_id_sensor_, data[12]);
-  this->publish_state_(this->pv_charging_mode_setting_text_sensor_, this->charging_mode_setting_to_string_(data[12]));
+  this->publish_state_(this->charging_mode_setting_id_sensor_, data[12]);
+  this->publish_state_(this->charging_mode_setting_text_sensor_, this->charging_mode_setting_to_string_(data[12]));
   //  13   1  0x00        Battery Controller Status               Bitmask
   this->publish_state_(this->pv_battery_status_bitmask_sensor_, data[13]);
   this->publish_state_(this->pv_battery_status_text_sensor_, this->battery_status_bitmask_to_string_(data[13]));
@@ -425,7 +425,6 @@ void Votronic::dump_config() {
   LOG_SENSOR("", "Charging Controller status bitmask", this->charging_controller_status_bitmask_sensor_);
   LOG_SENSOR("", "PV Controller status bitmask", this->pv_controller_status_bitmask_sensor_);
   LOG_SENSOR("", "Charging mode setting ID", this->charging_mode_setting_id_sensor_);
-  LOG_SENSOR("", "PV charging mode setting ID", this->pv_charging_mode_setting_id_sensor_);
   LOG_SENSOR("", "Controller temperature", this->controller_temperature_sensor_);
   LOG_SENSOR("", "PV controller temperature", this->pv_controller_temperature_sensor_);
 
@@ -434,7 +433,6 @@ void Votronic::dump_config() {
   LOG_TEXT_SENSOR("", "Charging controller status", this->charging_controller_status_text_sensor_);
   LOG_TEXT_SENSOR("", "PV controller status", this->pv_controller_status_text_sensor_);
   LOG_TEXT_SENSOR("", "Charging mode setting", this->charging_mode_setting_text_sensor_);
-  LOG_TEXT_SENSOR("", "PV charging mode setting", this->pv_charging_mode_setting_text_sensor_);
 
   this->check_uart_settings(1000);
 }

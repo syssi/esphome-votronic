@@ -71,13 +71,17 @@ CONFIG_SCHEMA = cv.Schema(
                 cv.Optional(CONF_ICON, default=ICON_AES_ACTIVE): cv.icon,
             }
         ),
-        cv.Optional(CONF_PV_CONTROLLER_ACTIVE): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
+        cv.Optional(
+            CONF_PV_CONTROLLER_ACTIVE
+        ): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
             {
                 cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
                 cv.Optional(CONF_ICON, default=ICON_PV_CONTROLLER_ACTIVE): cv.icon,
             }
         ),
-        cv.Optional(CONF_PV_CURRENT_REDUCTION): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
+        cv.Optional(
+            CONF_PV_CURRENT_REDUCTION
+        ): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
             {
                 cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
                 cv.Optional(CONF_ICON, default=ICON_PV_CURRENT_REDUCTION): cv.icon,

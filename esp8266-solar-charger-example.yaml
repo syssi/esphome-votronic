@@ -58,12 +58,12 @@ binary_sensor:
       name: "${name} charging"
     discharging:
       name: "${name} discharging"
-    controller_active:
-      name: "${name} controller active"
-    current_reduction:
-      name: "${name} current reduction"
-    aes_active:
-      name: "${name} aes active"
+    pv_controller_active:
+      name: "${name} pv controller active"
+    pv_current_reduction:
+      name: "${name} pv current reduction"
+    pv_aes_active:
+      name: "${name} pv aes active"
 
 sensor:
   - platform: votronic
@@ -76,12 +76,12 @@ sensor:
       name: "${name} pv current"
     pv_power:
       name: "${name} pv power"
-    controller_temperature:
-      name: "${name} controller temperature"
+    pv_controller_temperature:
+      name: "${name} pv controller temperature"
     charging_mode_setting_id:
       name: "${name} charging mode setting id"
-    battery_status_bitmask:
-      name: "${name} battery status bitmask"
+    pv_battery_status_bitmask:
+      name: "${name} pv battery status bitmask"
     pv_controller_status_bitmask:
       name: "${name} pv controller status bitmask"
 
@@ -90,7 +90,7 @@ text_sensor:
     votronic_id: votronic0
     charging_mode_setting:
       name: "${name} charging mode setting"
-    battery_status:
-      name: "${name} battery status"
+    pv_battery_status:
+      name: "${name} pv battery status"
     pv_controller_status:
       name: "${name} pv controller status"
