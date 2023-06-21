@@ -14,12 +14,18 @@ CONF_DISCHARGING = "discharging"
 CONF_CONTROLLER_ACTIVE = "controller_active"
 CONF_CURRENT_REDUCTION = "current_reduction"
 CONF_AES_ACTIVE = "aes_active"
+CONF_PV_CONTROLLER_ACTIVE = "pv_controller_active"
+CONF_PV_CURRENT_REDUCTION = "pv_current_reduction"
+CONF_PV_AES_ACTIVE = "pv_aes_active"
 
 ICON_CHARGING = "mdi:battery-charging"
 ICON_DISCHARGING = "mdi:power-plug"
 ICON_CONTROLLER_ACTIVE = "mdi:power"
 ICON_CURRENT_REDUCTION = "mdi:car-speed-limiter"
 ICON_AES_ACTIVE = "mdi:export"
+ICON_PV_CONTROLLER_ACTIVE = "mdi:power"
+ICON_PV_CURRENT_REDUCTION = "mdi:car-speed-limiter"
+ICON_PV_AES_ACTIVE = "mdi:export"
 
 BINARY_SENSORS = [
     CONF_CHARGING,
@@ -27,6 +33,9 @@ BINARY_SENSORS = [
     CONF_CONTROLLER_ACTIVE,
     CONF_CURRENT_REDUCTION,
     CONF_AES_ACTIVE,
+    CONF_PV_CONTROLLER_ACTIVE,
+    CONF_PV_CURRENT_REDUCTION,
+    CONF_PV_AES_ACTIVE,
 ]
 
 CONFIG_SCHEMA = cv.Schema(
@@ -60,6 +69,28 @@ CONFIG_SCHEMA = cv.Schema(
             {
                 cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
                 cv.Optional(CONF_ICON, default=ICON_AES_ACTIVE): cv.icon,
+            }
+        ),
+        cv.Optional(
+            CONF_PV_CONTROLLER_ACTIVE
+        ): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
+            {
+                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
+                cv.Optional(CONF_ICON, default=ICON_PV_CONTROLLER_ACTIVE): cv.icon,
+            }
+        ),
+        cv.Optional(
+            CONF_PV_CURRENT_REDUCTION
+        ): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
+            {
+                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
+                cv.Optional(CONF_ICON, default=ICON_PV_CURRENT_REDUCTION): cv.icon,
+            }
+        ),
+        cv.Optional(CONF_PV_AES_ACTIVE): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
+            {
+                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
+                cv.Optional(CONF_ICON, default=ICON_PV_AES_ACTIVE): cv.icon,
             }
         ),
     }

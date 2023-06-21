@@ -1,0 +1,27 @@
+<<: !include esp8266-solar-charger-example.yaml
+
+logger:
+  level: VERY_VERBOSE
+  logs:
+    votronic: VERY_VERBOSE
+    component: DEBUG
+    scheduler: INFO
+    binary_sensor: DEBUG
+    sensor: DEBUG
+    text_sensor: DEBUG
+    mqtt: INFO
+    mqtt.idf: INFO
+    mqtt.component: INFO
+    mqtt.sensor: INFO
+    mqtt.switch: INFO
+    api.service: INFO
+    api: INFO
+
+uart:
+  - id: uart_0
+    baud_rate: 1000
+    tx_pin: ${tx_pin}
+    rx_pin: ${rx_pin}
+    debug:
+      direction: BOTH
+      dummy_receiver: false
