@@ -4,7 +4,7 @@ substitutions:
   external_components_source: github://syssi/esphome-votronic@main
   tx_pin: GPIO4
   rx_pin: GPIO5
-  rx_timeout: 150ms
+  rx_timeout: 600ms
 
 esphome:
   name: ${name}
