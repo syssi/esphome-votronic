@@ -25,6 +25,8 @@ wifi:
   password: !secret wifi_password
 
 ota:
+  platform: esphome
+
 logger:
 
 # If you use Home Assistant please remove this `mqtt` section and uncomment the native `api` component!
