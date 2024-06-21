@@ -23,7 +23,7 @@ ESPHome component to monitor votronic devices via BLE or Display Link
 
 ## Requirements
 
-* [ESPHome 2023.7.0 or higher](https://github.com/esphome/esphome/releases).
+* [ESPHome 2024.6.0 or higher](https://github.com/esphome/esphome/releases).
 * Generic ESP32 board
 
 ## Installation
