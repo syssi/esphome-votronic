@@ -8,6 +8,9 @@ on:  # yamllint disable-line rule:truthy
   schedule:
     - cron: 0 12 * * *
 
+env:
+  FORCE_COLOR: 1
+
 jobs:
   yamllint:
     runs-on: ubuntu-latest
@@ -191,17 +194,13 @@ jobs:
         shell: bash
         run: 'echo -e "wifi_ssid: ssid\nwifi_password: password\nmqtt_host: host\nmqtt_username: username\nmqtt_password: password" > tests/secrets.yaml'
       - run: |
-          esphome -s external_components_source components config esp32-ble-example-faker.yaml
+          for YAML in esp*.yaml; do
+            esphome -s external_components_source components config $YAML >/dev/null
+          done
       - run: |
-          esphome -s external_components_source components config esp8266-solar-charger-example-faker.yaml
-          esphome -s external_components_source components config esp8266-charger-example-faker.yaml
-          esphome -s external_components_source components config esp8266-charging-converter-example-faker.yaml
-          esphome -s external_components_source components config esp8266-smart-shunt-example-faker.yaml
-          esphome -s external_components_source components config esp8266-triple-charger-example-faker.yaml
-      - run: |
-          esphome -s external_components_source ../components config tests/esp8266-fake-charger.yaml
-          esphome -s external_components_source ../components config tests/esp8266-fake-charging-converter.yaml
-          esphome -s external_components_source ../components config tests/esp8266-fake-solar-charger.yaml
+          for YAML in tests/esp*.yaml; do
+            esphome -s external_components_source components config $YAML >/dev/null
+          done
 
   esphome-compile:
     runs-on: ubuntu-latest
