@@ -45,19 +45,8 @@ esp32_ble:
   io_capability: keyboard_only
 
 esp32_ble_tracker:
-  on_ble_advertise:
-    then:
-      - lambda: |-
-          if (x.get_name().rfind("votronic", 0) == 0) {
-            ESP_LOGI("ble_adv", "New Votronic BLE controller found");
-            ESP_LOGI("ble_adv", "  Name: %s", x.get_name().c_str());
-            ESP_LOGI("ble_adv", "  MAC address: %s", x.address_str().c_str());
-            ESP_LOGD("ble_adv", "  Advertised service UUIDs:");
-            for (auto uuid : x.get_service_uuids()) {
-              ESP_LOGD("ble_adv", "    - %s", uuid.to_string().c_str());
-            }
-          }
-
+  scan_parameters:
+    active: false
 
 ble_client:
   - mac_address: ${mac_address}
