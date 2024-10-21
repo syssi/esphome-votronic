@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 from esphome.components import binary_sensor
 import esphome.config_validation as cv
-from esphome.const import CONF_ICON, CONF_ID
+from esphome.const import CONF_ID
 
 from . import CONF_VOTRONIC_ID, Votronic
 
@@ -18,15 +18,6 @@ CONF_PV_CONTROLLER_ACTIVE = "pv_controller_active"
 CONF_PV_CURRENT_REDUCTION = "pv_current_reduction"
 CONF_PV_AES_ACTIVE = "pv_aes_active"
 
-ICON_CHARGING = "mdi:battery-charging"
-ICON_DISCHARGING = "mdi:power-plug"
-ICON_CONTROLLER_ACTIVE = "mdi:power"
-ICON_CURRENT_REDUCTION = "mdi:car-speed-limiter"
-ICON_AES_ACTIVE = "mdi:export"
-ICON_PV_CONTROLLER_ACTIVE = "mdi:power"
-ICON_PV_CURRENT_REDUCTION = "mdi:car-speed-limiter"
-ICON_PV_AES_ACTIVE = "mdi:export"
-
 BINARY_SENSORS = [
     CONF_CHARGING,
     CONF_DISCHARGING,
@@ -41,57 +32,29 @@ BINARY_SENSORS = [
 CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(CONF_VOTRONIC_ID): cv.use_id(Votronic),
-        cv.Optional(CONF_CHARGING): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
-                cv.Optional(CONF_ICON, default=ICON_CHARGING): cv.icon,
-            }
+        cv.Optional(CONF_CHARGING): binary_sensor.binary_sensor_schema(
+            icon="mdi:battery-charging",
         ),
-        cv.Optional(CONF_DISCHARGING): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
-                cv.Optional(CONF_ICON, default=ICON_DISCHARGING): cv.icon,
-            }
+        cv.Optional(CONF_DISCHARGING): binary_sensor.binary_sensor_schema(
+            icon="mdi:power-plug",
         ),
-        cv.Optional(CONF_CONTROLLER_ACTIVE): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
-                cv.Optional(CONF_ICON, default=ICON_CONTROLLER_ACTIVE): cv.icon,
-            }
+        cv.Optional(CONF_CONTROLLER_ACTIVE): binary_sensor.binary_sensor_schema(
+            icon="mdi:power",
         ),
-        cv.Optional(CONF_CURRENT_REDUCTION): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
-                cv.Optional(CONF_ICON, default=ICON_CURRENT_REDUCTION): cv.icon,
-            }
+        cv.Optional(CONF_CURRENT_REDUCTION): binary_sensor.binary_sensor_schema(
+            icon="mdi:car-speed-limiter",
         ),
-        cv.Optional(CONF_AES_ACTIVE): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
-                cv.Optional(CONF_ICON, default=ICON_AES_ACTIVE): cv.icon,
-            }
+        cv.Optional(CONF_AES_ACTIVE): binary_sensor.binary_sensor_schema(
+            icon="mdi:export",
         ),
-        cv.Optional(
-            CONF_PV_CONTROLLER_ACTIVE
-        ): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
-                cv.Optional(CONF_ICON, default=ICON_PV_CONTROLLER_ACTIVE): cv.icon,
-            }
+        cv.Optional(CONF_PV_CONTROLLER_ACTIVE): binary_sensor.binary_sensor_schema(
+            icon="mdi:power",
         ),
-        cv.Optional(
-            CONF_PV_CURRENT_REDUCTION
-        ): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
-                cv.Optional(CONF_ICON, default=ICON_PV_CURRENT_REDUCTION): cv.icon,
-            }
+        cv.Optional(CONF_PV_CURRENT_REDUCTION): binary_sensor.binary_sensor_schema(
+            icon="mdi:car-speed-limiter",
         ),
-        cv.Optional(CONF_PV_AES_ACTIVE): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
-                cv.Optional(CONF_ICON, default=ICON_PV_AES_ACTIVE): cv.icon,
-            }
+        cv.Optional(CONF_PV_AES_ACTIVE): binary_sensor.binary_sensor_schema(
+            icon="mdi:export",
         ),
     }
 )
