@@ -37,6 +37,24 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
       this->publish_state_(this->charged_energy_sensor_, NAN);
       this->publish_state_(this->pv_power_sensor_, NAN);
 
+      if (this->char_battery_computer_handle_ != 0) {
+        auto status = esp_ble_gattc_unregister_for_notify(
+            this->parent()->get_gattc_if(), this->parent()->get_remote_bda(), this->char_battery_computer_handle_);
+        if (status) {
+          ESP_LOGW(TAG, "esp_ble_gattc_unregister_for_notify failed, status=%d", status);
+        }
+      }
+      this->char_battery_computer_handle_ = 0;
+
+      if (this->char_solar_charger_handle_ != 0) {
+        auto status = esp_ble_gattc_unregister_for_notify(
+            this->parent()->get_gattc_if(), this->parent()->get_remote_bda(), this->char_solar_charger_handle_);
+        if (status) {
+          ESP_LOGW(TAG, "esp_ble_gattc_unregister_for_notify failed, status=%d", status);
+        }
+      }
+      this->char_solar_charger_handle_ = 0;
+
       break;
     }
     case ESP_GATTC_SEARCH_CMPL_EVT: {
