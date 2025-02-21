@@ -11,9 +11,13 @@ CODEOWNERS = ["@syssi"]
 
 CONF_BATTERY_STATUS = "battery_status"
 CONF_PV_BATTERY_STATUS = "pv_battery_status"
-CONF_CHARGING_CONTROLLER_STATUS = "charging_controller_status"
+CONF_CHARGER_CONTROLLER_STATUS = "charger_controller_status"
 CONF_PV_CONTROLLER_STATUS = "pv_controller_status"
 CONF_CHARGING_MODE_SETTING = "charging_mode_setting"
+
+CONF_CHARGING_CONVERTER_MODE_SETTING = "charging_converter_mode_setting"
+CONF_CHARGING_CONVERTER_BATTERY_STATUS = "charging_converter_battery_status"
+CONF_CHARGING_CONVERTER_CONTROLLER_STATUS = "charging_converter_controller_status"
 
 ICON_BATTERY_STATUS = "mdi:alert-circle-outline"
 ICON_PV_BATTERY_STATUS = "mdi:alert-circle-outline"
@@ -23,10 +27,13 @@ ICON_CHARGING_MODE_SETTING = "mdi:car-battery"
 
 TEXT_SENSORS = [
     CONF_BATTERY_STATUS,
-    CONF_PV_BATTERY_STATUS,
-    CONF_CHARGING_CONTROLLER_STATUS,
-    CONF_PV_CONTROLLER_STATUS,
+    CONF_CHARGER_CONTROLLER_STATUS,
     CONF_CHARGING_MODE_SETTING,
+    CONF_CHARGING_CONVERTER_MODE_SETTING,
+    CONF_CHARGING_CONVERTER_BATTERY_STATUS,
+    CONF_CHARGING_CONVERTER_CONTROLLER_STATUS,
+    CONF_PV_BATTERY_STATUS,
+    CONF_PV_CONTROLLER_STATUS,
 ]
 
 CONFIG_SCHEMA = cv.Schema(
@@ -45,7 +52,7 @@ CONFIG_SCHEMA = cv.Schema(
             }
         ),
         cv.Optional(
-            CONF_CHARGING_CONTROLLER_STATUS
+            CONF_CHARGER_CONTROLLER_STATUS
         ): text_sensor.TEXT_SENSOR_SCHEMA.extend(
             {
                 cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
@@ -61,6 +68,32 @@ CONFIG_SCHEMA = cv.Schema(
             }
         ),
         cv.Optional(CONF_CHARGING_MODE_SETTING): text_sensor.TEXT_SENSOR_SCHEMA.extend(
+            {
+                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
+                cv.Optional(CONF_ICON, default=ICON_CHARGING_MODE_SETTING): cv.icon,
+            }
+        ),
+        cv.Optional(
+            CONF_CHARGING_CONVERTER_BATTERY_STATUS
+        ): text_sensor.TEXT_SENSOR_SCHEMA.extend(
+            {
+                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
+                cv.Optional(CONF_ICON, default=ICON_BATTERY_STATUS): cv.icon,
+            }
+        ),
+        cv.Optional(
+            CONF_CHARGING_CONVERTER_CONTROLLER_STATUS
+        ): text_sensor.TEXT_SENSOR_SCHEMA.extend(
+            {
+                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
+                cv.Optional(
+                    CONF_ICON, default=ICON_CHARGING_CONTROLLER_STATUS
+                ): cv.icon,
+            }
+        ),
+        cv.Optional(
+            CONF_CHARGING_CONVERTER_MODE_SETTING
+        ): text_sensor.TEXT_SENSOR_SCHEMA.extend(
             {
                 cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
                 cv.Optional(CONF_ICON, default=ICON_CHARGING_MODE_SETTING): cv.icon,

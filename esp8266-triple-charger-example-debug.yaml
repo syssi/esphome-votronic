@@ -1,4 +1,4 @@
-<<: !include esp8266-solar-charger-example.yaml
+<<: !include esp8266-triple-charger-example.yaml
 
 logger:
   level: VERY_VERBOSE

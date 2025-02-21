@@ -60,6 +60,7 @@ binary_sensor:
       name: "${name} charging"
     discharging:
       name: "${name} discharging"
+
     pv_controller_active:
       name: "${name} pv controller active"
     pv_current_reduction:
