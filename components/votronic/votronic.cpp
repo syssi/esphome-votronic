@@ -216,7 +216,7 @@ void Votronic::decode_charger_data_(const uint8_t &frame_type, const std::vector
     return (uint16_t(data[i + 1]) << 8) | (uint16_t(data[i + 0]) << 0);
   };
 
-  ESP_LOGI(TAG, "Charger data received");
+  ESP_LOGI(TAG, "Charger data received (frame_type 0x%02X)", frame_type);
   ESP_LOGVV(TAG, "  %s", format_hex_pretty(&data.front(), data.size()).c_str());
 
   // Byte Len Payload     Description                      Unit  Precision
