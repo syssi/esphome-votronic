@@ -238,7 +238,7 @@ void Votronic::decode_charger_data_(const uint8_t &frame_type, const std::vector
   //  10   1  0xA0        Charging Power                     %    0-100% 1%/Bit
   this->publish_state_(this->state_of_charge_sensor_, (float) data[10]);
   //  11   1  0x15        Controller temperature
-  this->publish_state_(this->controller_temperature_sensor_, (float) data[11]);
+  this->publish_state_(this->controller_temperature_sensor_, data[11] * 0.1f);
   //  12   1  0x03        Charging mode setting (dip switches)
   this->publish_state_(this->charging_mode_setting_id_sensor_, data[12]);
   this->publish_state_(this->charging_mode_setting_text_sensor_, this->charging_mode_setting_to_string_(data[12]));
