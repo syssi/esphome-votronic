@@ -18,6 +18,12 @@ CONF_PV_CONTROLLER_ACTIVE = "pv_controller_active"
 CONF_PV_CURRENT_REDUCTION = "pv_current_reduction"
 CONF_PV_AES_ACTIVE = "pv_aes_active"
 
+CONF_CHARGING_CONVERTER_CHARGING = "charging_converter_charging"
+CONF_CHARGING_CONVERTER_DISCHARGING = "charging_converter_discharging"
+CONF_CHARGING_CONVERTER_CONTROLLER_ACTIVE = "charging_converter_controller_active"
+CONF_CHARGING_CONVERTER_CURRENT_REDUCTION = "charging_converter_current_reduction"
+CONF_CHARGING_CONVERTER_AES_ACTIVE = "charging_converter_aes_active"
+
 BINARY_SENSORS = [
     CONF_CHARGING,
     CONF_DISCHARGING,
@@ -27,6 +33,11 @@ BINARY_SENSORS = [
     CONF_PV_CONTROLLER_ACTIVE,
     CONF_PV_CURRENT_REDUCTION,
     CONF_PV_AES_ACTIVE,
+    CONF_CHARGING_CONVERTER_CHARGING,
+    CONF_CHARGING_CONVERTER_DISCHARGING,
+    CONF_CHARGING_CONVERTER_CONTROLLER_ACTIVE,
+    CONF_CHARGING_CONVERTER_CURRENT_REDUCTION,
+    CONF_CHARGING_CONVERTER_AES_ACTIVE,
 ]
 
 CONFIG_SCHEMA = cv.Schema(
@@ -54,6 +65,31 @@ CONFIG_SCHEMA = cv.Schema(
             icon="mdi:car-speed-limiter",
         ),
         cv.Optional(CONF_PV_AES_ACTIVE): binary_sensor.binary_sensor_schema(
+            icon="mdi:export",
+        ),
+        cv.Optional(
+            CONF_CHARGING_CONVERTER_CHARGING
+        ): binary_sensor.binary_sensor_schema(
+            icon="mdi:battery-charging",
+        ),
+        cv.Optional(
+            CONF_CHARGING_CONVERTER_DISCHARGING
+        ): binary_sensor.binary_sensor_schema(
+            icon="mdi:power-plug",
+        ),
+        cv.Optional(
+            CONF_CHARGING_CONVERTER_CONTROLLER_ACTIVE
+        ): binary_sensor.binary_sensor_schema(
+            icon="mdi:power",
+        ),
+        cv.Optional(
+            CONF_CHARGING_CONVERTER_CURRENT_REDUCTION
+        ): binary_sensor.binary_sensor_schema(
+            icon="mdi:car-speed-limiter",
+        ),
+        cv.Optional(
+            CONF_CHARGING_CONVERTER_AES_ACTIVE
+        ): binary_sensor.binary_sensor_schema(
             icon="mdi:export",
         ),
     }
