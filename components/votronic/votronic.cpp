@@ -462,6 +462,13 @@ void Votronic::dump_config() {
   LOG_BINARY_SENSOR("", "PV controller active", this->pv_controller_active_binary_sensor_);
   LOG_BINARY_SENSOR("", "PV current reduction", this->pv_current_reduction_binary_sensor_);
   LOG_BINARY_SENSOR("", "PV AES active", this->pv_aes_active_binary_sensor_);
+  LOG_BINARY_SENSOR("", "Charging converter charging", this->charging_converter_charging_binary_sensor_);
+  LOG_BINARY_SENSOR("", "Charging converter discharging", this->charging_converter_discharging_binary_sensor_);
+  LOG_BINARY_SENSOR("", "Charging converter controller active",
+                    this->charging_converter_controller_active_binary_sensor_);
+  LOG_BINARY_SENSOR("", "Charging converter current reduction",
+                    this->charging_converter_current_reduction_binary_sensor_);
+  LOG_BINARY_SENSOR("", "Charging converter AES active", this->charging_converter_aes_active_binary_sensor_);
 
   LOG_SENSOR("", "Battery voltage", this->battery_voltage_sensor_);
   LOG_SENSOR("", "Secondary battery voltage", this->secondary_battery_voltage_sensor_);
@@ -480,12 +487,26 @@ void Votronic::dump_config() {
   LOG_SENSOR("", "Charging mode setting ID", this->charging_mode_setting_id_sensor_);
   LOG_SENSOR("", "Controller temperature", this->controller_temperature_sensor_);
   LOG_SENSOR("", "PV controller temperature", this->pv_controller_temperature_sensor_);
+  LOG_SENSOR("", "Charging converter battery voltage", this->charging_converter_battery_voltage_sensor_);
+  LOG_SENSOR("", "Charging converter secondary battery voltage",
+             this->charging_converter_secondary_battery_voltage_sensor_);
+  LOG_SENSOR("", "Charging converter state of charge", this->charging_converter_state_of_charge_sensor_);
+  LOG_SENSOR("", "Charging converter current", this->charging_converter_current_sensor_);
+  LOG_SENSOR("", "Charging converter power", this->charging_converter_power_sensor_);
+  LOG_SENSOR("", "Charging converter battery status bitmask", this->charging_converter_battery_status_bitmask_sensor_);
+  LOG_SENSOR("", "Charging converter controller status bitmask",
+             this->charging_converter_controller_status_bitmask_sensor_);
+  LOG_SENSOR("", "Charging converter mode setting ID", this->charging_converter_mode_setting_id_sensor_);
+  LOG_SENSOR("", "Charging converter controller temperature", this->charging_converter_controller_temperature_sensor_);
 
   LOG_TEXT_SENSOR("", "Battery status", this->battery_status_text_sensor_);
   LOG_TEXT_SENSOR("", "PV battery status", this->pv_battery_status_text_sensor_);
   LOG_TEXT_SENSOR("", "Charging controller status", this->charging_controller_status_text_sensor_);
   LOG_TEXT_SENSOR("", "PV controller status", this->pv_controller_status_text_sensor_);
   LOG_TEXT_SENSOR("", "Charging mode setting", this->charging_mode_setting_text_sensor_);
+  LOG_TEXT_SENSOR("", "Charging converter Battery status", this->charging_converter_battery_status_text_sensor_);
+  LOG_TEXT_SENSOR("", "Charging converter controller status", this->charging_converter_controller_status_text_sensor_);
+  LOG_TEXT_SENSOR("", "Charging converter mode setting", this->charging_converter_mode_setting_text_sensor_);
 
   this->check_uart_settings(1000);
 }
