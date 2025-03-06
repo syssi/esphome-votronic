@@ -89,8 +89,8 @@ sensor:
       name: "${name} charging converter current"
     charging_converter_power:
       name: "${name} charging converter power"
-    charging_converter_charging_power:
-      name: "${name} charging converter charging_power"
+    charging_converter_load:
+      name: "${name} charging converter load"
     charging_converter_controller_temperature:
       name: "${name} charging converter controller temperature"
     charging_converter_mode_setting_id:

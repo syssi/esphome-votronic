@@ -103,8 +103,8 @@ sensor:
       name: "${name} charger current"
     charger_power:
       name: "${name} charger power"
-    charger_charging_power:
-      name: "${name} charger charging power"
+    charger_load:
+      name: "${name} charger load"
     pv_voltage:
       name: "${name} pv voltage"
     pv_current:
@@ -133,8 +133,8 @@ sensor:
       name: "${name} charging converter current"
     charging_converter_power:
       name: "${name} charging converter power"
-    charging_converter_charging_power:
-      name: "${name} charging converter charging power"
+    charging_converter_load:
+      name: "${name} charging converter load"
     charging_converter_controller_temperature:
       name: "${name} charging converter controller temperature"
     charging_converter_mode_setting_id:

@@ -83,8 +83,8 @@ sensor:
       name: "${name} current"
     power:
       name: "${name} power"
-    charger_charging_power:
-      name: "${name} charger charging power"
+    charger_load:
+      name: "${name} charger load"
     charger_controller_temperature:
       name: "${name} charger controller temperature"
     charging_mode_setting_id:

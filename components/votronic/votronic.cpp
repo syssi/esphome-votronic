@@ -238,7 +238,7 @@ void Votronic::decode_charger_data_(const std::vector<uint8_t> &data) {
   //   8   1  0x00        Reserved
   //   9   1  0x00        Reserved
   //  10   1  0xA0        Charging Power                     %    0-100% 1%/Bit
-  this->publish_state_(this->charger_charging_power_sensor_, (float) data[10]);
+  this->publish_state_(this->charger_load_sensor_, (float) data[10]);
   //  11   1  0x15        Controller temperature
   this->publish_state_(this->charger_controller_temperature_sensor_, data[11] * 0.1f);
   //  12   1  0x03        Charging mode setting (dip switches)
@@ -286,7 +286,7 @@ void Votronic::decode_charging_converter_data_(const std::vector<uint8_t> &data)
   //   8   1  0x00        Reserved
   //   9   1  0x00        Reserved
   //  10   1  0xA0        Charging Power                     %    0-100% 1%/Bit
-  this->publish_state_(this->charging_converter_charging_power_sensor_, (float) data[10]);
+  this->publish_state_(this->charging_converter_load_sensor_, (float) data[10]);
   //  11   1  0x15        Controller temperature
   this->publish_state_(this->charging_converter_controller_temperature_sensor_, data[11] * 0.1f);
   //  12   1  0x03        Charging mode setting (dip switches)
@@ -491,12 +491,12 @@ void Votronic::dump_config() {
   LOG_SENSOR("", "Charger Controller status bitmask", this->charger_controller_status_bitmask_sensor_);
   LOG_SENSOR("", "Charging mode setting ID", this->charging_mode_setting_id_sensor_);
   LOG_SENSOR("", "Charger controller temperature", this->charger_controller_temperature_sensor_);
-  LOG_SENSOR("", "Charger charging power", this->charger_charging_power_sensor_);
+  LOG_SENSOR("", "Charger load", this->charger_load_sensor_);
 
   LOG_SENSOR("", "Charging converter battery voltage", this->charging_converter_battery_voltage_sensor_);
   LOG_SENSOR("", "Charging converter secondary battery voltage",
              this->charging_converter_secondary_battery_voltage_sensor_);
-  LOG_SENSOR("", "Charging converter charging power", this->charging_converter_charging_power_sensor_);
+  LOG_SENSOR("", "Charging converter load", this->charging_converter_load_sensor_);
   LOG_SENSOR("", "Charging converter current", this->charging_converter_current_sensor_);
   LOG_SENSOR("", "Charging converter power", this->charging_converter_power_sensor_);
   LOG_SENSOR("", "Charging converter battery status bitmask", this->charging_converter_battery_status_bitmask_sensor_);
