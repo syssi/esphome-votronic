@@ -84,6 +84,7 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
     charger_current_sensor_ = charger_current_sensor;
   }
   void set_charger_power_sensor(sensor::Sensor *charger_power_sensor) { charger_power_sensor_ = charger_power_sensor; }
+  void set_charger_load_sensor(sensor::Sensor *charger_load_sensor) { charger_load_sensor_ = charger_load_sensor; }
   void set_pv_voltage_sensor(sensor::Sensor *pv_voltage_sensor) { pv_voltage_sensor_ = pv_voltage_sensor; }
   void set_pv_current_sensor(sensor::Sensor *pv_current_sensor) { pv_current_sensor_ = pv_current_sensor; }
   void set_pv_power_sensor(sensor::Sensor *pv_power_sensor) { pv_power_sensor_ = pv_power_sensor; }
@@ -127,8 +128,8 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   void set_charging_converter_power_sensor(sensor::Sensor *charging_converter_power_sensor) {
     charging_converter_power_sensor_ = charging_converter_power_sensor;
   }
-  void set_charging_converter_state_of_charge_sensor(sensor::Sensor *charging_converter_state_of_charge_sensor) {
-    charging_converter_state_of_charge_sensor_ = charging_converter_state_of_charge_sensor;
+  void set_charging_converter_load_sensor(sensor::Sensor *charging_converter_load_sensor) {
+    charging_converter_load_sensor_ = charging_converter_load_sensor;
   }
   void set_charging_converter_controller_temperature_sensor(
       sensor::Sensor *charging_converter_controller_temperature_sensor) {
@@ -210,6 +211,7 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
 
   sensor::Sensor *charger_current_sensor_;
   sensor::Sensor *charger_power_sensor_;
+  sensor::Sensor *charger_load_sensor_;
   sensor::Sensor *charger_controller_status_bitmask_sensor_;
   sensor::Sensor *charger_controller_temperature_sensor_;
 
@@ -224,6 +226,7 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   sensor::Sensor *charging_converter_secondary_battery_voltage_sensor_;
   sensor::Sensor *charging_converter_current_sensor_;
   sensor::Sensor *charging_converter_power_sensor_;
+  sensor::Sensor *charging_converter_load_sensor_;
   sensor::Sensor *charging_converter_state_of_charge_sensor_;
   sensor::Sensor *charging_converter_controller_temperature_sensor_;
   sensor::Sensor *charging_converter_mode_setting_id_sensor_;
