@@ -196,9 +196,11 @@ void Votronic::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   this->publish_state_(this->charging_mode_setting_id_sensor_, data[12]);
   this->publish_state_(this->charging_mode_setting_text_sensor_, this->charging_mode_setting_to_string_(data[12]));
   //  13   1  0x00        Battery Controller Status               Bitmask
+  ESP_LOGI(TAG, "PV - Battery Controller Status: 0x%02X", data[13]);
   this->publish_state_(this->pv_battery_status_bitmask_sensor_, data[13]);
   this->publish_state_(this->pv_battery_status_text_sensor_, this->battery_status_bitmask_to_string_(data[13]));
   //  14   1  0x00        PV Controller Status                    Bitmask
+  ESP_LOGI(TAG, "PV - Controller Status: 0x%02X", data[14]);
   this->publish_state_(this->pv_controller_status_bitmask_sensor_, data[14]);
   this->publish_state_(this->pv_controller_status_text_sensor_,
                        this->solar_charger_status_bitmask_to_string_(data[14]));
@@ -245,9 +247,11 @@ void Votronic::decode_charger_data_(const std::vector<uint8_t> &data) {
   this->publish_state_(this->charging_mode_setting_id_sensor_, data[12]);
   this->publish_state_(this->charging_mode_setting_text_sensor_, this->charging_mode_setting_to_string_(data[12]));
   //  13   1  0x00        Battery Controller Status               Bitmask
+  ESP_LOGI(TAG, "Charger - Battery Controller Status: 0x%02X", data[13]);
   this->publish_state_(this->battery_status_bitmask_sensor_, data[13]);
   this->publish_state_(this->battery_status_text_sensor_, this->battery_status_bitmask_to_string_(data[13]));
   //  14   1  0x00        Charging Controller Status              Bitmask
+  ESP_LOGI(TAG, "Charger - Controller Status: 0x%02X", data[14]);
   this->publish_state_(this->charger_controller_status_bitmask_sensor_, data[14]);
   this->publish_state_(this->charger_controller_status_text_sensor_, this->charger_status_bitmask_to_string_(data[14]));
   this->publish_state_(this->charger_controller_active_binary_sensor_, (data[14] & (1 << 3)));
@@ -294,10 +298,12 @@ void Votronic::decode_charging_converter_data_(const std::vector<uint8_t> &data)
   this->publish_state_(this->charging_converter_mode_setting_text_sensor_,
                        this->charging_mode_setting_to_string_(data[12]));
   //  13   1  0x00        Battery Controller Status               Bitmask
+  ESP_LOGI(TAG, "Charging Converter - Battery Controller Status: 0x%02X", data[13]);
   this->publish_state_(this->charging_converter_battery_status_bitmask_sensor_, data[13]);
   this->publish_state_(this->charging_converter_battery_status_text_sensor_,
                        this->battery_status_bitmask_to_string_(data[13]));
   //  14   1  0x00        Charging Controller Status              Bitmask
+  ESP_LOGI(TAG, "Charging Converter - Controller Status: 0x%02X", data[14]);
   this->publish_state_(this->charging_converter_controller_status_bitmask_sensor_, data[14]);
   this->publish_state_(this->charging_converter_controller_status_text_sensor_,
                        this->charger_status_bitmask_to_string_(data[14]));
