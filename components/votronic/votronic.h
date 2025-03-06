@@ -106,6 +106,9 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   void set_charger_mode_setting_id_sensor(sensor::Sensor *charger_mode_setting_id_sensor) {
     charger_mode_setting_id_sensor_ = charger_mode_setting_id_sensor;
   }
+  void set_charger_battery_status_text_sensor(text_sensor::TextSensor *charger_battery_status_text_sensor) {
+    charger_battery_status_text_sensor_ = charger_battery_status_text_sensor;
+  }
   void set_charger_controller_temperature_sensor(sensor::Sensor *charger_controller_temperature_sensor) {
     charger_controller_temperature_sensor_ = charger_controller_temperature_sensor;
   }
