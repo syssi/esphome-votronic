@@ -92,8 +92,8 @@ sensor:
       name: "${name} charger load"
     charger_controller_temperature:
       name: "${name} charger controller temperature"
-    charging_mode_setting_id:
-      name: "${name} charging mode setting id"
+    charger_mode_setting_id:
+      name: "${name} charger mode setting id"
     battery_status_bitmask:
       name: "${name} battery status bitmask"
     charger_controller_status_bitmask:
@@ -102,8 +102,8 @@ sensor:
 text_sensor:
   - platform: votronic
     votronic_id: votronic0
-    charging_mode_setting:
-      name: "${name} charging mode setting"
+    charger_mode_setting:
+      name: "${name} charger mode setting"
     battery_status:
       name: "${name} battery status"
     charger_controller_status:

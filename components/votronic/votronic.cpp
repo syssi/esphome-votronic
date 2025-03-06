@@ -193,8 +193,8 @@ void Votronic::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   //  11   1  0x15        Reserved
   this->publish_state_(this->pv_controller_temperature_sensor_, (float) data[11]);
   //  12   1  0x03        Charging mode setting (dip switches)
-  this->publish_state_(this->charging_mode_setting_id_sensor_, data[12]);
-  this->publish_state_(this->charging_mode_setting_text_sensor_, this->charging_mode_setting_to_string_(data[12]));
+  this->publish_state_(this->pv_mode_setting_id_sensor_, data[12]);
+  this->publish_state_(this->pv_mode_setting_text_sensor_, this->charging_mode_setting_to_string_(data[12]));
   //  13   1  0x00        Battery Controller Status               Bitmask
   ESP_LOGI(TAG, "PV - Battery Controller Status: 0x%02X", data[13]);
   this->publish_state_(this->pv_battery_status_bitmask_sensor_, data[13]);
@@ -244,8 +244,8 @@ void Votronic::decode_charger_data_(const std::vector<uint8_t> &data) {
   //  11   1  0x15        Controller temperature
   this->publish_state_(this->charger_controller_temperature_sensor_, data[11] * 0.1f);
   //  12   1  0x03        Charging mode setting (dip switches)
-  this->publish_state_(this->charging_mode_setting_id_sensor_, data[12]);
-  this->publish_state_(this->charging_mode_setting_text_sensor_, this->charging_mode_setting_to_string_(data[12]));
+  this->publish_state_(this->charger_mode_setting_id_sensor_, data[12]);
+  this->publish_state_(this->charger_mode_setting_text_sensor_, this->charging_mode_setting_to_string_(data[12]));
   //  13   1  0x00        Battery Controller Status               Bitmask
   ESP_LOGI(TAG, "Charger - Battery Controller Status: 0x%02X", data[13]);
   this->publish_state_(this->charger_battery_status_bitmask_sensor_, data[13]);
@@ -401,8 +401,8 @@ void Votronic::decode_battery_computer_info2_data_(const std::vector<uint8_t> &d
   //                        LiFePo4 14.4V    14.4        84    184
   //                        LiFePo4 14.6V    14.6        86    186
   //                        LiFePo4 14.8V    14.8        88    188
-  this->publish_state_(this->charging_mode_setting_id_sensor_, data[12]);
-  this->publish_state_(this->charging_mode_setting_text_sensor_, this->charging_mode_setting_to_string_(data[12]));
+  // this->publish_state_(this->charging_mode_setting_id_sensor_, data[12]);
+  // this->publish_state_(this->charging_mode_setting_text_sensor_, this->charging_mode_setting_to_string_(data[12]));
   //  13   1  0x04
   this->publish_state_(this->battery_status_bitmask_sensor_, data[13]);
   this->publish_state_(this->battery_status_text_sensor_, this->battery_status_bitmask_to_string_(data[13]));
@@ -496,7 +496,7 @@ void Votronic::dump_config() {
 
   LOG_SENSOR("", "Charger battery status bitmask", this->charger_battery_status_bitmask_sensor_);
   LOG_SENSOR("", "Charger Controller status bitmask", this->charger_controller_status_bitmask_sensor_);
-  LOG_SENSOR("", "Charging mode setting ID", this->charging_mode_setting_id_sensor_);
+  LOG_SENSOR("", "Charger mode setting ID", this->charger_mode_setting_id_sensor_);
   LOG_SENSOR("", "Charger controller temperature", this->charger_controller_temperature_sensor_);
   LOG_SENSOR("", "Charger load", this->charger_load_sensor_);
 
@@ -516,8 +516,8 @@ void Votronic::dump_config() {
 
   LOG_TEXT_SENSOR("", "Charger battery status", this->charger_battery_status_text_sensor_);
   LOG_TEXT_SENSOR("", "Charger controller status", this->charger_controller_status_text_sensor_);
+  LOG_TEXT_SENSOR("", "Charger mode setting", this->charger_mode_setting_text_sensor_);
 
-  LOG_TEXT_SENSOR("", "Charging mode setting", this->charging_mode_setting_text_sensor_);
   LOG_TEXT_SENSOR("", "Charging converter battery status", this->charging_converter_battery_status_text_sensor_);
   LOG_TEXT_SENSOR("", "Charging converter controller status", this->charging_converter_controller_status_text_sensor_);
   LOG_TEXT_SENSOR("", "Charging converter mode setting", this->charging_converter_mode_setting_text_sensor_);

@@ -50,7 +50,7 @@ CONF_CHARGER_POWER = "charger_power"
 CONF_CHARGER_LOAD = "charger_load"
 CONF_CHARGER_BATTERY_STATUS_BITMASK = "charger_battery_status_bitmask"
 CONF_CHARGER_CONTROLLER_STATUS_BITMASK = "charger_controller_status_bitmask"
-CONF_CHARGING_MODE_SETTING_ID = "charging_mode_setting_id"
+CONF_CHARGER_MODE_SETTING_ID = "charger_mode_setting_id"
 CONF_CHARGER_CONTROLLER_TEMPERATURE = "charger_controller_temperature"
 
 CONF_CHARGING_CONVERTER_BATTERY_VOLTAGE = "charging_converter_battery_voltage"
@@ -80,7 +80,7 @@ ICON_BATTERY_STATUS_BITMASK = "mdi:alert-circle-outline"
 ICON_PV_BATTERY_STATUS_BITMASK = "mdi:alert-circle-outline"
 ICON_CHARGING_CONTROLLER_STATUS_BITMASK = "mdi:alert-circle-outline"
 ICON_PV_CONTROLLER_STATUS_BITMASK = "mdi:alert-circle-outline"
-ICON_CHARGING_MODE_SETTING_ID = "mdi:car-battery"
+ICON_MODE_SETTING_ID = "mdi:car-battery"
 
 UNIT_AMPERE_HOURS = "Ah"
 
@@ -96,7 +96,7 @@ SENSORS = [
     CONF_CHARGER_LOAD,
     CONF_CHARGER_BATTERY_STATUS_BITMASK,
     CONF_CHARGER_CONTROLLER_STATUS_BITMASK,
-    CONF_CHARGING_MODE_SETTING_ID,
+    CONF_CHARGER_MODE_SETTING_ID,
     CONF_CHARGER_CURRENT,
     CONF_CHARGER_POWER,
     CONF_CHARGER_CONTROLLER_TEMPERATURE,
@@ -251,9 +251,9 @@ CONFIG_SCHEMA = cv.Schema(
             state_class=STATE_CLASS_MEASUREMENT,
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
-        cv.Optional(CONF_CHARGING_MODE_SETTING_ID): sensor.sensor_schema(
+        cv.Optional(CONF_CHARGER_MODE_SETTING_ID): sensor.sensor_schema(
             unit_of_measurement=UNIT_EMPTY,
-            icon=ICON_CHARGING_MODE_SETTING_ID,
+            icon=ICON_MODE_SETTING_ID,
             accuracy_decimals=0,
             device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,
@@ -334,7 +334,7 @@ CONFIG_SCHEMA = cv.Schema(
         ),
         cv.Optional(CONF_CHARGING_CONVERTER_MODE_SETTING_ID): sensor.sensor_schema(
             unit_of_measurement=UNIT_EMPTY,
-            icon=ICON_CHARGING_MODE_SETTING_ID,
+            icon=ICON_MODE_SETTING_ID,
             accuracy_decimals=0,
             device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,

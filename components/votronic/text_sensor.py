@@ -10,8 +10,8 @@ DEPENDENCIES = ["votronic"]
 CODEOWNERS = ["@syssi"]
 
 CONF_BATTERY_STATUS = "battery_status"
-CONF_CHARGING_MODE_SETTING = "charging_mode_setting"
 
+CONF_CHARGER_MODE_SETTING = "charger_mode_setting"
 CONF_CHARGER_CONTROLLER_STATUS = "charger_controller_status"
 CONF_CHARGER_BATTERY_STATUS = "charger_battery_status"
 
@@ -24,9 +24,9 @@ CONF_PV_CONTROLLER_STATUS = "pv_controller_status"
 
 TEXT_SENSORS = [
     CONF_BATTERY_STATUS,
+    CONF_CHARGER_MODE_SETTING,
     CONF_CHARGER_CONTROLLER_STATUS,
     CONF_CHARGER_BATTERY_STATUS,
-    CONF_CHARGING_MODE_SETTING,
     CONF_CHARGING_CONVERTER_MODE_SETTING,
     CONF_CHARGING_CONVERTER_BATTERY_STATUS,
     CONF_CHARGING_CONVERTER_CONTROLLER_STATUS,
@@ -43,16 +43,10 @@ CONFIG_SCHEMA = cv.Schema(
                 cv.Optional(CONF_ICON, default="mdi:alert-circle-outline"): cv.icon,
             }
         ),
-        cv.Optional(CONF_PV_BATTERY_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
+        cv.Optional(CONF_CHARGER_MODE_SETTING): text_sensor.TEXT_SENSOR_SCHEMA.extend(
             {
                 cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default="mdi:alert-circle-outline"): cv.icon,
-            }
-        ),
-        cv.Optional(CONF_CHARGER_BATTERY_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default="mdi:alert-circle-outline"): cv.icon,
+                cv.Optional(CONF_ICON, default="mdi:car-battery"): cv.icon,
             }
         ),
         cv.Optional(
@@ -63,16 +57,10 @@ CONFIG_SCHEMA = cv.Schema(
                 cv.Optional(CONF_ICON, default="mdi:heart-pulse"): cv.icon,
             }
         ),
-        cv.Optional(CONF_PV_CONTROLLER_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
+        cv.Optional(CONF_CHARGER_BATTERY_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
             {
                 cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default="mdi:heart-pulse"): cv.icon,
-            }
-        ),
-        cv.Optional(CONF_CHARGING_MODE_SETTING): text_sensor.TEXT_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default="mdi:car-battery"): cv.icon,
+                cv.Optional(CONF_ICON, default="mdi:alert-circle-outline"): cv.icon,
             }
         ),
         cv.Optional(
@@ -97,6 +85,18 @@ CONFIG_SCHEMA = cv.Schema(
             {
                 cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
                 cv.Optional(CONF_ICON, default="mdi:car-battery"): cv.icon,
+            }
+        ),
+        cv.Optional(CONF_PV_BATTERY_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
+            {
+                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
+                cv.Optional(CONF_ICON, default="mdi:alert-circle-outline"): cv.icon,
+            }
+        ),
+        cv.Optional(CONF_PV_CONTROLLER_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
+            {
+                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
+                cv.Optional(CONF_ICON, default="mdi:heart-pulse"): cv.icon,
             }
         ),
     }

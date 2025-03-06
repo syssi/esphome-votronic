@@ -81,8 +81,8 @@ sensor:
       name: "${name} pv power"
     pv_controller_temperature:
       name: "${name} pv controller temperature"
-    charging_mode_setting_id:
-      name: "${name} charging mode setting id"
+    pv_mode_setting_id:
+      name: "${name} pv mode setting id"
     pv_battery_status_bitmask:
       name: "${name} pv battery status bitmask"
     pv_controller_status_bitmask:
@@ -91,8 +91,8 @@ sensor:
 text_sensor:
   - platform: votronic
     votronic_id: votronic0
-    charging_mode_setting:
-      name: "${name} charging mode setting"
+    pv_mode_setting:
+      name: "${name} pv mode setting"
     pv_battery_status:
       name: "${name} pv battery status"
     pv_controller_status:
