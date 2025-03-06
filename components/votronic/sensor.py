@@ -33,22 +33,25 @@ CONF_BATTERY_CAPACITY_REMAINING = "battery_capacity_remaining"
 CONF_STATE_OF_CHARGE = "state_of_charge"
 # CONF_CURRENT = "current"
 # CONF_POWER = "power"
+CONF_BATTERY_NOMINAL_CAPACITY = "battery_nominal_capacity"
+CONF_BATTERY_STATUS_BITMASK = "battery_status_bitmask"
+CONF_CHARGED_CAPACITY = "charged_capacity"
+CONF_CHARGED_ENERGY = "charged_energy"
+
+CONF_PV_VOLTAGE = "pv_voltage"
+CONF_PV_CURRENT = "pv_current"
+CONF_PV_BATTERY_STATUS_BITMASK = "pv_battery_status_bitmask"
+CONF_PV_CONTROLLER_STATUS_BITMASK = "pv_controller_status_bitmask"
+CONF_PV_POWER = "pv_power"
+CONF_PV_CONTROLLER_TEMPERATURE = "pv_controller_temperature"
+
 CONF_CHARGER_CURRENT = "charger_current"
 CONF_CHARGER_POWER = "charger_power"
 CONF_CHARGER_LOAD = "charger_load"
-CONF_BATTERY_NOMINAL_CAPACITY = "battery_nominal_capacity"
-CONF_PV_VOLTAGE = "pv_voltage"
-CONF_PV_CURRENT = "pv_current"
-CONF_BATTERY_STATUS_BITMASK = "battery_status_bitmask"
-CONF_PV_BATTERY_STATUS_BITMASK = "pv_battery_status_bitmask"
+CONF_CHARGER_BATTERY_STATUS_BITMASK = "charger_battery_status_bitmask"
 CONF_CHARGER_CONTROLLER_STATUS_BITMASK = "charger_controller_status_bitmask"
-CONF_PV_CONTROLLER_STATUS_BITMASK = "pv_controller_status_bitmask"
-CONF_CHARGED_CAPACITY = "charged_capacity"
-CONF_CHARGED_ENERGY = "charged_energy"
-CONF_PV_POWER = "pv_power"
 CONF_CHARGING_MODE_SETTING_ID = "charging_mode_setting_id"
 CONF_CHARGER_CONTROLLER_TEMPERATURE = "charger_controller_temperature"
-CONF_PV_CONTROLLER_TEMPERATURE = "pv_controller_temperature"
 
 CONF_CHARGING_CONVERTER_BATTERY_VOLTAGE = "charging_converter_battery_voltage"
 CONF_CHARGING_CONVERTER_SECONDARY_BATTERY_VOLTAGE = (
@@ -88,9 +91,10 @@ SENSORS = [
     CONF_STATE_OF_CHARGE,
     CONF_CURRENT,
     CONF_POWER,
-    CONF_CHARGER_LOAD,
     CONF_BATTERY_NOMINAL_CAPACITY,
     CONF_BATTERY_STATUS_BITMASK,
+    CONF_CHARGER_LOAD,
+    CONF_CHARGER_BATTERY_STATUS_BITMASK,
     CONF_CHARGER_CONTROLLER_STATUS_BITMASK,
     CONF_CHARGING_MODE_SETTING_ID,
     CONF_CHARGER_CURRENT,
@@ -218,6 +222,14 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(CONF_PV_BATTERY_STATUS_BITMASK): sensor.sensor_schema(
             unit_of_measurement=UNIT_EMPTY,
             icon=ICON_PV_BATTERY_STATUS_BITMASK,
+            accuracy_decimals=0,
+            device_class=DEVICE_CLASS_EMPTY,
+            state_class=STATE_CLASS_MEASUREMENT,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+        ),
+        cv.Optional(CONF_CHARGER_BATTERY_STATUS_BITMASK): sensor.sensor_schema(
+            unit_of_measurement=UNIT_EMPTY,
+            icon=ICON_BATTERY_STATUS_BITMASK,
             accuracy_decimals=0,
             device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,

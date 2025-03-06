@@ -99,32 +99,24 @@ sensor:
       name: "${name} current"
     power:
       name: "${name} power"
+    battery_status_bitmask:
+      name: "${name} battery status bitmask"
+    charging_mode_setting_id:
+      name: "${name} charging mode setting id"
+
     charger_current:
       name: "${name} charger current"
     charger_power:
       name: "${name} charger power"
     charger_load:
       name: "${name} charger load"
-    pv_voltage:
-      name: "${name} pv voltage"
-    pv_current:
-      name: "${name} pv current"
-    pv_power:
-      name: "${name} pv power"
-    charger_controller_status_bitmask:
-      name: "${name} charger controller status bitmask"
     charger_controller_temperature:
       name: "${name} charger controller temperature"
-    charging_mode_setting_id:
-      name: "${name} charging mode setting id"
-    battery_status_bitmask:
-      name: "${name} battery status bitmask"
-    pv_controller_status_bitmask:
-      name: "${name} pv controller status bitmask"
-    pv_controller_temperature:
-      name: "${name} pv controller temperature"
-    pv_battery_status_bitmask:
-      name: "${name} pv battery status bitmask"
+    charger_battery_status_bitmask:
+      name: "${name} charger battery status bitmask"
+    charger_controller_status_bitmask:
+      name: "${name} charger controller status bitmask"
+
     charging_converter_battery_voltage:
       name: "${name} charging converter battery voltage"
     charging_converter_secondary_battery_voltage:
@@ -144,6 +136,19 @@ sensor:
     charging_converter_controller_status_bitmask:
       name: "${name} charging converter controller status bitmask"
 
+    pv_controller_status_bitmask:
+      name: "${name} pv controller status bitmask"
+    pv_controller_temperature:
+      name: "${name} pv controller temperature"
+    pv_battery_status_bitmask:
+      name: "${name} pv battery status bitmask"
+    pv_voltage:
+      name: "${name} pv voltage"
+    pv_current:
+      name: "${name} pv current"
+    pv_power:
+      name: "${name} pv power"
+
 text_sensor:
   - platform: votronic
     votronic_id: votronic0
@@ -151,13 +156,20 @@ text_sensor:
       name: "${name} charging mode setting"
     battery_status:
       name: "${name} battery status"
-    pv_controller_status:
-      name: "${name} pv controller status"
-    pv_battery_status:
-      name: "${name} pv battery status"
+
+    charger_battery_status:
+      name: "${name} charger battery status"
+    charger_controller_status:
+      name: "${name} charger controller status"
+
     charging_converter_mode_setting:
       name: "${name} charging converter mode setting"
     charging_converter_battery_status:
       name: "${name} charging converter battery status"
     charging_converter_controller_status:
       name: "${name} charging converter controller status"
+
+    pv_controller_status:
+      name: "${name} pv controller status"
+    pv_battery_status:
+      name: "${name} pv battery status"
