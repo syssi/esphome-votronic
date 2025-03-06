@@ -83,6 +83,11 @@ sensor:
       name: "${name} current"
     power:
       name: "${name} power"
+
+    charger_current:
+      name: "${name} charger current"
+    charger_power:
+      name: "${name} charger power"
     charger_load:
       name: "${name} charger load"
     charger_controller_temperature:

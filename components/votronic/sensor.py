@@ -35,7 +35,7 @@ CONF_STATE_OF_CHARGE = "state_of_charge"
 # CONF_POWER = "power"
 CONF_CHARGER_CURRENT = "charger_current"
 CONF_CHARGER_POWER = "charger_power"
-CONF_CHARGER_CHARGING_POWER = "charger_charging_power"
+CONF_CHARGER_LOAD = "charger_load"
 CONF_BATTERY_NOMINAL_CAPACITY = "battery_nominal_capacity"
 CONF_PV_VOLTAGE = "pv_voltage"
 CONF_PV_CURRENT = "pv_current"
@@ -56,7 +56,7 @@ CONF_CHARGING_CONVERTER_SECONDARY_BATTERY_VOLTAGE = (
 )
 CONF_CHARGING_CONVERTER_CURRENT = "charging_converter_current"
 CONF_CHARGING_CONVERTER_POWER = "charging_converter_power"
-CONF_CHARGING_CONVERTER_CHARGING_POWER = "charging_converter_charging_power"
+CONF_CHARGING_CONVERTER_LOAD = "charging_converter_load"
 CONF_CHARGING_CONVERTER_CONTROLLER_TEMPERATURE = (
     "charging_converter_controller_temperature"
 )
@@ -88,7 +88,7 @@ SENSORS = [
     CONF_STATE_OF_CHARGE,
     CONF_CURRENT,
     CONF_POWER,
-    CONF_CHARGER_CHARGING_POWER,
+    CONF_CHARGER_LOAD,
     CONF_BATTERY_NOMINAL_CAPACITY,
     CONF_BATTERY_STATUS_BITMASK,
     CONF_CHARGER_CONTROLLER_STATUS_BITMASK,
@@ -100,7 +100,7 @@ SENSORS = [
     CONF_CHARGING_CONVERTER_SECONDARY_BATTERY_VOLTAGE,
     CONF_CHARGING_CONVERTER_CURRENT,
     CONF_CHARGING_CONVERTER_POWER,
-    CONF_CHARGING_CONVERTER_CHARGING_POWER,
+    CONF_CHARGING_CONVERTER_LOAD,
     CONF_CHARGING_CONVERTER_CONTROLLER_TEMPERATURE,
     CONF_CHARGING_CONVERTER_MODE_SETTING_ID,
     CONF_CHARGING_CONVERTER_BATTERY_STATUS_BITMASK,
@@ -172,7 +172,7 @@ CONFIG_SCHEMA = cv.Schema(
             device_class=DEVICE_CLASS_POWER,
             state_class=STATE_CLASS_MEASUREMENT,
         ),
-        cv.Optional(CONF_CHARGER_CHARGING_POWER): sensor.sensor_schema(
+        cv.Optional(CONF_CHARGER_LOAD): sensor.sensor_schema(
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_STATE_OF_CHARGE,
             accuracy_decimals=0,
@@ -279,7 +279,7 @@ CONFIG_SCHEMA = cv.Schema(
             device_class=DEVICE_CLASS_VOLTAGE,
             state_class=STATE_CLASS_MEASUREMENT,
         ),
-        cv.Optional(CONF_CHARGING_CONVERTER_CHARGING_POWER): sensor.sensor_schema(
+        cv.Optional(CONF_CHARGING_CONVERTER_LOAD): sensor.sensor_schema(
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_STATE_OF_CHARGE,
             accuracy_decimals=0,
