@@ -19,6 +19,7 @@ CONF_CHARGING_CONVERTER_MODE_SETTING = "charging_converter_mode_setting"
 CONF_CHARGING_CONVERTER_BATTERY_STATUS = "charging_converter_battery_status"
 CONF_CHARGING_CONVERTER_CONTROLLER_STATUS = "charging_converter_controller_status"
 
+CONF_PV_MODE_SETTING = "pv_mode_setting"
 CONF_PV_BATTERY_STATUS = "pv_battery_status"
 CONF_PV_CONTROLLER_STATUS = "pv_controller_status"
 
@@ -30,6 +31,7 @@ TEXT_SENSORS = [
     CONF_CHARGING_CONVERTER_MODE_SETTING,
     CONF_CHARGING_CONVERTER_BATTERY_STATUS,
     CONF_CHARGING_CONVERTER_CONTROLLER_STATUS,
+    CONF_PV_MODE_SETTING,
     CONF_PV_BATTERY_STATUS,
     CONF_PV_CONTROLLER_STATUS,
 ]
@@ -82,6 +84,12 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(
             CONF_CHARGING_CONVERTER_MODE_SETTING
         ): text_sensor.TEXT_SENSOR_SCHEMA.extend(
+            {
+                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
+                cv.Optional(CONF_ICON, default="mdi:car-battery"): cv.icon,
+            }
+        ),
+        cv.Optional(CONF_PV_MODE_SETTING): text_sensor.TEXT_SENSOR_SCHEMA.extend(
             {
                 cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
                 cv.Optional(CONF_ICON, default="mdi:car-battery"): cv.icon,

@@ -43,6 +43,7 @@ CONF_PV_CURRENT = "pv_current"
 CONF_PV_BATTERY_STATUS_BITMASK = "pv_battery_status_bitmask"
 CONF_PV_CONTROLLER_STATUS_BITMASK = "pv_controller_status_bitmask"
 CONF_PV_POWER = "pv_power"
+CONF_PV_MODE_SETTING_ID = "pv_mode_setting_id"
 CONF_PV_CONTROLLER_TEMPERATURE = "pv_controller_temperature"
 
 CONF_CHARGER_CURRENT = "charger_current"
@@ -112,6 +113,7 @@ SENSORS = [
     CONF_PV_VOLTAGE,
     CONF_PV_CURRENT,
     CONF_PV_POWER,
+    CONF_PV_MODE_SETTING_ID,
     CONF_PV_BATTERY_STATUS_BITMASK,
     CONF_PV_CONTROLLER_STATUS_BITMASK,
     CONF_PV_CONTROLLER_TEMPERATURE,
@@ -162,6 +164,21 @@ CONFIG_SCHEMA = cv.Schema(
             device_class=DEVICE_CLASS_POWER,
             state_class=STATE_CLASS_MEASUREMENT,
         ),
+        cv.Optional(CONF_BATTERY_NOMINAL_CAPACITY): sensor.sensor_schema(
+            unit_of_measurement=UNIT_AMPERE_HOURS,
+            icon=ICON_BATTERY_NOMINAL_CAPACITY,
+            accuracy_decimals=1,
+            device_class=DEVICE_CLASS_EMPTY,
+            state_class=STATE_CLASS_MEASUREMENT,
+        ),
+        cv.Optional(CONF_BATTERY_STATUS_BITMASK): sensor.sensor_schema(
+            unit_of_measurement=UNIT_EMPTY,
+            icon=ICON_BATTERY_STATUS_BITMASK,
+            accuracy_decimals=0,
+            device_class=DEVICE_CLASS_EMPTY,
+            state_class=STATE_CLASS_MEASUREMENT,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+        ),
         cv.Optional(CONF_CHARGER_CURRENT): sensor.sensor_schema(
             unit_of_measurement=UNIT_AMPERE,
             icon=ICON_CURRENT_DC,
@@ -183,50 +200,6 @@ CONFIG_SCHEMA = cv.Schema(
             device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,
         ),
-        cv.Optional(CONF_BATTERY_NOMINAL_CAPACITY): sensor.sensor_schema(
-            unit_of_measurement=UNIT_AMPERE_HOURS,
-            icon=ICON_BATTERY_NOMINAL_CAPACITY,
-            accuracy_decimals=1,
-            device_class=DEVICE_CLASS_EMPTY,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_PV_VOLTAGE): sensor.sensor_schema(
-            unit_of_measurement=UNIT_VOLT,
-            icon=ICON_EMPTY,
-            accuracy_decimals=2,
-            device_class=DEVICE_CLASS_VOLTAGE,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_PV_CURRENT): sensor.sensor_schema(
-            unit_of_measurement=UNIT_AMPERE,
-            icon=ICON_CURRENT_DC,
-            accuracy_decimals=1,
-            device_class=DEVICE_CLASS_CURRENT,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_PV_POWER): sensor.sensor_schema(
-            unit_of_measurement=UNIT_WATT,
-            icon=ICON_EMPTY,
-            accuracy_decimals=1,
-            device_class=DEVICE_CLASS_POWER,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_BATTERY_STATUS_BITMASK): sensor.sensor_schema(
-            unit_of_measurement=UNIT_EMPTY,
-            icon=ICON_BATTERY_STATUS_BITMASK,
-            accuracy_decimals=0,
-            device_class=DEVICE_CLASS_EMPTY,
-            state_class=STATE_CLASS_MEASUREMENT,
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_PV_BATTERY_STATUS_BITMASK): sensor.sensor_schema(
-            unit_of_measurement=UNIT_EMPTY,
-            icon=ICON_PV_BATTERY_STATUS_BITMASK,
-            accuracy_decimals=0,
-            device_class=DEVICE_CLASS_EMPTY,
-            state_class=STATE_CLASS_MEASUREMENT,
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
         cv.Optional(CONF_CHARGER_BATTERY_STATUS_BITMASK): sensor.sensor_schema(
             unit_of_measurement=UNIT_EMPTY,
             icon=ICON_BATTERY_STATUS_BITMASK,
@@ -243,14 +216,6 @@ CONFIG_SCHEMA = cv.Schema(
             state_class=STATE_CLASS_MEASUREMENT,
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
-        cv.Optional(CONF_PV_CONTROLLER_STATUS_BITMASK): sensor.sensor_schema(
-            unit_of_measurement=UNIT_EMPTY,
-            icon=ICON_PV_CONTROLLER_STATUS_BITMASK,
-            accuracy_decimals=0,
-            device_class=DEVICE_CLASS_EMPTY,
-            state_class=STATE_CLASS_MEASUREMENT,
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
         cv.Optional(CONF_CHARGER_MODE_SETTING_ID): sensor.sensor_schema(
             unit_of_measurement=UNIT_EMPTY,
             icon=ICON_MODE_SETTING_ID,
@@ -259,15 +224,15 @@ CONFIG_SCHEMA = cv.Schema(
             state_class=STATE_CLASS_MEASUREMENT,
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
-        cv.Optional(CONF_CHARGER_CONTROLLER_TEMPERATURE): sensor.sensor_schema(
-            unit_of_measurement=UNIT_CELSIUS,
-            icon=ICON_EMPTY,
+        cv.Optional(CONF_PV_CONTROLLER_STATUS_BITMASK): sensor.sensor_schema(
+            unit_of_measurement=UNIT_EMPTY,
+            icon=ICON_PV_CONTROLLER_STATUS_BITMASK,
             accuracy_decimals=0,
-            device_class=DEVICE_CLASS_TEMPERATURE,
+            device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
-        cv.Optional(CONF_PV_CONTROLLER_TEMPERATURE): sensor.sensor_schema(
+        cv.Optional(CONF_CHARGER_CONTROLLER_TEMPERATURE): sensor.sensor_schema(
             unit_of_measurement=UNIT_CELSIUS,
             icon=ICON_EMPTY,
             accuracy_decimals=0,
@@ -343,6 +308,51 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(
             CONF_CHARGING_CONVERTER_CONTROLLER_TEMPERATURE
         ): sensor.sensor_schema(
+            unit_of_measurement=UNIT_CELSIUS,
+            icon=ICON_EMPTY,
+            accuracy_decimals=0,
+            device_class=DEVICE_CLASS_TEMPERATURE,
+            state_class=STATE_CLASS_MEASUREMENT,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+        ),
+        cv.Optional(CONF_PV_VOLTAGE): sensor.sensor_schema(
+            unit_of_measurement=UNIT_VOLT,
+            icon=ICON_EMPTY,
+            accuracy_decimals=2,
+            device_class=DEVICE_CLASS_VOLTAGE,
+            state_class=STATE_CLASS_MEASUREMENT,
+        ),
+        cv.Optional(CONF_PV_CURRENT): sensor.sensor_schema(
+            unit_of_measurement=UNIT_AMPERE,
+            icon=ICON_CURRENT_DC,
+            accuracy_decimals=1,
+            device_class=DEVICE_CLASS_CURRENT,
+            state_class=STATE_CLASS_MEASUREMENT,
+        ),
+        cv.Optional(CONF_PV_POWER): sensor.sensor_schema(
+            unit_of_measurement=UNIT_WATT,
+            icon=ICON_EMPTY,
+            accuracy_decimals=1,
+            device_class=DEVICE_CLASS_POWER,
+            state_class=STATE_CLASS_MEASUREMENT,
+        ),
+        cv.Optional(CONF_PV_BATTERY_STATUS_BITMASK): sensor.sensor_schema(
+            unit_of_measurement=UNIT_EMPTY,
+            icon=ICON_PV_BATTERY_STATUS_BITMASK,
+            accuracy_decimals=0,
+            device_class=DEVICE_CLASS_EMPTY,
+            state_class=STATE_CLASS_MEASUREMENT,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+        ),
+        cv.Optional(CONF_PV_MODE_SETTING_ID): sensor.sensor_schema(
+            unit_of_measurement=UNIT_EMPTY,
+            icon=ICON_MODE_SETTING_ID,
+            accuracy_decimals=0,
+            device_class=DEVICE_CLASS_EMPTY,
+            state_class=STATE_CLASS_MEASUREMENT,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+        ),
+        cv.Optional(CONF_PV_CONTROLLER_TEMPERATURE): sensor.sensor_schema(
             unit_of_measurement=UNIT_CELSIUS,
             icon=ICON_EMPTY,
             accuracy_decimals=0,
