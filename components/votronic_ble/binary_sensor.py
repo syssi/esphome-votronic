@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 from esphome.components import binary_sensor
 import esphome.config_validation as cv
-from esphome.const import CONF_ICON, CONF_ID
+from esphome.const import CONF_ID
 
 from . import CONF_VOTRONIC_BLE_ID, VotronicBle
 
@@ -32,35 +32,20 @@ BINARY_SENSORS = [
 CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(CONF_VOTRONIC_BLE_ID): cv.use_id(VotronicBle),
-        cv.Optional(CONF_CHARGING): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
-                cv.Optional(CONF_ICON, default=ICON_CHARGING): cv.icon,
-            }
+        cv.Optional(CONF_CHARGING): binary_sensor.binary_sensor_schema(
+            binary_sensor.BinarySensor, icon=ICON_CHARGING
         ),
-        cv.Optional(CONF_DISCHARGING): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
-                cv.Optional(CONF_ICON, default=ICON_DISCHARGING): cv.icon,
-            }
+        cv.Optional(CONF_DISCHARGING): binary_sensor.binary_sensor_schema(
+            binary_sensor.BinarySensor, icon=ICON_DISCHARGING
         ),
-        cv.Optional(CONF_CONTROLLER_ACTIVE): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
-                cv.Optional(CONF_ICON, default=ICON_CONTROLLER_ACTIVE): cv.icon,
-            }
+        cv.Optional(CONF_CONTROLLER_ACTIVE): binary_sensor.binary_sensor_schema(
+            binary_sensor.BinarySensor, icon=ICON_CONTROLLER_ACTIVE
         ),
-        cv.Optional(CONF_CURRENT_REDUCTION): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
-                cv.Optional(CONF_ICON, default=ICON_CURRENT_REDUCTION): cv.icon,
-            }
+        cv.Optional(CONF_CURRENT_REDUCTION): binary_sensor.binary_sensor_schema(
+            binary_sensor.BinarySensor, icon=ICON_CURRENT_REDUCTION
         ),
-        cv.Optional(CONF_AES_ACTIVE): binary_sensor.BINARY_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
-                cv.Optional(CONF_ICON, default=ICON_AES_ACTIVE): cv.icon,
-            }
+        cv.Optional(CONF_AES_ACTIVE): binary_sensor.binary_sensor_schema(
+            binary_sensor.BinarySensor, icon=ICON_AES_ACTIVE
         ),
     }
 )

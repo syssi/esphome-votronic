@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 from esphome.components import text_sensor
 import esphome.config_validation as cv
-from esphome.const import CONF_ICON, CONF_ID
+from esphome.const import CONF_ID
 
 from . import CONF_VOTRONIC_ID, Votronic
 
@@ -39,73 +39,41 @@ TEXT_SENSORS = [
 CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(CONF_VOTRONIC_ID): cv.use_id(Votronic),
-        cv.Optional(CONF_BATTERY_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default="mdi:alert-circle-outline"): cv.icon,
-            }
+        cv.Optional(CONF_BATTERY_STATUS): text_sensor.text_sensor_schema(
+            text_sensor.TextSensor, icon="mdi:alert-circle-outline"
         ),
-        cv.Optional(CONF_CHARGER_MODE_SETTING): text_sensor.TEXT_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default="mdi:car-battery"): cv.icon,
-            }
+        cv.Optional(CONF_CHARGER_MODE_SETTING): text_sensor.text_sensor_schema(
+            text_sensor.TextSensor, icon="mdi:car-battery"
         ),
-        cv.Optional(
-            CONF_CHARGER_CONTROLLER_STATUS
-        ): text_sensor.TEXT_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default="mdi:heart-pulse"): cv.icon,
-            }
+        cv.Optional(CONF_CHARGER_CONTROLLER_STATUS): text_sensor.text_sensor_schema(
+            text_sensor.TextSensor, icon="mdi:heart-pulse"
         ),
-        cv.Optional(CONF_CHARGER_BATTERY_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default="mdi:alert-circle-outline"): cv.icon,
-            }
+        cv.Optional(CONF_CHARGER_BATTERY_STATUS): text_sensor.text_sensor_schema(
+            text_sensor.TextSensor, icon="mdi:alert-circle-outline"
         ),
         cv.Optional(
             CONF_CHARGING_CONVERTER_BATTERY_STATUS
-        ): text_sensor.TEXT_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default="mdi:car-battery"): cv.icon,
-            }
+        ): text_sensor.text_sensor_schema(
+            text_sensor.TextSensor, icon="mdi:car-battery"
         ),
         cv.Optional(
             CONF_CHARGING_CONVERTER_CONTROLLER_STATUS
-        ): text_sensor.TEXT_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default="mdi:heart-pulse"): cv.icon,
-            }
+        ): text_sensor.text_sensor_schema(
+            text_sensor.TextSensor, icon="mdi:heart-pulse"
         ),
         cv.Optional(
             CONF_CHARGING_CONVERTER_MODE_SETTING
-        ): text_sensor.TEXT_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default="mdi:car-battery"): cv.icon,
-            }
+        ): text_sensor.text_sensor_schema(
+            text_sensor.TextSensor, icon="mdi:car-battery"
         ),
-        cv.Optional(CONF_PV_MODE_SETTING): text_sensor.TEXT_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default="mdi:car-battery"): cv.icon,
-            }
+        cv.Optional(CONF_PV_MODE_SETTING): text_sensor.text_sensor_schema(
+            text_sensor.TextSensor, icon="mdi:car-battery"
         ),
-        cv.Optional(CONF_PV_BATTERY_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default="mdi:alert-circle-outline"): cv.icon,
-            }
+        cv.Optional(CONF_PV_BATTERY_STATUS): text_sensor.text_sensor_schema(
+            text_sensor.TextSensor, icon="mdi:alert-circle-outline"
         ),
-        cv.Optional(CONF_PV_CONTROLLER_STATUS): text_sensor.TEXT_SENSOR_SCHEMA.extend(
-            {
-                cv.GenerateID(): cv.declare_id(text_sensor.TextSensor),
-                cv.Optional(CONF_ICON, default="mdi:heart-pulse"): cv.icon,
-            }
+        cv.Optional(CONF_PV_CONTROLLER_STATUS): text_sensor.text_sensor_schema(
+            text_sensor.TextSensor, icon="mdi:heart-pulse"
         ),
     }
 )
