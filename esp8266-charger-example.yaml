@@ -60,12 +60,17 @@ binary_sensor:
       name: "${name} charging"
     discharging:
       name: "${name} discharging"
-    controller_active:
-      name: "${name} controller active"
-    current_reduction:
-      name: "${name} current reduction"
-    aes_active:
-      name: "${name} aes active"
+
+    charger_charging:
+      name: "${name} charger charging"
+    charger_discharging:
+      name: "${name} charger discharging"
+    charger_controller_active:
+      name: "${name} charger controller active"
+    charger_current_reduction:
+      name: "${name} charger current reduction"
+    charger_aes_active:
+      name: "${name} charger aes active"
 
 sensor:
   - platform: votronic
@@ -78,23 +83,28 @@ sensor:
       name: "${name} current"
     power:
       name: "${name} power"
-    state_of_charge:
-      name: "${name} state of charge"
-    controller_temperature:
-      name: "${name} controller temperature"
-    charging_mode_setting_id:
-      name: "${name} charging mode setting id"
+
+    charger_current:
+      name: "${name} charger current"
+    charger_power:
+      name: "${name} charger power"
+    charger_load:
+      name: "${name} charger load"
+    charger_controller_temperature:
+      name: "${name} charger controller temperature"
+    charger_mode_setting_id:
+      name: "${name} charger mode setting id"
     battery_status_bitmask:
       name: "${name} battery status bitmask"
-    charging_controller_status_bitmask:
-      name: "${name} charging controller status bitmask"
+    charger_controller_status_bitmask:
+      name: "${name} charger controller status bitmask"
 
 text_sensor:
   - platform: votronic
     votronic_id: votronic0
-    charging_mode_setting:
-      name: "${name} charging mode setting"
+    charger_mode_setting:
+      name: "${name} charger mode setting"
     battery_status:
       name: "${name} battery status"
-    charging_controller_status:
-      name: "${name} charging controller status"
+    charger_controller_status:
+      name: "${name} charger controller status"

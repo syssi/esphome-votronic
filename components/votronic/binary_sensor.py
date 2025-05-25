@@ -11,9 +11,19 @@ CODEOWNERS = ["@syssi"]
 
 CONF_CHARGING = "charging"
 CONF_DISCHARGING = "discharging"
-CONF_CONTROLLER_ACTIVE = "controller_active"
-CONF_CURRENT_REDUCTION = "current_reduction"
-CONF_AES_ACTIVE = "aes_active"
+
+CONF_CHARGER_CHARGING = "charger_charging"
+CONF_CHARGER_DISCHARGING = "charger_discharging"
+CONF_CHARGER_CONTROLLER_ACTIVE = "charger_controller_active"
+CONF_CHARGER_CURRENT_REDUCTION = "charger_current_reduction"
+CONF_CHARGER_AES_ACTIVE = "charger_aes_active"
+
+CONF_CHARGING_CONVERTER_CHARGING = "charging_converter_charging"
+CONF_CHARGING_CONVERTER_DISCHARGING = "charging_converter_discharging"
+CONF_CHARGING_CONVERTER_CONTROLLER_ACTIVE = "charging_converter_controller_active"
+CONF_CHARGING_CONVERTER_CURRENT_REDUCTION = "charging_converter_current_reduction"
+CONF_CHARGING_CONVERTER_AES_ACTIVE = "charging_converter_aes_active"
+
 CONF_PV_CONTROLLER_ACTIVE = "pv_controller_active"
 CONF_PV_CURRENT_REDUCTION = "pv_current_reduction"
 CONF_PV_AES_ACTIVE = "pv_aes_active"
@@ -21,9 +31,16 @@ CONF_PV_AES_ACTIVE = "pv_aes_active"
 BINARY_SENSORS = [
     CONF_CHARGING,
     CONF_DISCHARGING,
-    CONF_CONTROLLER_ACTIVE,
-    CONF_CURRENT_REDUCTION,
-    CONF_AES_ACTIVE,
+    CONF_CHARGER_CHARGING,
+    CONF_CHARGER_DISCHARGING,
+    CONF_CHARGER_CONTROLLER_ACTIVE,
+    CONF_CHARGER_CURRENT_REDUCTION,
+    CONF_CHARGER_AES_ACTIVE,
+    CONF_CHARGING_CONVERTER_CHARGING,
+    CONF_CHARGING_CONVERTER_DISCHARGING,
+    CONF_CHARGING_CONVERTER_CONTROLLER_ACTIVE,
+    CONF_CHARGING_CONVERTER_CURRENT_REDUCTION,
+    CONF_CHARGING_CONVERTER_AES_ACTIVE,
     CONF_PV_CONTROLLER_ACTIVE,
     CONF_PV_CURRENT_REDUCTION,
     CONF_PV_AES_ACTIVE,
@@ -38,13 +55,44 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(CONF_DISCHARGING): binary_sensor.binary_sensor_schema(
             icon="mdi:power-plug",
         ),
-        cv.Optional(CONF_CONTROLLER_ACTIVE): binary_sensor.binary_sensor_schema(
+        cv.Optional(CONF_CHARGER_CHARGING): binary_sensor.binary_sensor_schema(
+            icon="mdi:battery-charging",
+        ),
+        cv.Optional(CONF_CHARGER_DISCHARGING): binary_sensor.binary_sensor_schema(
+            icon="mdi:power-plug",
+        ),
+        cv.Optional(CONF_CHARGER_CONTROLLER_ACTIVE): binary_sensor.binary_sensor_schema(
             icon="mdi:power",
         ),
-        cv.Optional(CONF_CURRENT_REDUCTION): binary_sensor.binary_sensor_schema(
+        cv.Optional(CONF_CHARGER_CURRENT_REDUCTION): binary_sensor.binary_sensor_schema(
             icon="mdi:car-speed-limiter",
         ),
-        cv.Optional(CONF_AES_ACTIVE): binary_sensor.binary_sensor_schema(
+        cv.Optional(CONF_CHARGER_AES_ACTIVE): binary_sensor.binary_sensor_schema(
+            icon="mdi:export",
+        ),
+        cv.Optional(
+            CONF_CHARGING_CONVERTER_CHARGING
+        ): binary_sensor.binary_sensor_schema(
+            icon="mdi:battery-charging",
+        ),
+        cv.Optional(
+            CONF_CHARGING_CONVERTER_DISCHARGING
+        ): binary_sensor.binary_sensor_schema(
+            icon="mdi:power-plug",
+        ),
+        cv.Optional(
+            CONF_CHARGING_CONVERTER_CONTROLLER_ACTIVE
+        ): binary_sensor.binary_sensor_schema(
+            icon="mdi:power",
+        ),
+        cv.Optional(
+            CONF_CHARGING_CONVERTER_CURRENT_REDUCTION
+        ): binary_sensor.binary_sensor_schema(
+            icon="mdi:car-speed-limiter",
+        ),
+        cv.Optional(
+            CONF_CHARGING_CONVERTER_AES_ACTIVE
+        ): binary_sensor.binary_sensor_schema(
             icon="mdi:export",
         ),
         cv.Optional(CONF_PV_CONTROLLER_ACTIVE): binary_sensor.binary_sensor_schema(

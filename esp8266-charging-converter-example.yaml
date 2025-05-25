@@ -56,16 +56,16 @@ votronic:
 binary_sensor:
   - platform: votronic
     votronic_id: votronic0
-    charging:
-      name: "${name} charging"
-    discharging:
-      name: "${name} discharging"
-    controller_active:
-      name: "${name} controller active"
-    current_reduction:
-      name: "${name} current reduction"
-    aes_active:
-      name: "${name} aes active"
+    charging_converter_charging:
+      name: "${name} charging converter charging"
+    charging_converter_discharging:
+      name: "${name} charging converter discharging"
+    charging_converter_controller_active:
+      name: "${name} charging converter controller active"
+    charging_converter_current_reduction:
+      name: "${name} charging converter current reduction"
+    charging_converter_aes_active:
+      name: "${name} charging converter aes active"
 
 sensor:
   - platform: votronic
@@ -80,21 +80,32 @@ sensor:
       name: "${name} power"
     state_of_charge:
       name: "${name} state of charge"
-    controller_temperature:
-      name: "${name} controller temperature"
-    charging_mode_setting_id:
-      name: "${name} charging mode setting id"
-    battery_status_bitmask:
-      name: "${name} battery status bitmask"
-    charging_controller_status_bitmask:
-      name: "${name} charging controller status bitmask"
+
+    charging_converter_battery_voltage:
+      name: "${name} charging converter battery voltage"
+    charging_converter_secondary_battery_voltage:
+      name: "${name} charging converter secondary battery voltage"
+    charging_converter_current:
+      name: "${name} charging converter current"
+    charging_converter_power:
+      name: "${name} charging converter power"
+    charging_converter_load:
+      name: "${name} charging converter load"
+    charging_converter_controller_temperature:
+      name: "${name} charging converter controller temperature"
+    charging_converter_mode_setting_id:
+      name: "${name} charging converter mode setting id"
+    charging_converter_battery_status_bitmask:
+      name: "${name} charging converter battery status bitmask"
+    charging_converter_controller_status_bitmask:
+      name: "${name} charging converter controller status bitmask"
 
 text_sensor:
   - platform: votronic
     votronic_id: votronic0
-    charging_mode_setting:
-      name: "${name} charging mode setting"
-    battery_status:
-      name: "${name} battery status"
-    charging_controller_status:
-      name: "${name} charging controller status"
+    charging_converter_mode_setting:
+      name: "${name} charging converter mode setting"
+    charging_converter_battery_status:
+      name: "${name} charging converter battery status"
+    charging_converter_controller_status:
+      name: "${name} charging converter controller status"
