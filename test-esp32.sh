@@ -1,3 +1,10 @@
 #!/bin/bash
 
-esphome -s external_components_source components ${1:-run} ${2:-esp32-ble-example-faker.yaml}
+
+if [[ $2 == tests/* ]]; then
+  C="../components"
+else
+  C="components"
+fi
+
+esphome -s external_components_source $C ${1:-run} ${2:-esp32-ble-example-faker.yaml}

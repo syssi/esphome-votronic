@@ -83,6 +83,7 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
 
   void on_votronic_ble_data(const uint8_t &handle, const std::vector<uint8_t> &data);
   void set_throttle(uint32_t throttle) { this->throttle_ = throttle; }
+  bool send_command(uint8_t command);
 
  protected:
   binary_sensor::BinarySensor *charging_binary_sensor_;
@@ -111,6 +112,7 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
 
   uint16_t char_battery_computer_handle_{0x22};
   uint16_t char_solar_charger_handle_{0x25};
+  uint16_t char_management_handle_{0x24};
   uint32_t last_battery_computer_data_{0};
   uint32_t last_solar_charger_data_{0};
   uint32_t throttle_;
@@ -123,12 +125,12 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
       esp32_ble_tracker::ESPBTUUID::from_raw("ae64a924-1184-4554-8bbc-295db9f2324a");
 
   esp32_ble_tracker::ESPBTUUID char_battery_computer_uuid_ =
-      esp32_ble_tracker::ESPBTUUID::from_raw("9a082a4e-5bcc-4b1d-9958-a97cfccfa5ec");
+      esp32_ble_tracker::ESPBTUUID::from_raw("9a082a4e-5bcc-4b1d-9958-a97cfccfa5ec");  // Handle 0x16 (22)
   esp32_ble_tracker::ESPBTUUID char_solar_charger_uuid_ =
-      esp32_ble_tracker::ESPBTUUID::from_raw("971ccec2-521d-42fd-b570-cf46fe5ceb65");
+      esp32_ble_tracker::ESPBTUUID::from_raw("971ccec2-521d-42fd-b570-cf46fe5ceb65");  // Handle 0x19 (25)
 
   esp32_ble_tracker::ESPBTUUID char_management_uuid_ =
-      esp32_ble_tracker::ESPBTUUID::from_raw("ac12f485-cab7-4e0a-aac5-3585918852f6");
+      esp32_ble_tracker::ESPBTUUID::from_raw("ac12f485-cab7-4e0a-aac5-3585918852f6");  // Handle 0x24 (36)
   esp32_ble_tracker::ESPBTUUID char_bulk_data_uuid_ =
       esp32_ble_tracker::ESPBTUUID::from_raw("b8a37ffe-c57b-4007-b3c1-ca05a6b7f0c6");
 
