@@ -1,6 +1,6 @@
 import esphome.codegen as cg
-import esphome.config_validation as cv
 from esphome.components import button
+import esphome.config_validation as cv
 from esphome.const import CONF_ICON, CONF_ID
 
 from .. import CONF_VOTRONIC_BLE_ID, VOTRONIC_BLE_COMPONENT_SCHEMA, votronic_ble_ns
