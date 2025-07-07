@@ -1,7 +1,7 @@
 substitutions:
   name: votronic-solar-charger
   device_description: "Monitor a Votronic Solar Charger via the display link port (UART)"
-  external_components_source: github://syssi/esphome-votronic@verify-triple-charger-controller
+  external_components_source: github://syssi/esphome-votronic@main
   tx_pin: GPIO4
   rx_pin: GPIO5
   rx_timeout: 600ms
