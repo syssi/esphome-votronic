@@ -3,7 +3,7 @@ from esphome.components import text_sensor
 import esphome.config_validation as cv
 from esphome.const import CONF_ID
 
-from . import CONF_VOTRONIC_ID, Votronic
+from . import CONF_VOTRONIC_ID, VOTRONIC_COMPONENT_SCHEMA
 
 DEPENDENCIES = ["votronic"]
 
@@ -36,9 +36,8 @@ TEXT_SENSORS = [
     CONF_PV_CONTROLLER_STATUS,
 ]
 
-CONFIG_SCHEMA = cv.Schema(
+CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
     {
-        cv.GenerateID(CONF_VOTRONIC_ID): cv.use_id(Votronic),
         cv.Optional(CONF_BATTERY_STATUS): text_sensor.text_sensor_schema(
             text_sensor.TextSensor, icon="mdi:alert-circle-outline"
         ),

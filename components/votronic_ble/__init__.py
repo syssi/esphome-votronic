@@ -27,6 +27,13 @@ CONFIG_SCHEMA = (
     .extend(cv.polling_component_schema("2s"))
 )
 
+# Centralized schema for subcomponents
+VOTRONIC_BLE_SCHEMA = cv.Schema(
+    {
+        cv.GenerateID(CONF_VOTRONIC_BLE_ID): cv.use_id(VotronicBle),
+    }
+)
+
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
