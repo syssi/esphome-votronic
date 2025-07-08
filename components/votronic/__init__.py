@@ -15,6 +15,12 @@ CONF_RX_TIMEOUT = "rx_timeout"
 votronic_ns = cg.esphome_ns.namespace("votronic")
 Votronic = votronic_ns.class_("Votronic", cg.PollingComponent, uart.UARTDevice)
 
+VOTRONIC_COMPONENT_SCHEMA = cv.Schema(
+    {
+        cv.GenerateID(CONF_VOTRONIC_ID): cv.use_id(Votronic),
+    }
+)
+
 CONFIG_SCHEMA = (
     cv.Schema(
         {

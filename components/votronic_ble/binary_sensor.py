@@ -3,7 +3,7 @@ from esphome.components import binary_sensor
 import esphome.config_validation as cv
 from esphome.const import CONF_ID
 
-from . import CONF_VOTRONIC_BLE_ID, VotronicBle
+from . import CONF_VOTRONIC_BLE_ID, VOTRONIC_BLE_SCHEMA
 
 DEPENDENCIES = ["votronic_ble"]
 
@@ -29,9 +29,8 @@ BINARY_SENSORS = [
     CONF_AES_ACTIVE,
 ]
 
-CONFIG_SCHEMA = cv.Schema(
+CONFIG_SCHEMA = VOTRONIC_BLE_SCHEMA.extend(
     {
-        cv.GenerateID(CONF_VOTRONIC_BLE_ID): cv.use_id(VotronicBle),
         cv.Optional(CONF_CHARGING): binary_sensor.binary_sensor_schema(
             binary_sensor.BinarySensor, icon=ICON_CHARGING
         ),

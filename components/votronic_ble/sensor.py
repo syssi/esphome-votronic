@@ -20,7 +20,7 @@ from esphome.const import (
     UNIT_WATT_HOURS,
 )
 
-from . import CONF_VOTRONIC_BLE_ID, VotronicBle
+from . import CONF_VOTRONIC_BLE_ID, VOTRONIC_BLE_SCHEMA
 
 DEPENDENCIES = ["votronic_ble"]
 
@@ -71,9 +71,8 @@ SENSORS = [
     CONF_CHARGED_ENERGY,
 ]
 
-CONFIG_SCHEMA = cv.Schema(
+CONFIG_SCHEMA = VOTRONIC_BLE_SCHEMA.extend(
     {
-        cv.GenerateID(CONF_VOTRONIC_BLE_ID): cv.use_id(VotronicBle),
         cv.Optional(CONF_BATTERY_VOLTAGE): sensor.sensor_schema(
             unit_of_measurement=UNIT_VOLT,
             icon=ICON_EMPTY,

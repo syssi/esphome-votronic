@@ -3,7 +3,7 @@ from esphome.components import text_sensor
 import esphome.config_validation as cv
 from esphome.const import CONF_ID
 
-from . import CONF_VOTRONIC_BLE_ID, VotronicBle
+from . import CONF_VOTRONIC_BLE_ID, VOTRONIC_BLE_SCHEMA
 
 DEPENDENCIES = ["votronic_ble"]
 
@@ -20,9 +20,8 @@ TEXT_SENSORS = [
     CONF_PV_CONTROLLER_STATUS,
 ]
 
-CONFIG_SCHEMA = cv.Schema(
+CONFIG_SCHEMA = VOTRONIC_BLE_SCHEMA.extend(
     {
-        cv.GenerateID(CONF_VOTRONIC_BLE_ID): cv.use_id(VotronicBle),
         cv.Optional(CONF_BATTERY_STATUS): text_sensor.text_sensor_schema(
             class_=text_sensor.TextSensor,
             icon=ICON_BATTERY_STATUS,

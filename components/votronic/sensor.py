@@ -21,7 +21,7 @@ from esphome.const import (
     UNIT_WATT,
 )
 
-from . import CONF_VOTRONIC_ID, Votronic
+from . import CONF_VOTRONIC_ID, VOTRONIC_COMPONENT_SCHEMA
 
 DEPENDENCIES = ["votronic"]
 
@@ -119,9 +119,8 @@ SENSORS = [
     CONF_PV_CONTROLLER_TEMPERATURE,
 ]
 
-CONFIG_SCHEMA = cv.Schema(
+CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
     {
-        cv.GenerateID(CONF_VOTRONIC_ID): cv.use_id(Votronic),
         cv.Optional(CONF_BATTERY_VOLTAGE): sensor.sensor_schema(
             unit_of_measurement=UNIT_VOLT,
             icon=ICON_EMPTY,
