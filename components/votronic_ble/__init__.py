@@ -40,4 +40,5 @@ async def to_code(config):
     await cg.register_component(var, config)
     await ble_client.register_ble_node(var, config)
 
+    cg.add_define("USE_ESP32_BLE_DEVICE")
     cg.add(var.set_throttle(config[CONF_THROTTLE]))
