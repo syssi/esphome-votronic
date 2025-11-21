@@ -35,8 +35,6 @@ CONF_STATE_OF_CHARGE = "state_of_charge"
 # CONF_POWER = "power"
 CONF_BATTERY_NOMINAL_CAPACITY = "battery_nominal_capacity"
 CONF_BATTERY_STATUS_BITMASK = "battery_status_bitmask"
-CONF_CHARGED_CAPACITY = "charged_capacity"
-CONF_CHARGED_ENERGY = "charged_energy"
 
 CONF_PV_VOLTAGE = "pv_voltage"
 CONF_PV_CURRENT = "pv_current"
@@ -94,8 +92,6 @@ SENSORS = [
     CONF_POWER,
     CONF_BATTERY_NOMINAL_CAPACITY,
     CONF_BATTERY_STATUS_BITMASK,
-    CONF_CHARGED_CAPACITY,
-    CONF_CHARGED_ENERGY,
     CONF_CHARGER_LOAD,
     CONF_CHARGER_BATTERY_STATUS_BITMASK,
     CONF_CHARGER_CONTROLLER_STATUS_BITMASK,
@@ -179,20 +175,6 @@ CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
             device_class=DEVICE_CLASS_EMPTY,
             state_class=STATE_CLASS_MEASUREMENT,
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_CHARGED_CAPACITY): sensor.sensor_schema(
-            unit_of_measurement=UNIT_AMPERE_HOURS,
-            icon=ICON_BATTERY_CAPACITY_REMAINING,
-            accuracy_decimals=0,
-            device_class=DEVICE_CLASS_EMPTY,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_CHARGED_ENERGY): sensor.sensor_schema(
-            unit_of_measurement=UNIT_WATT,
-            icon=ICON_BATTERY_CAPACITY_REMAINING,
-            accuracy_decimals=0,
-            device_class=DEVICE_CLASS_EMPTY,
-            state_class=STATE_CLASS_MEASUREMENT,
         ),
         cv.Optional(CONF_CHARGER_CURRENT): sensor.sensor_schema(
             unit_of_measurement=UNIT_AMPERE,
