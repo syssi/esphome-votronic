@@ -511,7 +511,6 @@ void Votronic::dump_config() {
              this->charging_converter_controller_status_bitmask_sensor_);
   LOG_SENSOR("", "Charging converter mode setting ID", this->charging_converter_mode_setting_id_sensor_);
   LOG_SENSOR("", "Charging converter controller temperature", this->charging_converter_controller_temperature_sensor_);
-  LOG_SENSOR("", "Charging converter state of charge", this->charging_converter_state_of_charge_sensor_);
   LOG_SENSOR("", "PV Mode Setting ID", this->pv_mode_setting_id_sensor_);
 
   LOG_TEXT_SENSOR("", "Battery status", this->battery_status_text_sensor_);

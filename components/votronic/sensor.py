@@ -35,8 +35,6 @@ CONF_STATE_OF_CHARGE = "state_of_charge"
 # CONF_POWER = "power"
 CONF_BATTERY_NOMINAL_CAPACITY = "battery_nominal_capacity"
 CONF_BATTERY_STATUS_BITMASK = "battery_status_bitmask"
-CONF_CHARGED_CAPACITY = "charged_capacity"
-CONF_CHARGED_ENERGY = "charged_energy"
 
 CONF_PV_VOLTAGE = "pv_voltage"
 CONF_PV_CURRENT = "pv_current"
