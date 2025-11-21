@@ -74,21 +74,6 @@ CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
         cv.Optional(CONF_PV_CONTROLLER_STATUS): text_sensor.text_sensor_schema(
             text_sensor.TextSensor, icon="mdi:heart-pulse"
         ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_MODE_SETTING
-        ): text_sensor.text_sensor_schema(
-            text_sensor.TextSensor, icon="mdi:car-battery"
-        ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_BATTERY_STATUS
-        ): text_sensor.text_sensor_schema(
-            text_sensor.TextSensor, icon="mdi:car-battery"
-        ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_CONTROLLER_STATUS
-        ): text_sensor.text_sensor_schema(
-            text_sensor.TextSensor, icon="mdi:heart-pulse"
-        ),
     }
 )
 
