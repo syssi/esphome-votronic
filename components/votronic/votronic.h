@@ -233,7 +233,6 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   sensor::Sensor *charging_converter_current_sensor_;
   sensor::Sensor *charging_converter_power_sensor_;
   sensor::Sensor *charging_converter_load_sensor_;
-  sensor::Sensor *charging_converter_state_of_charge_sensor_;
   sensor::Sensor *charging_converter_controller_temperature_sensor_;
   sensor::Sensor *charging_converter_mode_setting_id_sensor_;
   sensor::Sensor *charging_converter_battery_status_bitmask_sensor_;
