@@ -103,31 +103,6 @@ CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
         cv.Optional(CONF_PV_AES_ACTIVE): binary_sensor.binary_sensor_schema(
             icon="mdi:export",
         ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_CHARGING
-        ): binary_sensor.binary_sensor_schema(
-            icon="mdi:battery-charging",
-        ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_DISCHARGING
-        ): binary_sensor.binary_sensor_schema(
-            icon="mdi:power-plug",
-        ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_CONTROLLER_ACTIVE
-        ): binary_sensor.binary_sensor_schema(
-            icon="mdi:power",
-        ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_CURRENT_REDUCTION
-        ): binary_sensor.binary_sensor_schema(
-            icon="mdi:car-speed-limiter",
-        ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_AES_ACTIVE
-        ): binary_sensor.binary_sensor_schema(
-            icon="mdi:export",
-        ),
     }
 )
 
