@@ -103,7 +103,7 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
     }
     case ESP_GATTC_NOTIFY_EVT: {
       ESP_LOGVV(TAG, "Notification received (handle %d): %s", param->notify.handle,
-                format_hex_pretty(param->notify.value, param->notify.value_len).c_str());
+                format_hex_pretty(param->notify.value, param->notify.value_len).c_str());  // NOLINT
 
       std::vector<uint8_t> data(param->notify.value, param->notify.value + param->notify.value_len);
 
@@ -136,7 +136,7 @@ void VotronicBle::on_votronic_ble_data(const uint8_t &handle, const std::vector<
   ESP_LOGW(TAG, "Your device is probably not supported. Please create an issue here: "
                 "https://github.com/syssi/esphome-votronic/issues");
   ESP_LOGW(TAG, "Please provide the following unhandled message data: %s",
-           format_hex_pretty(&data.front(), data.size()).c_str());
+           format_hex_pretty(&data.front(), data.size()).c_str());  // NOLINT
 }
 
 void VotronicBle::decode_battery_computer_data_(const std::vector<uint8_t> &data) {
