@@ -281,6 +281,12 @@ void VotronicBle::publish_state_(text_sensor::TextSensor *text_sensor, const std
   text_sensor->publish_state(state);
 }
 
+static std::string format_unknown_hex(uint8_t value) {
+  char buf[16];
+  snprintf(buf, sizeof(buf), "Unknown (0x%02X)", value);
+  return buf;
+}
+
 std::string VotronicBle::battery_status_bitmask_to_string_(const uint8_t mask) {
   if (mask == 0x00) {
     return "Standby";
@@ -302,7 +308,7 @@ std::string VotronicBle::battery_status_bitmask_to_string_(const uint8_t mask) {
     return "I phase";
   }
 
-  return str_snprintf("Unknown (0x%02X)", 15, mask);  // NOLINT
+  return format_unknown_hex(mask);
 }
 
 std::string VotronicBle::solar_charger_status_bitmask_to_string_(const uint8_t mask) {
@@ -322,7 +328,7 @@ std::string VotronicBle::solar_charger_status_bitmask_to_string_(const uint8_t m
     return "Active";
   }
 
-  return str_snprintf("Unknown (0x%02X)", 15, mask);  // NOLINT
+  return format_unknown_hex(mask);
 }
 
 }  // namespace votronic_ble

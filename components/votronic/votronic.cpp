@@ -556,6 +556,12 @@ void Votronic::publish_state_(text_sensor::TextSensor *text_sensor, const std::s
   text_sensor->publish_state(state);
 }
 
+static std::string format_unknown_hex(uint8_t value) {
+  char buf[16];
+  snprintf(buf, sizeof(buf), "Unknown (0x%02X)", value);
+  return buf;
+}
+
 std::string Votronic::charging_mode_setting_to_string_(const uint8_t charging_mode_setting) {
   switch (charging_mode_setting) {
     case 24:
@@ -587,7 +593,7 @@ std::string Votronic::charging_mode_setting_to_string_(const uint8_t charging_mo
       return "LiFePo4 14.8V";
   }
 
-  return str_snprintf("Unknown (0x%02X)", 15, charging_mode_setting);  // NOLINT
+  return format_unknown_hex(charging_mode_setting);
 }
 
 std::string Votronic::battery_status_bitmask_to_string_(const uint8_t mask) {
@@ -611,7 +617,7 @@ std::string Votronic::battery_status_bitmask_to_string_(const uint8_t mask) {
     return "I phase";
   }
 
-  return str_snprintf("Unknown (0x%02X)", 15, mask);  // NOLINT
+  return format_unknown_hex(mask);
 }
 
 std::string Votronic::solar_charger_status_bitmask_to_string_(const uint8_t mask) {
@@ -631,7 +637,7 @@ std::string Votronic::solar_charger_status_bitmask_to_string_(const uint8_t mask
     return "Active";
   }
 
-  return str_snprintf("Unknown (0x%02X)", 15, mask);  // NOLINT
+  return format_unknown_hex(mask);
 }
 
 std::string Votronic::charger_status_bitmask_to_string_(const uint8_t mask) {
