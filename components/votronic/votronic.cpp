@@ -587,7 +587,7 @@ std::string Votronic::charging_mode_setting_to_string_(const uint8_t charging_mo
       return "LiFePo4 14.8V";
   }
 
-  return str_snprintf("Unknown (0x%02X)", 15, charging_mode_setting);
+  return str_snprintf("Unknown (0x%02X)", 15, charging_mode_setting);  // NOLINT
 }
 
 std::string Votronic::battery_status_bitmask_to_string_(const uint8_t mask) {
@@ -611,7 +611,7 @@ std::string Votronic::battery_status_bitmask_to_string_(const uint8_t mask) {
     return "I phase";
   }
 
-  return str_snprintf("Unknown (0x%02X)", 15, mask);
+  return str_snprintf("Unknown (0x%02X)", 15, mask);  // NOLINT
 }
 
 std::string Votronic::solar_charger_status_bitmask_to_string_(const uint8_t mask) {
@@ -631,7 +631,7 @@ std::string Votronic::solar_charger_status_bitmask_to_string_(const uint8_t mask
     return "Active";
   }
 
-  return str_snprintf("Unknown (0x%02X)", 15, mask);
+  return str_snprintf("Unknown (0x%02X)", 15, mask);  // NOLINT
 }
 
 std::string Votronic::charger_status_bitmask_to_string_(const uint8_t mask) {
