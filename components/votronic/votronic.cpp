@@ -179,7 +179,7 @@ void Votronic::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   //   0   1  0xAA        Sync Byte
   //   1   1  0x1A        Frame Type
   //   2   2  0xA0 0x05   Battery Voltage                    V    U16 10mV/Bit
-  float bat_voltage = votronic_get_16bit(2) * 0.01f
+  float bat_voltage = votronic_get_16bit(2) * 0.01f;
   this->publish_state_(this->battery_voltage_sensor_, bat_voltage);
   //   4   2  0xA4 0x06   PV Voltage                         V    U16 10mV/Bit Nur bei MPP-Version
   float pv_voltage = votronic_get_16bit(4) * 0.01f;
