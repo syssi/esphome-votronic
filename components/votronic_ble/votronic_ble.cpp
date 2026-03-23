@@ -63,7 +63,7 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
           this->parent_->get_characteristic(this->service_monitoring_uuid_, this->char_battery_computer_uuid_);
       if (char_battery_computer == nullptr) {
         ESP_LOGW(TAG, "[%s] No battery computer characteristic found at device. No battery computer attached?",
-                 ADDR_STR(this->parent_->address_str()));
+                 this->parent_->address_str());
         break;
       }
       this->char_battery_computer_handle_ = char_battery_computer->handle;
@@ -78,7 +78,7 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
           this->parent_->get_characteristic(this->service_monitoring_uuid_, this->char_solar_charger_uuid_);
       if (char_solar_charger == nullptr) {
         ESP_LOGW(TAG, "[%s] No solar charger characteristic found at device. No solar charger attached?",
-                 ADDR_STR(this->parent_->address_str()));
+                 this->parent_->address_str());
         break;
       }
       this->char_solar_charger_handle_ = char_solar_charger->handle;
@@ -111,7 +111,7 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
 
 void VotronicBle::update() {
   if (this->node_state != espbt::ClientState::ESTABLISHED) {
-    ESP_LOGW(TAG, "[%s] Not connected", ADDR_STR(this->parent_->address_str()));
+    ESP_LOGW(TAG, "[%s] Not connected", this->parent_->address_str());
     return;
   }
 }
