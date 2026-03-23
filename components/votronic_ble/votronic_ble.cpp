@@ -1,13 +1,7 @@
 #include "votronic_ble.h"
 #include "esphome/core/log.h"
 #include "esphome/core/helpers.h"
-#include "esphome/core/version.h"
 
-#if ESPHOME_VERSION_CODE >= VERSION_CODE(2025, 12, 0)
-#define ADDR_STR(x) x
-#else
-#define ADDR_STR(x) (x).c_str()
-#endif
 
 namespace esphome {
 namespace votronic_ble {
@@ -229,11 +223,16 @@ void VotronicBle::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
 
 void VotronicBle::dump_config() {
   ESP_LOGCONFIG(TAG, "VotronicBle:");
-  ESP_LOGCONFIG(TAG, "  MAC address                         : %s", ADDR_STR(this->parent_->address_str()));
-  ESP_LOGCONFIG(TAG, "  Monitoring Service UUID             : %s", this->service_monitoring_uuid_.to_string().c_str());
+  ESP_LOGCONFIG(TAG, "  MAC address                         : %s", this->parent_->address_str());
+  char service_monitoring_uuid_str[esp32_ble::UUID_STR_LEN];
+  char char_battery_computer_uuid_str[esp32_ble::UUID_STR_LEN];
+  char char_solar_charger_uuid_str[esp32_ble::UUID_STR_LEN];
+  ESP_LOGCONFIG(TAG, "  Monitoring Service UUID             : %s",
+                this->service_monitoring_uuid_.to_str(service_monitoring_uuid_str));
   ESP_LOGCONFIG(TAG, "  Battery Computer Characteristic UUID: %s",
-                this->char_battery_computer_uuid_.to_string().c_str());
-  ESP_LOGCONFIG(TAG, "  Solar Charger Characteristic UUID   : %s", this->char_solar_charger_uuid_.to_string().c_str());
+                this->char_battery_computer_uuid_.to_str(char_battery_computer_uuid_str));
+  ESP_LOGCONFIG(TAG, "  Solar Charger Characteristic UUID   : %s",
+                this->char_solar_charger_uuid_.to_str(char_solar_charger_uuid_str));
 
   LOG_BINARY_SENSOR("", "Charging", this->charging_binary_sensor_);
   LOG_BINARY_SENSOR("", "Discharging", this->discharging_binary_sensor_);
