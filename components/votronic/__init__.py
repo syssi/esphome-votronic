@@ -21,7 +21,8 @@ VOTRONIC_COMPONENT_SCHEMA = cv.Schema(
     }
 )
 
-CONFIG_SCHEMA = (
+CONFIG_SCHEMA = cv.All(
+    cv.require_esphome_version(2024, 6, 0),
     cv.Schema(
         {
             cv.GenerateID(): cv.declare_id(Votronic),
@@ -34,7 +35,7 @@ CONFIG_SCHEMA = (
         }
     )
     .extend(cv.polling_component_schema("never"))
-    .extend(uart.UART_DEVICE_SCHEMA)
+    .extend(uart.UART_DEVICE_SCHEMA),
 )
 
 
