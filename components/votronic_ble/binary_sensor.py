@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 from esphome.components import binary_sensor
 import esphome.config_validation as cv
-from esphome.const import CONF_ID
+from esphome.const import ENTITY_CATEGORY_DIAGNOSTIC
 
 from . import CONF_VOTRONIC_BLE_ID, VOTRONIC_BLE_SCHEMA
 
@@ -32,19 +32,29 @@ BINARY_SENSORS = [
 CONFIG_SCHEMA = VOTRONIC_BLE_SCHEMA.extend(
     {
         cv.Optional(CONF_CHARGING): binary_sensor.binary_sensor_schema(
-            binary_sensor.BinarySensor, icon=ICON_CHARGING
+            binary_sensor.BinarySensor,
+            icon=ICON_CHARGING,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(CONF_DISCHARGING): binary_sensor.binary_sensor_schema(
-            binary_sensor.BinarySensor, icon=ICON_DISCHARGING
+            binary_sensor.BinarySensor,
+            icon=ICON_DISCHARGING,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(CONF_CONTROLLER_ACTIVE): binary_sensor.binary_sensor_schema(
-            binary_sensor.BinarySensor, icon=ICON_CONTROLLER_ACTIVE
+            binary_sensor.BinarySensor,
+            icon=ICON_CONTROLLER_ACTIVE,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(CONF_CURRENT_REDUCTION): binary_sensor.binary_sensor_schema(
-            binary_sensor.BinarySensor, icon=ICON_CURRENT_REDUCTION
+            binary_sensor.BinarySensor,
+            icon=ICON_CURRENT_REDUCTION,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(CONF_AES_ACTIVE): binary_sensor.binary_sensor_schema(
-            binary_sensor.BinarySensor, icon=ICON_AES_ACTIVE
+            binary_sensor.BinarySensor,
+            icon=ICON_AES_ACTIVE,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
     }
 )
@@ -55,6 +65,5 @@ async def to_code(config):
     for key in BINARY_SENSORS:
         if key in config:
             conf = config[key]
-            sens = cg.new_Pvariable(conf[CONF_ID])
-            await binary_sensor.register_binary_sensor(sens, conf)
+            sens = await binary_sensor.new_binary_sensor(conf)
             cg.add(getattr(hub, f"set_{key}_binary_sensor")(sens))
