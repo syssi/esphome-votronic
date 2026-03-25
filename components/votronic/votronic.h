@@ -192,73 +192,73 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   void set_rx_timeout(uint16_t rx_timeout) { rx_timeout_ = rx_timeout; }
 
  protected:
-  binary_sensor::BinarySensor *charging_binary_sensor_;
-  binary_sensor::BinarySensor *discharging_binary_sensor_;
+  binary_sensor::BinarySensor *charging_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *discharging_binary_sensor_{nullptr};
 
-  binary_sensor::BinarySensor *charger_charging_binary_sensor_;
-  binary_sensor::BinarySensor *charger_discharging_binary_sensor_;
-  binary_sensor::BinarySensor *charger_controller_active_binary_sensor_;
-  binary_sensor::BinarySensor *charger_aes_active_binary_sensor_;
-  binary_sensor::BinarySensor *charger_current_reduction_binary_sensor_;
+  binary_sensor::BinarySensor *charger_charging_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *charger_discharging_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *charger_controller_active_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *charger_aes_active_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *charger_current_reduction_binary_sensor_{nullptr};
 
-  binary_sensor::BinarySensor *charging_converter_charging_binary_sensor_;
-  binary_sensor::BinarySensor *charging_converter_discharging_binary_sensor_;
-  binary_sensor::BinarySensor *charging_converter_controller_active_binary_sensor_;
-  binary_sensor::BinarySensor *charging_converter_current_reduction_binary_sensor_;
-  binary_sensor::BinarySensor *charging_converter_aes_active_binary_sensor_;
+  binary_sensor::BinarySensor *charging_converter_charging_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *charging_converter_discharging_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *charging_converter_controller_active_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *charging_converter_current_reduction_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *charging_converter_aes_active_binary_sensor_{nullptr};
 
-  binary_sensor::BinarySensor *pv_controller_active_binary_sensor_;
-  binary_sensor::BinarySensor *pv_aes_active_binary_sensor_;
-  binary_sensor::BinarySensor *pv_current_reduction_binary_sensor_;
+  binary_sensor::BinarySensor *pv_controller_active_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *pv_aes_active_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *pv_current_reduction_binary_sensor_{nullptr};
 
-  sensor::Sensor *battery_voltage_sensor_;
-  sensor::Sensor *secondary_battery_voltage_sensor_;
-  sensor::Sensor *state_of_charge_sensor_;
-  sensor::Sensor *current_sensor_;
-  sensor::Sensor *power_sensor_;
-  sensor::Sensor *battery_status_bitmask_sensor_;
-  sensor::Sensor *battery_capacity_remaining_sensor_;
-  sensor::Sensor *battery_nominal_capacity_sensor_;
+  sensor::Sensor *battery_voltage_sensor_{nullptr};
+  sensor::Sensor *secondary_battery_voltage_sensor_{nullptr};
+  sensor::Sensor *state_of_charge_sensor_{nullptr};
+  sensor::Sensor *current_sensor_{nullptr};
+  sensor::Sensor *power_sensor_{nullptr};
+  sensor::Sensor *battery_status_bitmask_sensor_{nullptr};
+  sensor::Sensor *battery_capacity_remaining_sensor_{nullptr};
+  sensor::Sensor *battery_nominal_capacity_sensor_{nullptr};
 
-  sensor::Sensor *charger_current_sensor_;
-  sensor::Sensor *charger_power_sensor_;
-  sensor::Sensor *charger_load_sensor_;
-  sensor::Sensor *charger_controller_temperature_sensor_;
-  sensor::Sensor *charger_mode_setting_id_sensor_;
-  sensor::Sensor *charger_battery_status_bitmask_sensor_;
-  sensor::Sensor *charger_controller_status_bitmask_sensor_;
+  sensor::Sensor *charger_current_sensor_{nullptr};
+  sensor::Sensor *charger_power_sensor_{nullptr};
+  sensor::Sensor *charger_load_sensor_{nullptr};
+  sensor::Sensor *charger_controller_temperature_sensor_{nullptr};
+  sensor::Sensor *charger_mode_setting_id_sensor_{nullptr};
+  sensor::Sensor *charger_battery_status_bitmask_sensor_{nullptr};
+  sensor::Sensor *charger_controller_status_bitmask_sensor_{nullptr};
 
-  sensor::Sensor *charging_converter_battery_voltage_sensor_;
-  sensor::Sensor *charging_converter_secondary_battery_voltage_sensor_;
-  sensor::Sensor *charging_converter_current_sensor_;
-  sensor::Sensor *charging_converter_power_sensor_;
-  sensor::Sensor *charging_converter_load_sensor_;
-  sensor::Sensor *charging_converter_controller_temperature_sensor_;
-  sensor::Sensor *charging_converter_mode_setting_id_sensor_;
-  sensor::Sensor *charging_converter_battery_status_bitmask_sensor_;
-  sensor::Sensor *charging_converter_controller_status_bitmask_sensor_;
+  sensor::Sensor *charging_converter_battery_voltage_sensor_{nullptr};
+  sensor::Sensor *charging_converter_secondary_battery_voltage_sensor_{nullptr};
+  sensor::Sensor *charging_converter_current_sensor_{nullptr};
+  sensor::Sensor *charging_converter_power_sensor_{nullptr};
+  sensor::Sensor *charging_converter_load_sensor_{nullptr};
+  sensor::Sensor *charging_converter_controller_temperature_sensor_{nullptr};
+  sensor::Sensor *charging_converter_mode_setting_id_sensor_{nullptr};
+  sensor::Sensor *charging_converter_battery_status_bitmask_sensor_{nullptr};
+  sensor::Sensor *charging_converter_controller_status_bitmask_sensor_{nullptr};
 
-  sensor::Sensor *pv_voltage_sensor_;
-  sensor::Sensor *pv_current_sensor_;
-  sensor::Sensor *pv_power_sensor_;
-  sensor::Sensor *pv_battery_status_bitmask_sensor_;
-  sensor::Sensor *pv_controller_status_bitmask_sensor_;
-  sensor::Sensor *pv_controller_temperature_sensor_;
-  sensor::Sensor *pv_mode_setting_id_sensor_;
+  sensor::Sensor *pv_voltage_sensor_{nullptr};
+  sensor::Sensor *pv_current_sensor_{nullptr};
+  sensor::Sensor *pv_power_sensor_{nullptr};
+  sensor::Sensor *pv_battery_status_bitmask_sensor_{nullptr};
+  sensor::Sensor *pv_controller_status_bitmask_sensor_{nullptr};
+  sensor::Sensor *pv_controller_temperature_sensor_{nullptr};
+  sensor::Sensor *pv_mode_setting_id_sensor_{nullptr};
 
-  text_sensor::TextSensor *battery_status_text_sensor_;
+  text_sensor::TextSensor *battery_status_text_sensor_{nullptr};
 
-  text_sensor::TextSensor *charger_mode_setting_text_sensor_;
-  text_sensor::TextSensor *charger_battery_status_text_sensor_;
-  text_sensor::TextSensor *charger_controller_status_text_sensor_;
+  text_sensor::TextSensor *charger_mode_setting_text_sensor_{nullptr};
+  text_sensor::TextSensor *charger_battery_status_text_sensor_{nullptr};
+  text_sensor::TextSensor *charger_controller_status_text_sensor_{nullptr};
 
-  text_sensor::TextSensor *charging_converter_mode_setting_text_sensor_;
-  text_sensor::TextSensor *charging_converter_battery_status_text_sensor_;
-  text_sensor::TextSensor *charging_converter_controller_status_text_sensor_;
+  text_sensor::TextSensor *charging_converter_mode_setting_text_sensor_{nullptr};
+  text_sensor::TextSensor *charging_converter_battery_status_text_sensor_{nullptr};
+  text_sensor::TextSensor *charging_converter_controller_status_text_sensor_{nullptr};
 
-  text_sensor::TextSensor *pv_mode_setting_text_sensor_;
-  text_sensor::TextSensor *pv_battery_status_text_sensor_;
-  text_sensor::TextSensor *pv_controller_status_text_sensor_;
+  text_sensor::TextSensor *pv_mode_setting_text_sensor_{nullptr};
+  text_sensor::TextSensor *pv_battery_status_text_sensor_{nullptr};
+  text_sensor::TextSensor *pv_controller_status_text_sensor_{nullptr};
 
   std::vector<uint8_t> rx_buffer_;
   uint32_t last_byte_{0};
