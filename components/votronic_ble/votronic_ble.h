@@ -85,29 +85,29 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   void set_throttle(uint32_t throttle) { this->throttle_ = throttle; }
 
  protected:
-  binary_sensor::BinarySensor *charging_binary_sensor_;
-  binary_sensor::BinarySensor *discharging_binary_sensor_;
-  binary_sensor::BinarySensor *controller_active_binary_sensor_;
-  binary_sensor::BinarySensor *current_reduction_binary_sensor_;
-  binary_sensor::BinarySensor *aes_active_binary_sensor_;
+  binary_sensor::BinarySensor *charging_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *discharging_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *controller_active_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *current_reduction_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *aes_active_binary_sensor_{nullptr};
 
-  sensor::Sensor *battery_voltage_sensor_;
-  sensor::Sensor *secondary_battery_voltage_sensor_;
-  sensor::Sensor *battery_capacity_remaining_sensor_;
-  sensor::Sensor *state_of_charge_sensor_;
-  sensor::Sensor *current_sensor_;
-  sensor::Sensor *power_sensor_;
-  sensor::Sensor *battery_nominal_capacity_sensor_;
-  sensor::Sensor *pv_voltage_sensor_;
-  sensor::Sensor *pv_current_sensor_;
-  sensor::Sensor *battery_status_bitmask_sensor_;
-  sensor::Sensor *pv_controller_status_bitmask_sensor_;
-  sensor::Sensor *charged_capacity_sensor_;
-  sensor::Sensor *charged_energy_sensor_;
-  sensor::Sensor *pv_power_sensor_;
+  sensor::Sensor *battery_voltage_sensor_{nullptr};
+  sensor::Sensor *secondary_battery_voltage_sensor_{nullptr};
+  sensor::Sensor *battery_capacity_remaining_sensor_{nullptr};
+  sensor::Sensor *state_of_charge_sensor_{nullptr};
+  sensor::Sensor *current_sensor_{nullptr};
+  sensor::Sensor *power_sensor_{nullptr};
+  sensor::Sensor *battery_nominal_capacity_sensor_{nullptr};
+  sensor::Sensor *pv_voltage_sensor_{nullptr};
+  sensor::Sensor *pv_current_sensor_{nullptr};
+  sensor::Sensor *battery_status_bitmask_sensor_{nullptr};
+  sensor::Sensor *pv_controller_status_bitmask_sensor_{nullptr};
+  sensor::Sensor *charged_capacity_sensor_{nullptr};
+  sensor::Sensor *charged_energy_sensor_{nullptr};
+  sensor::Sensor *pv_power_sensor_{nullptr};
 
-  text_sensor::TextSensor *battery_status_text_sensor_;
-  text_sensor::TextSensor *pv_controller_status_text_sensor_;
+  text_sensor::TextSensor *battery_status_text_sensor_{nullptr};
+  text_sensor::TextSensor *pv_controller_status_text_sensor_{nullptr};
 
   uint16_t char_battery_computer_handle_{0x22};
   uint16_t char_solar_charger_handle_{0x25};
