@@ -172,7 +172,7 @@ CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
             unit_of_measurement=UNIT_EMPTY,
             icon=ICON_BATTERY_STATUS_BITMASK,
             accuracy_decimals=0,
-            device_class=None,
+            device_class=DEVICE_CLASS_EMPTY,
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(CONF_CHARGER_CURRENT): sensor.sensor_schema(
@@ -200,14 +200,14 @@ CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
             unit_of_measurement=UNIT_EMPTY,
             icon=ICON_BATTERY_STATUS_BITMASK,
             accuracy_decimals=0,
-            device_class=None,
+            device_class=DEVICE_CLASS_EMPTY,
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(CONF_CHARGER_CONTROLLER_STATUS_BITMASK): sensor.sensor_schema(
             unit_of_measurement=UNIT_EMPTY,
             icon=ICON_CHARGING_CONTROLLER_STATUS_BITMASK,
             accuracy_decimals=0,
-            device_class=None,
+            device_class=DEVICE_CLASS_EMPTY,
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(CONF_CHARGER_MODE_SETTING_ID): sensor.sensor_schema(
@@ -222,7 +222,7 @@ CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
             unit_of_measurement=UNIT_EMPTY,
             icon=ICON_PV_CONTROLLER_STATUS_BITMASK,
             accuracy_decimals=0,
-            device_class=None,
+            device_class=DEVICE_CLASS_EMPTY,
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(CONF_CHARGER_CONTROLLER_TEMPERATURE): sensor.sensor_schema(
@@ -276,7 +276,7 @@ CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
             unit_of_measurement=UNIT_EMPTY,
             icon=ICON_BATTERY_STATUS_BITMASK,
             accuracy_decimals=0,
-            device_class=None,
+            device_class=DEVICE_CLASS_EMPTY,
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(
@@ -285,7 +285,7 @@ CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
             unit_of_measurement=UNIT_EMPTY,
             icon=ICON_CHARGING_CONTROLLER_STATUS_BITMASK,
             accuracy_decimals=0,
-            device_class=None,
+            device_class=DEVICE_CLASS_EMPTY,
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(CONF_CHARGING_CONVERTER_MODE_SETTING_ID): sensor.sensor_schema(
@@ -331,7 +331,7 @@ CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
             unit_of_measurement=UNIT_EMPTY,
             icon=ICON_PV_BATTERY_STATUS_BITMASK,
             accuracy_decimals=0,
-            device_class=None,
+            device_class=DEVICE_CLASS_EMPTY,
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(CONF_PV_MODE_SETTING_ID): sensor.sensor_schema(

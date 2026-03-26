@@ -148,14 +148,14 @@ CONFIG_SCHEMA = VOTRONIC_BLE_SCHEMA.extend(
             unit_of_measurement=UNIT_EMPTY,
             icon=ICON_BATTERY_STATUS_BITMASK,
             accuracy_decimals=0,
-            device_class=None,
+            device_class=DEVICE_CLASS_EMPTY,
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(CONF_PV_CONTROLLER_STATUS_BITMASK): sensor.sensor_schema(
             unit_of_measurement=UNIT_EMPTY,
             icon=ICON_PV_CONTROLLER_STATUS_BITMASK,
             accuracy_decimals=0,
-            device_class=None,
+            device_class=DEVICE_CLASS_EMPTY,
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(CONF_CHARGED_CAPACITY): sensor.sensor_schema(
