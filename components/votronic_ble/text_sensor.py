@@ -22,11 +22,9 @@ TEXT_SENSORS = [
 CONFIG_SCHEMA = VOTRONIC_BLE_SCHEMA.extend(
     {
         cv.Optional(CONF_BATTERY_STATUS): text_sensor.text_sensor_schema(
-            class_=text_sensor.TextSensor,
             icon=ICON_BATTERY_STATUS,
         ),
         cv.Optional(CONF_PV_CONTROLLER_STATUS): text_sensor.text_sensor_schema(
-            class_=text_sensor.TextSensor,
             icon=ICON_PV_CONTROLLER_STATUS,
         ),
     }
