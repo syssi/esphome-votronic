@@ -13,6 +13,7 @@ from esphome.const import (
     ENTITY_CATEGORY_DIAGNOSTIC,
     ICON_EMPTY,
     STATE_CLASS_MEASUREMENT,
+    STATE_CLASS_TOTAL_INCREASING,
     UNIT_AMPERE,
     UNIT_EMPTY,
     UNIT_PERCENT,
@@ -163,14 +164,14 @@ CONFIG_SCHEMA = VOTRONIC_BLE_SCHEMA.extend(
             icon=ICON_CHARGED_CAPACITY,
             accuracy_decimals=0,
             device_class=DEVICE_CLASS_EMPTY,
-            state_class=STATE_CLASS_MEASUREMENT,
+            state_class=STATE_CLASS_TOTAL_INCREASING,
         ),
         cv.Optional(CONF_CHARGED_ENERGY): sensor.sensor_schema(
             unit_of_measurement=UNIT_WATT_HOURS,
             icon=ICON_CHARGED_CAPACITY,
             accuracy_decimals=0,
             device_class=DEVICE_CLASS_ENERGY,
-            state_class=STATE_CLASS_MEASUREMENT,
+            state_class=STATE_CLASS_TOTAL_INCREASING,
         ),
     }
 )
