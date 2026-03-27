@@ -85,7 +85,7 @@ void Votronic::loop() {
   }
 }
 
-void Votronic::update() {}
+void Votronic::update() { ESP_LOGW(TAG, "update() not implemented"); }
 
 bool Votronic::parse_votronic_byte_(uint8_t byte) {
   size_t at = this->rx_buffer_.size();
