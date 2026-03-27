@@ -5,6 +5,7 @@ from esphome.const import CONF_ID, CONF_THROTTLE
 
 AUTO_LOAD = ["binary_sensor", "sensor", "text_sensor"]
 CODEOWNERS = ["@syssi"]
+DEPENDENCIES = ["ble_client"]
 MULTI_CONF = True
 
 CONF_VOTRONIC_BLE_ID = "votronic_ble_id"
