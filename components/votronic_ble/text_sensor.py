@@ -1,6 +1,7 @@
 import esphome.codegen as cg
 from esphome.components import text_sensor
 import esphome.config_validation as cv
+from esphome.const import ENTITY_CATEGORY_DIAGNOSTIC
 
 from . import CONF_VOTRONIC_BLE_ID, VOTRONIC_BLE_SCHEMA
 
@@ -23,9 +24,11 @@ CONFIG_SCHEMA = VOTRONIC_BLE_SCHEMA.extend(
     {
         cv.Optional(CONF_BATTERY_STATUS): text_sensor.text_sensor_schema(
             icon=ICON_BATTERY_STATUS,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
         cv.Optional(CONF_PV_CONTROLLER_STATUS): text_sensor.text_sensor_schema(
             icon=ICON_PV_CONTROLLER_STATUS,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),
     }
 )
