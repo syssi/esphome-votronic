@@ -8,6 +8,7 @@ substitutions:
 
 esphome:
   name: ${name}
+  friendly_name: ${name}
   comment: ${device_description}
   project:
     name: "syssi.esphome-votronic"
@@ -56,121 +57,121 @@ binary_sensor:
   - platform: votronic
     votronic_id: votronic0
     charging:
-      name: "${name} charging"
+      name: "charging"
     discharging:
-      name: "${name} discharging"
+      name: "discharging"
 
     charger_charging:
-      name: "${name} charger charging"
+      name: "charger charging"
     charger_discharging:
-      name: "${name} charger discharging"
+      name: "charger discharging"
     charger_controller_active:
-      name: "${name} charger controller active"
+      name: "charger controller active"
     charger_current_reduction:
-      name: "${name} charger current reduction"
+      name: "charger current reduction"
     charger_aes_active:
-      name: "${name} charger aes active"
+      name: "charger aes active"
 
     charging_converter_charging:
-      name: "${name} charging converter charging"
+      name: "charging converter charging"
     charging_converter_discharging:
-      name: "${name} charging converter discharging"
+      name: "charging converter discharging"
     charging_converter_controller_active:
-      name: "${name} charging converter controller active"
+      name: "charging converter controller active"
     charging_converter_current_reduction:
-      name: "${name} charging converter current reduction"
+      name: "charging converter current reduction"
     charging_converter_aes_active:
-      name: "${name} charging converter aes active"
+      name: "charging converter aes active"
 
     pv_controller_active:
-      name: "${name} pv controller active"
+      name: "pv controller active"
     pv_current_reduction:
-      name: "${name} pv current reduction"
+      name: "pv current reduction"
     pv_aes_active:
-      name: "${name} pv aes active"
+      name: "pv aes active"
 
 sensor:
   - platform: votronic
     votronic_id: votronic0
     battery_voltage:
-      name: "${name} battery voltage"
+      name: "battery voltage"
     current:
-      name: "${name} current"
+      name: "current"
     power:
-      name: "${name} power"
+      name: "power"
     battery_status_bitmask:
-      name: "${name} battery status bitmask"
+      name: "battery status bitmask"
 
     charger_current:
-      name: "${name} charger current"
+      name: "charger current"
     charger_power:
-      name: "${name} charger power"
+      name: "charger power"
     charger_load:
-      name: "${name} charger load"
+      name: "charger load"
     charger_controller_temperature:
-      name: "${name} charger controller temperature"
+      name: "charger controller temperature"
     charger_mode_setting_id:
-      name: "${name} charger mode setting id"
+      name: "charger mode setting id"
     charger_battery_status_bitmask:
-      name: "${name} charger battery status bitmask"
+      name: "charger battery status bitmask"
     charger_controller_status_bitmask:
-      name: "${name} charger controller status bitmask"
+      name: "charger controller status bitmask"
 
     charging_converter_battery_voltage:
-      name: "${name} charging converter battery voltage"
+      name: "charging converter battery voltage"
     charging_converter_secondary_battery_voltage:
-      name: "${name} charging converter secondary battery voltage"
+      name: "charging converter secondary battery voltage"
     charging_converter_current:
-      name: "${name} charging converter current"
+      name: "charging converter current"
     charging_converter_power:
-      name: "${name} charging converter power"
+      name: "charging converter power"
     charging_converter_load:
-      name: "${name} charging converter load"
+      name: "charging converter load"
     charging_converter_controller_temperature:
-      name: "${name} charging converter controller temperature"
+      name: "charging converter controller temperature"
     charging_converter_mode_setting_id:
-      name: "${name} charging converter mode setting id"
+      name: "charging converter mode setting id"
     charging_converter_battery_status_bitmask:
-      name: "${name} charging converter battery status bitmask"
+      name: "charging converter battery status bitmask"
     charging_converter_controller_status_bitmask:
-      name: "${name} charging converter controller status bitmask"
+      name: "charging converter controller status bitmask"
 
     pv_controller_status_bitmask:
-      name: "${name} pv controller status bitmask"
+      name: "pv controller status bitmask"
     pv_controller_temperature:
-      name: "${name} pv controller temperature"
+      name: "pv controller temperature"
     pv_battery_status_bitmask:
-      name: "${name} pv battery status bitmask"
+      name: "pv battery status bitmask"
     pv_voltage:
-      name: "${name} pv voltage"
+      name: "pv voltage"
     pv_current:
-      name: "${name} pv current"
+      name: "pv current"
     pv_power:
-      name: "${name} pv power"
+      name: "pv power"
 
 text_sensor:
   - platform: votronic
     votronic_id: votronic0
     battery_status:
-      name: "${name} battery status"
+      name: "battery status"
 
     charger_mode_setting:
-      name: "${name} charger mode setting"
+      name: "charger mode setting"
     charger_battery_status:
-      name: "${name} charger battery status"
+      name: "charger battery status"
     charger_controller_status:
-      name: "${name} charger controller status"
+      name: "charger controller status"
 
     charging_converter_mode_setting:
-      name: "${name} charging converter mode setting"
+      name: "charging converter mode setting"
     charging_converter_battery_status:
-      name: "${name} charging converter battery status"
+      name: "charging converter battery status"
     charging_converter_controller_status:
-      name: "${name} charging converter controller status"
+      name: "charging converter controller status"
 
     pv_mode_setting:
-      name: "${name} pv mode setting"
+      name: "pv mode setting"
     pv_controller_status:
-      name: "${name} pv controller status"
+      name: "pv controller status"
     pv_battery_status:
-      name: "${name} pv battery status"
+      name: "pv battery status"

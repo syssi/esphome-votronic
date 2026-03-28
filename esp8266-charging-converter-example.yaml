@@ -8,6 +8,7 @@ substitutions:
 
 esphome:
   name: ${name}
+  friendly_name: ${name}
   comment: ${device_description}
   project:
     name: "syssi.esphome-votronic"
@@ -56,55 +57,55 @@ binary_sensor:
   - platform: votronic
     votronic_id: votronic0
     charging_converter_charging:
-      name: "${name} charging converter charging"
+      name: "charging converter charging"
     charging_converter_discharging:
-      name: "${name} charging converter discharging"
+      name: "charging converter discharging"
     charging_converter_controller_active:
-      name: "${name} charging converter controller active"
+      name: "charging converter controller active"
     charging_converter_current_reduction:
-      name: "${name} charging converter current reduction"
+      name: "charging converter current reduction"
     charging_converter_aes_active:
-      name: "${name} charging converter aes active"
+      name: "charging converter aes active"
 
 sensor:
   - platform: votronic
     votronic_id: votronic0
     battery_voltage:
-      name: "${name} battery voltage"
+      name: "battery voltage"
     secondary_battery_voltage:
-      name: "${name} secondary battery voltage"
+      name: "secondary battery voltage"
     current:
-      name: "${name} current"
+      name: "current"
     power:
-      name: "${name} power"
+      name: "power"
     state_of_charge:
-      name: "${name} state of charge"
+      name: "state of charge"
 
     charging_converter_battery_voltage:
-      name: "${name} charging converter battery voltage"
+      name: "charging converter battery voltage"
     charging_converter_secondary_battery_voltage:
-      name: "${name} charging converter secondary battery voltage"
+      name: "charging converter secondary battery voltage"
     charging_converter_current:
-      name: "${name} charging converter current"
+      name: "charging converter current"
     charging_converter_power:
-      name: "${name} charging converter power"
+      name: "charging converter power"
     charging_converter_load:
-      name: "${name} charging converter load"
+      name: "charging converter load"
     charging_converter_controller_temperature:
-      name: "${name} charging converter controller temperature"
+      name: "charging converter controller temperature"
     charging_converter_mode_setting_id:
-      name: "${name} charging converter mode setting id"
+      name: "charging converter mode setting id"
     charging_converter_battery_status_bitmask:
-      name: "${name} charging converter battery status bitmask"
+      name: "charging converter battery status bitmask"
     charging_converter_controller_status_bitmask:
-      name: "${name} charging converter controller status bitmask"
+      name: "charging converter controller status bitmask"
 
 text_sensor:
   - platform: votronic
     votronic_id: votronic0
     charging_converter_mode_setting:
-      name: "${name} charging converter mode setting"
+      name: "charging converter mode setting"
     charging_converter_battery_status:
-      name: "${name} charging converter battery status"
+      name: "charging converter battery status"
     charging_converter_controller_status:
-      name: "${name} charging converter controller status"
+      name: "charging converter controller status"

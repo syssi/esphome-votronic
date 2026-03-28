@@ -8,6 +8,7 @@ substitutions:
 
 esphome:
   name: ${name}
+  friendly_name: ${name}
   comment: ${device_description}
   project:
     name: "syssi.esphome-votronic"
@@ -54,36 +55,36 @@ binary_sensor:
   - platform: votronic
     votronic_id: votronic0
     charging:
-      name: "${name} charging"
+      name: "charging"
     discharging:
-      name: "${name} discharging"
+      name: "discharging"
 
 sensor:
   - platform: votronic
     votronic_id: votronic0
     battery_voltage:
-      name: "${name} battery voltage"
+      name: "battery voltage"
     secondary_battery_voltage:
-      name: "${name} secondary battery voltage"
+      name: "secondary battery voltage"
     battery_capacity_remaining:
-      name: "${name} battery capacity remaining"
+      name: "battery capacity remaining"
     current:
-      name: "${name} current"
+      name: "current"
     power:
-      name: "${name} power"
+      name: "power"
     battery_nominal_capacity:
-      name: "${name} battery nominal capacity"
+      name: "battery nominal capacity"
     state_of_charge:
-      name: "${name} state of charge"
+      name: "state of charge"
     charger_mode_setting_id:
-      name: "${name} charger mode setting id"
+      name: "charger mode setting id"
     battery_status_bitmask:
-      name: "${name} battery status bitmask"
+      name: "battery status bitmask"
 
 text_sensor:
   - platform: votronic
     votronic_id: votronic0
     charger_mode_setting:
-      name: "${name} charger mode setting"
+      name: "charger mode setting"
     battery_status:
-      name: "${name} battery status"
+      name: "battery status"

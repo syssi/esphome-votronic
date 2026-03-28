@@ -8,6 +8,7 @@ substitutions:
 
 esphome:
   name: ${name}
+  friendly_name: ${name}
   comment: ${device_description}
   project:
     name: "syssi.esphome-votronic"
@@ -56,54 +57,54 @@ binary_sensor:
   - platform: votronic
     votronic_id: votronic0
     charging:
-      name: "${name} charging"
+      name: "charging"
     discharging:
-      name: "${name} discharging"
+      name: "discharging"
 
     charger_charging:
-      name: "${name} charger charging"
+      name: "charger charging"
     charger_discharging:
-      name: "${name} charger discharging"
+      name: "charger discharging"
     charger_controller_active:
-      name: "${name} charger controller active"
+      name: "charger controller active"
     charger_current_reduction:
-      name: "${name} charger current reduction"
+      name: "charger current reduction"
     charger_aes_active:
-      name: "${name} charger aes active"
+      name: "charger aes active"
 
 sensor:
   - platform: votronic
     votronic_id: votronic0
     battery_voltage:
-      name: "${name} battery voltage"
+      name: "battery voltage"
     secondary_battery_voltage:
-      name: "${name} secondary battery voltage"
+      name: "secondary battery voltage"
     current:
-      name: "${name} current"
+      name: "current"
     power:
-      name: "${name} power"
+      name: "power"
 
     charger_current:
-      name: "${name} charger current"
+      name: "charger current"
     charger_power:
-      name: "${name} charger power"
+      name: "charger power"
     charger_load:
-      name: "${name} charger load"
+      name: "charger load"
     charger_controller_temperature:
-      name: "${name} charger controller temperature"
+      name: "charger controller temperature"
     charger_mode_setting_id:
-      name: "${name} charger mode setting id"
+      name: "charger mode setting id"
     battery_status_bitmask:
-      name: "${name} battery status bitmask"
+      name: "battery status bitmask"
     charger_controller_status_bitmask:
-      name: "${name} charger controller status bitmask"
+      name: "charger controller status bitmask"
 
 text_sensor:
   - platform: votronic
     votronic_id: votronic0
     charger_mode_setting:
-      name: "${name} charger mode setting"
+      name: "charger mode setting"
     battery_status:
-      name: "${name} battery status"
+      name: "battery status"
     charger_controller_status:
-      name: "${name} charger controller status"
+      name: "charger controller status"

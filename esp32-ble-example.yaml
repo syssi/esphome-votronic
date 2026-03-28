@@ -6,6 +6,7 @@ substitutions:
 
 esphome:
   name: ${name}
+  friendly_name: ${name}
   comment: ${device_description}
   project:
     name: "syssi.esphome-votronic"
@@ -69,61 +70,61 @@ binary_sensor:
   - platform: votronic_ble
     votronic_ble_id: votronic0
     charging:
-      name: "${name} charging"
+      name: "charging"
     discharging:
-      name: "${name} discharging"
+      name: "discharging"
     controller_active:
-      name: "${name} controller active"
+      name: "controller active"
     current_reduction:
-      name: "${name} current reduction"
+      name: "current reduction"
     aes_active:
-      name: "${name} aes active"
+      name: "aes active"
 
 sensor:
   - platform: votronic_ble
     votronic_ble_id: votronic0
     # Battery computer
     battery_voltage:
-      name: "${name} battery voltage"
+      name: "battery voltage"
     secondary_battery_voltage:
-      name: "${name} secondary battery voltage"
+      name: "secondary battery voltage"
     battery_capacity_remaining:
-      name: "${name} battery capacity remaining"
+      name: "battery capacity remaining"
     state_of_charge:
-      name: "${name} state of charge"
+      name: "state of charge"
     current:
-      name: "${name} current"
+      name: "current"
     power:
-      name: "${name} power"
+      name: "power"
     battery_nominal_capacity:
-      name: "${name} battery nominal capacity"
+      name: "battery nominal capacity"
 
     # Solar charger
     pv_voltage:
-      name: "${name} pv voltage"
+      name: "pv voltage"
     pv_current:
-      name: "${name} pv current"
+      name: "pv current"
     battery_status_bitmask:
-      name: "${name} battery status bitmask"
+      name: "battery status bitmask"
     pv_controller_status_bitmask:
-      name: "${name} pv controller status bitmask"
+      name: "pv controller status bitmask"
     charged_capacity:
-      name: "${name} charged capacity"
+      name: "charged capacity"
     charged_energy:
-      name: "${name} charged energy"
+      name: "charged energy"
     pv_power:
-      name: "${name} pv power"
+      name: "pv power"
 
 switch:
   - platform: ble_client
     ble_client_id: client0
-    name: "${name} enable bluetooth connection"
+    name: "enable bluetooth connection"
     id: ble_client_switch0
 
 text_sensor:
   - platform: votronic_ble
     votronic_ble_id: votronic0
     battery_status:
-      name: "${name} battery status"
+      name: "battery status"
     pv_controller_status:
-      name: "${name} pv controller status"
+      name: "pv controller status"
