@@ -133,5 +133,3 @@ uart:
 * https://github.com/TheRealMoeder/vosodi
 * https://github.com/crathje/VotronicSRDuoDig
 * https://github.com/SirReal-surreal/SirReal-surreal/blob/main/2021_08_16_Votronic.json
-
-
