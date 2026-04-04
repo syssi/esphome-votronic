@@ -21,48 +21,40 @@ ICON_CONTROLLER_ACTIVE = "mdi:power"
 ICON_CURRENT_REDUCTION = "mdi:car-speed-limiter"
 ICON_AES_ACTIVE = "mdi:export"
 
-BINARY_SENSORS = [
-    CONF_CHARGING,
-    CONF_DISCHARGING,
-    CONF_CONTROLLER_ACTIVE,
-    CONF_CURRENT_REDUCTION,
-    CONF_AES_ACTIVE,
-]
+BINARY_SENSOR_DEFS = {
+    CONF_CHARGING: {
+        "icon": ICON_CHARGING,
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_DISCHARGING: {
+        "icon": ICON_DISCHARGING,
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CONTROLLER_ACTIVE: {
+        "icon": ICON_CONTROLLER_ACTIVE,
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CURRENT_REDUCTION: {
+        "icon": ICON_CURRENT_REDUCTION,
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_AES_ACTIVE: {
+        "icon": ICON_AES_ACTIVE,
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+}
 
 CONFIG_SCHEMA = VOTRONIC_BLE_SCHEMA.extend(
     {
-        cv.Optional(CONF_CHARGING): binary_sensor.binary_sensor_schema(
-            binary_sensor.BinarySensor,
-            icon=ICON_CHARGING,
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_DISCHARGING): binary_sensor.binary_sensor_schema(
-            binary_sensor.BinarySensor,
-            icon=ICON_DISCHARGING,
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_CONTROLLER_ACTIVE): binary_sensor.binary_sensor_schema(
-            binary_sensor.BinarySensor,
-            icon=ICON_CONTROLLER_ACTIVE,
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_CURRENT_REDUCTION): binary_sensor.binary_sensor_schema(
-            binary_sensor.BinarySensor,
-            icon=ICON_CURRENT_REDUCTION,
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_AES_ACTIVE): binary_sensor.binary_sensor_schema(
-            binary_sensor.BinarySensor,
-            icon=ICON_AES_ACTIVE,
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
+        cv.Optional(key): binary_sensor.binary_sensor_schema(**kwargs)
+        for key, kwargs in BINARY_SENSOR_DEFS.items()
     }
 )
 
 
 async def to_code(config):
     hub = await cg.get_variable(config[CONF_VOTRONIC_BLE_ID])
-    for key in BINARY_SENSORS:
+    for key in BINARY_SENSOR_DEFS:
         if key in config:
             conf = config[key]
             sens = await binary_sensor.new_binary_sensor(conf)

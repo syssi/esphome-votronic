@@ -28,103 +28,80 @@ CONF_PV_CONTROLLER_ACTIVE = "pv_controller_active"
 CONF_PV_CURRENT_REDUCTION = "pv_current_reduction"
 CONF_PV_AES_ACTIVE = "pv_aes_active"
 
-BINARY_SENSORS = [
-    CONF_CHARGING,
-    CONF_DISCHARGING,
-    CONF_CHARGER_CHARGING,
-    CONF_CHARGER_DISCHARGING,
-    CONF_CHARGER_CONTROLLER_ACTIVE,
-    CONF_CHARGER_CURRENT_REDUCTION,
-    CONF_CHARGER_AES_ACTIVE,
-    CONF_CHARGING_CONVERTER_CHARGING,
-    CONF_CHARGING_CONVERTER_DISCHARGING,
-    CONF_CHARGING_CONVERTER_CONTROLLER_ACTIVE,
-    CONF_CHARGING_CONVERTER_CURRENT_REDUCTION,
-    CONF_CHARGING_CONVERTER_AES_ACTIVE,
-    CONF_PV_CONTROLLER_ACTIVE,
-    CONF_PV_CURRENT_REDUCTION,
-    CONF_PV_AES_ACTIVE,
-]
+BINARY_SENSOR_DEFS = {
+    CONF_CHARGING: {
+        "icon": "mdi:battery-charging",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_DISCHARGING: {
+        "icon": "mdi:power-plug",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CHARGER_CHARGING: {
+        "icon": "mdi:battery-charging",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CHARGER_DISCHARGING: {
+        "icon": "mdi:power-plug",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CHARGER_CONTROLLER_ACTIVE: {
+        "icon": "mdi:power",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CHARGER_CURRENT_REDUCTION: {
+        "icon": "mdi:car-speed-limiter",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CHARGER_AES_ACTIVE: {
+        "icon": "mdi:export",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CHARGING_CONVERTER_CHARGING: {
+        "icon": "mdi:battery-charging",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CHARGING_CONVERTER_DISCHARGING: {
+        "icon": "mdi:power-plug",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CHARGING_CONVERTER_CONTROLLER_ACTIVE: {
+        "icon": "mdi:power",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CHARGING_CONVERTER_CURRENT_REDUCTION: {
+        "icon": "mdi:car-speed-limiter",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CHARGING_CONVERTER_AES_ACTIVE: {
+        "icon": "mdi:export",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_PV_CONTROLLER_ACTIVE: {
+        "icon": "mdi:power",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_PV_CURRENT_REDUCTION: {
+        "icon": "mdi:car-speed-limiter",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_PV_AES_ACTIVE: {
+        "icon": "mdi:export",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+}
 
 CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
     {
-        cv.Optional(CONF_CHARGING): binary_sensor.binary_sensor_schema(
-            icon="mdi:battery-charging",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_DISCHARGING): binary_sensor.binary_sensor_schema(
-            icon="mdi:power-plug",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_CHARGER_CHARGING): binary_sensor.binary_sensor_schema(
-            icon="mdi:battery-charging",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_CHARGER_DISCHARGING): binary_sensor.binary_sensor_schema(
-            icon="mdi:power-plug",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_CHARGER_CONTROLLER_ACTIVE): binary_sensor.binary_sensor_schema(
-            icon="mdi:power",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_CHARGER_CURRENT_REDUCTION): binary_sensor.binary_sensor_schema(
-            icon="mdi:car-speed-limiter",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_CHARGER_AES_ACTIVE): binary_sensor.binary_sensor_schema(
-            icon="mdi:export",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_CHARGING
-        ): binary_sensor.binary_sensor_schema(
-            icon="mdi:battery-charging",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_DISCHARGING
-        ): binary_sensor.binary_sensor_schema(
-            icon="mdi:power-plug",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_CONTROLLER_ACTIVE
-        ): binary_sensor.binary_sensor_schema(
-            icon="mdi:power",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_CURRENT_REDUCTION
-        ): binary_sensor.binary_sensor_schema(
-            icon="mdi:car-speed-limiter",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_AES_ACTIVE
-        ): binary_sensor.binary_sensor_schema(
-            icon="mdi:export",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_PV_CONTROLLER_ACTIVE): binary_sensor.binary_sensor_schema(
-            icon="mdi:power",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_PV_CURRENT_REDUCTION): binary_sensor.binary_sensor_schema(
-            icon="mdi:car-speed-limiter",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_PV_AES_ACTIVE): binary_sensor.binary_sensor_schema(
-            icon="mdi:export",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
+        cv.Optional(key): binary_sensor.binary_sensor_schema(**kwargs)
+        for key, kwargs in BINARY_SENSOR_DEFS.items()
     }
 )
 
 
 async def to_code(config):
     hub = await cg.get_variable(config[CONF_VOTRONIC_ID])
-    for key in BINARY_SENSORS:
+    for key in BINARY_SENSOR_DEFS:
         if key in config:
             conf = config[key]
             sens = await binary_sensor.new_binary_sensor(conf)
