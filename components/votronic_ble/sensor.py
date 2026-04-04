@@ -56,130 +56,118 @@ ICON_ERRORS_BITMASK = "mdi:alert-circle-outline"
 
 UNIT_AMPERE_HOURS = "Ah"
 
-SENSORS = [
-    CONF_BATTERY_VOLTAGE,
-    CONF_SECONDARY_BATTERY_VOLTAGE,
-    CONF_BATTERY_CAPACITY_REMAINING,
-    CONF_STATE_OF_CHARGE,
-    CONF_CURRENT,
-    CONF_POWER,
-    CONF_BATTERY_NOMINAL_CAPACITY,
-    CONF_PV_VOLTAGE,
-    CONF_PV_CURRENT,
-    CONF_PV_POWER,
-    CONF_BATTERY_STATUS_BITMASK,
-    CONF_PV_CONTROLLER_STATUS_BITMASK,
-    CONF_CHARGED_CAPACITY,
-    CONF_CHARGED_ENERGY,
-]
+SENSOR_DEFS = {
+    CONF_BATTERY_VOLTAGE: {
+        "unit_of_measurement": UNIT_VOLT,
+        "icon": ICON_EMPTY,
+        "accuracy_decimals": 2,
+        "device_class": DEVICE_CLASS_VOLTAGE,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_SECONDARY_BATTERY_VOLTAGE: {
+        "unit_of_measurement": UNIT_VOLT,
+        "icon": ICON_EMPTY,
+        "accuracy_decimals": 2,
+        "device_class": DEVICE_CLASS_VOLTAGE,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_BATTERY_CAPACITY_REMAINING: {
+        "unit_of_measurement": UNIT_AMPERE_HOURS,
+        "icon": ICON_BATTERY_CAPACITY_REMAINING,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_EMPTY,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_STATE_OF_CHARGE: {
+        "unit_of_measurement": UNIT_PERCENT,
+        "icon": ICON_STATE_OF_CHARGE,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_EMPTY,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_CURRENT: {
+        "unit_of_measurement": UNIT_AMPERE,
+        "icon": ICON_CURRENT_DC,
+        "accuracy_decimals": 3,
+        "device_class": DEVICE_CLASS_CURRENT,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_POWER: {
+        "unit_of_measurement": UNIT_WATT,
+        "icon": ICON_EMPTY,
+        "accuracy_decimals": 2,
+        "device_class": DEVICE_CLASS_POWER,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_BATTERY_NOMINAL_CAPACITY: {
+        "unit_of_measurement": UNIT_AMPERE_HOURS,
+        "icon": ICON_BATTERY_NOMINAL_CAPACITY,
+        "accuracy_decimals": 1,
+        "device_class": DEVICE_CLASS_EMPTY,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_PV_VOLTAGE: {
+        "unit_of_measurement": UNIT_VOLT,
+        "icon": ICON_EMPTY,
+        "accuracy_decimals": 2,
+        "device_class": DEVICE_CLASS_VOLTAGE,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_PV_CURRENT: {
+        "unit_of_measurement": UNIT_AMPERE,
+        "icon": ICON_CURRENT_DC,
+        "accuracy_decimals": 1,
+        "device_class": DEVICE_CLASS_CURRENT,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_PV_POWER: {
+        "unit_of_measurement": UNIT_WATT,
+        "icon": ICON_EMPTY,
+        "accuracy_decimals": 1,
+        "device_class": DEVICE_CLASS_POWER,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_BATTERY_STATUS_BITMASK: {
+        "unit_of_measurement": UNIT_EMPTY,
+        "icon": ICON_BATTERY_STATUS_BITMASK,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_EMPTY,
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_PV_CONTROLLER_STATUS_BITMASK: {
+        "unit_of_measurement": UNIT_EMPTY,
+        "icon": ICON_PV_CONTROLLER_STATUS_BITMASK,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_EMPTY,
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CHARGED_CAPACITY: {
+        "unit_of_measurement": UNIT_AMPERE_HOURS,
+        "icon": ICON_CHARGED_CAPACITY,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_EMPTY,
+        "state_class": STATE_CLASS_TOTAL_INCREASING,
+    },
+    CONF_CHARGED_ENERGY: {
+        "unit_of_measurement": UNIT_WATT_HOURS,
+        "icon": ICON_CHARGED_CAPACITY,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_ENERGY,
+        "state_class": STATE_CLASS_TOTAL_INCREASING,
+    },
+}
 
 CONFIG_SCHEMA = VOTRONIC_BLE_SCHEMA.extend(
     {
-        cv.Optional(CONF_BATTERY_VOLTAGE): sensor.sensor_schema(
-            unit_of_measurement=UNIT_VOLT,
-            icon=ICON_EMPTY,
-            accuracy_decimals=2,
-            device_class=DEVICE_CLASS_VOLTAGE,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_SECONDARY_BATTERY_VOLTAGE): sensor.sensor_schema(
-            unit_of_measurement=UNIT_VOLT,
-            icon=ICON_EMPTY,
-            accuracy_decimals=2,
-            device_class=DEVICE_CLASS_VOLTAGE,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_BATTERY_CAPACITY_REMAINING): sensor.sensor_schema(
-            unit_of_measurement=UNIT_AMPERE_HOURS,
-            icon=ICON_BATTERY_CAPACITY_REMAINING,
-            accuracy_decimals=0,
-            device_class=DEVICE_CLASS_EMPTY,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_STATE_OF_CHARGE): sensor.sensor_schema(
-            unit_of_measurement=UNIT_PERCENT,
-            icon=ICON_STATE_OF_CHARGE,
-            accuracy_decimals=0,
-            device_class=DEVICE_CLASS_EMPTY,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_CURRENT): sensor.sensor_schema(
-            unit_of_measurement=UNIT_AMPERE,
-            icon=ICON_CURRENT_DC,
-            accuracy_decimals=3,
-            device_class=DEVICE_CLASS_CURRENT,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_POWER): sensor.sensor_schema(
-            unit_of_measurement=UNIT_WATT,
-            icon=ICON_EMPTY,
-            accuracy_decimals=2,
-            device_class=DEVICE_CLASS_POWER,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_BATTERY_NOMINAL_CAPACITY): sensor.sensor_schema(
-            unit_of_measurement=UNIT_AMPERE_HOURS,
-            icon=ICON_BATTERY_NOMINAL_CAPACITY,
-            accuracy_decimals=1,
-            device_class=DEVICE_CLASS_EMPTY,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_PV_VOLTAGE): sensor.sensor_schema(
-            unit_of_measurement=UNIT_VOLT,
-            icon=ICON_EMPTY,
-            accuracy_decimals=2,
-            device_class=DEVICE_CLASS_VOLTAGE,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_PV_CURRENT): sensor.sensor_schema(
-            unit_of_measurement=UNIT_AMPERE,
-            icon=ICON_CURRENT_DC,
-            accuracy_decimals=1,
-            device_class=DEVICE_CLASS_CURRENT,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_PV_POWER): sensor.sensor_schema(
-            unit_of_measurement=UNIT_WATT,
-            icon=ICON_EMPTY,
-            accuracy_decimals=1,
-            device_class=DEVICE_CLASS_POWER,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_BATTERY_STATUS_BITMASK): sensor.sensor_schema(
-            unit_of_measurement=UNIT_EMPTY,
-            icon=ICON_BATTERY_STATUS_BITMASK,
-            accuracy_decimals=0,
-            device_class=DEVICE_CLASS_EMPTY,
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_PV_CONTROLLER_STATUS_BITMASK): sensor.sensor_schema(
-            unit_of_measurement=UNIT_EMPTY,
-            icon=ICON_PV_CONTROLLER_STATUS_BITMASK,
-            accuracy_decimals=0,
-            device_class=DEVICE_CLASS_EMPTY,
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_CHARGED_CAPACITY): sensor.sensor_schema(
-            unit_of_measurement=UNIT_AMPERE_HOURS,
-            icon=ICON_CHARGED_CAPACITY,
-            accuracy_decimals=0,
-            device_class=DEVICE_CLASS_EMPTY,
-            state_class=STATE_CLASS_TOTAL_INCREASING,
-        ),
-        cv.Optional(CONF_CHARGED_ENERGY): sensor.sensor_schema(
-            unit_of_measurement=UNIT_WATT_HOURS,
-            icon=ICON_CHARGED_CAPACITY,
-            accuracy_decimals=0,
-            device_class=DEVICE_CLASS_ENERGY,
-            state_class=STATE_CLASS_TOTAL_INCREASING,
-        ),
+        cv.Optional(key): sensor.sensor_schema(**kwargs)
+        for key, kwargs in SENSOR_DEFS.items()
     }
 )
 
 
 async def to_code(config):
     hub = await cg.get_variable(config[CONF_VOTRONIC_BLE_ID])
-    for key in SENSORS:
+    for key in SENSOR_DEFS:
         if key in config:
             conf = config[key]
             sens = await sensor.new_sensor(conf)
