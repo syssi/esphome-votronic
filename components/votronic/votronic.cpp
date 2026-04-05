@@ -27,7 +27,7 @@ static const uint8_t VOTRONIC_FRAME_TYPE_CONTROL_CHARGING_CONVERTER2 = 0x4A;
 static const uint8_t VOTRONIC_FRAME_TYPE_CONTROL_BATTERY_COMPUTER = 0xEA;
 
 static const uint8_t BATTERY_STATUS_SIZE = 8;
-static const char *const BATTERY_STATUS[BATTERY_STATUS_SIZE] = {
+static constexpr const char *const BATTERY_STATUS[BATTERY_STATUS_SIZE] = {
     "I phase",         // 0000 0001
     "U1 phase",        // 0000 0010
     "U2 phase",        // 0000 0100
@@ -39,7 +39,7 @@ static const char *const BATTERY_STATUS[BATTERY_STATUS_SIZE] = {
 };
 
 static const uint8_t SOLAR_CHARGER_STATUS_SIZE = 8;
-static const char *const SOLAR_CHARGER_STATUS[SOLAR_CHARGER_STATUS_SIZE] = {
+static constexpr const char *const SOLAR_CHARGER_STATUS[SOLAR_CHARGER_STATUS_SIZE] = {
     "Unused (Bit 0)",  // 0000 0001
     "Unused (Bit 1)",  // 0000 0010
     "Unused (Bit 2)",  // 0000 0100
@@ -51,7 +51,7 @@ static const char *const SOLAR_CHARGER_STATUS[SOLAR_CHARGER_STATUS_SIZE] = {
 };
 
 static const uint8_t CHARGER_STATUS_SIZE = 8;
-static const char *const CHARGER_STATUS[CHARGER_STATUS_SIZE] = {
+static constexpr const char *const CHARGER_STATUS[CHARGER_STATUS_SIZE] = {
     "Unused (Bit 0)",                         // 0000 0001
     "Unused (Bit 1)",                         // 0000 0010
     "Charging Battery 1",                     // 0000 0100
