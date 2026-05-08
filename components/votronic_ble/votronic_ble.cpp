@@ -54,9 +54,40 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
       }
       this->char_solar_charger_handle_ = 0;
 
+      if (this->char_bulk_data_handle_ != 0) {
+        auto status = esp_ble_gattc_unregister_for_notify(
+            this->parent()->get_gattc_if(), this->parent()->get_remote_bda(), this->char_bulk_data_handle_);
+        if (status) {
+          ESP_LOGW(TAG, "esp_ble_gattc_unregister_for_notify failed, status=%d", status);
+        }
+      }
+      this->char_bulk_data_handle_ = 0;
+      this->bulk_data_receiving_ = false;
+      this->bulk_data_frames_.clear();
+
       break;
     }
     case ESP_GATTC_SEARCH_CMPL_EVT: {
+      // [60:A4:23:91:8F:55] ESP_GATTC_SEARCH_CMPL_EVT
+      // [60:A4:23:91:8F:55] Service UUID: 0x1801
+      // [60:A4:23:91:8F:55]  start_handle: 0x1  end_handle: 0x4
+      // [60:A4:23:91:8F:55] Service UUID: 0x1800
+      // [60:A4:23:91:8F:55]  start_handle: 0x5  end_handle: 0x9
+      // [60:A4:23:91:8F:55] Service UUID: 0x180A
+      // [60:A4:23:91:8F:55]  start_handle: 0xa  end_handle: 0x10
+      // [60:A4:23:91:8F:55] Service UUID: 1D14D6EE-FD63-4FA1-BFA4-8F47B42119F0
+      // [60:A4:23:91:8F:55]  start_handle: 0x11  end_handle: 0x13
+      // [60:A4:23:91:8F:55] Service UUID: D0CB6AA7-8548-46D0-99F8-2D02611E5270
+      // [60:A4:23:91:8F:55]  start_handle: 0x14  end_handle: 0x21
+      // [60:A4:23:91:8F:55] Service UUID: AE64A924-1184-4554-8BBC-295DB9F2324A
+      // [60:A4:23:91:8F:55]  start_handle: 0x22  end_handle: 0xffff
+      // [60:A4:23:91:8F:55]  characteristic 9A082A4E-5BCC-4B1D-9958-A97CFCCFA5EC, handle 0x16, properties 0x12
+      // [60:A4:23:91:8F:55]  characteristic 971CCEC2-521D-42FD-B570-CF46FE5CEB65, handle 0x19, properties 0x12
+      // [60:A4:23:91:8F:55]  characteristic 9E298E7F-2594-49DE-BE51-39153A6250E4, handle 0x1c, properties 0xa
+      // [60:A4:23:91:8F:55]  characteristic CFA6E099-FA0F-43AA-88D2-4508B986A67F, handle 0x1e, properties 0xa
+      // [60:A4:23:91:8F:55]  characteristic D2296045-A715-4458-850F-0800C7E11CEC, handle 0x20, properties 0x1a
+      // [60:A4:23:91:8F:55] gattc_event_handler: event=18 gattc_if=3
+      // [60:A4:23:91:8F:55] cfg_mtu status 0, mtu 247
       auto *char_battery_computer =
           this->parent_->get_characteristic(this->service_monitoring_uuid_, this->char_battery_computer_uuid_);
       if (char_battery_computer == nullptr) {
@@ -87,6 +118,28 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
         ESP_LOGW(TAG, "esp_ble_gattc_register_for_notify failed, status=%d", status2);
       }
 
+      auto *char_management =
+          this->parent_->get_characteristic(this->service_monitoring_uuid_, this->char_management_uuid_);
+      if (char_management == nullptr) {
+        ESP_LOGW(TAG, "[%s] No management characteristic found at device.", this->parent_->address_str());
+        break;
+      }
+      this->char_management_handle_ = char_management->handle;
+
+      auto *char_bulk_data =
+          this->parent_->get_characteristic(this->service_log_data_uuid_, this->char_bulk_data_uuid_);
+      if (char_bulk_data == nullptr) {
+        ESP_LOGW(TAG, "[%s] No bulk data characteristic found at device.", this->parent_->address_str());
+        break;
+      }
+      this->char_bulk_data_handle_ = char_bulk_data->handle;
+
+      auto status3 = esp_ble_gattc_register_for_notify(this->parent()->get_gattc_if(), this->parent()->get_remote_bda(),
+                                                       char_bulk_data->handle);
+      if (status3) {
+        ESP_LOGW(TAG, "esp_ble_gattc_register_for_notify failed (bulk data), status=%d", status3);
+      }
+
       break;
     }
     case ESP_GATTC_REG_FOR_NOTIFY_EVT: {
@@ -114,6 +167,23 @@ void VotronicBle::update() {
   }
 }
 
+bool VotronicBle::send_command(uint8_t command) {
+  ESP_LOGD(TAG, "Send command: 0x%02X", command);
+
+  uint8_t frame[1];
+  frame[0] = command;
+
+  auto status = esp_ble_gattc_write_char(this->parent_->get_gattc_if(), this->parent_->get_conn_id(),
+                                         this->char_management_handle_, sizeof(frame), frame, ESP_GATT_WRITE_TYPE_RSP,
+                                         ESP_GATT_AUTH_REQ_NONE);
+
+  if (status) {
+    ESP_LOGW(TAG, "[%s] esp_ble_gattc_write_char failed, status=%d", this->parent_->address_str(), status);
+  }
+
+  return (status == 0);
+}
+
 void VotronicBle::on_votronic_ble_data(const uint8_t &handle, const std::vector<uint8_t> &data) {
   if (handle == this->char_solar_charger_handle_) {
     this->decode_solar_charger_data_(data);
@@ -125,10 +195,48 @@ void VotronicBle::on_votronic_ble_data(const uint8_t &handle, const std::vector<
     return;
   }
 
+  if (handle == this->char_bulk_data_handle_) {
+    this->decode_bulk_data_(data);
+    return;
+  }
+
   ESP_LOGW(TAG, "Your device is probably not supported. Please create an issue here: "
                 "https://github.com/syssi/esphome-votronic/issues");
   ESP_LOGW(TAG, "Please provide the following unhandled message data: %s",
            format_hex_pretty(&data.front(), data.size()).c_str());  // NOLINT
+}
+
+void VotronicBle::decode_bulk_data_(const std::vector<uint8_t> &data) {
+  if (data.empty())
+    return;
+
+  if (data[0] == 0xAA) {
+    ESP_LOGD(TAG, "Bulk data: begin of transmission");
+    this->bulk_data_frames_.clear();
+    this->bulk_data_receiving_ = true;
+    return;
+  }
+
+  if (data[0] == 0xFF) {
+    ESP_LOGD(TAG, "Bulk data: end of transmission (%zu frames)", this->bulk_data_frames_.size());
+    this->bulk_data_receiving_ = false;
+    for (size_t i = 0; i < this->bulk_data_frames_.size(); i++) {
+      const auto &frame = this->bulk_data_frames_[i];
+      ESP_LOGD(TAG, "  Frame[%zu]: %s", i, format_hex_pretty(frame.data(), frame.size()).c_str());  // NOLINT
+    }
+    this->bulk_data_frames_.clear();
+    return;
+  }
+
+  if (!this->bulk_data_receiving_) {
+    ESP_LOGW(TAG, "Bulk data frame outside transmission: %s",
+             format_hex_pretty(data.data(), data.size()).c_str());  // NOLINT
+    return;
+  }
+
+  ESP_LOGD(TAG, "Bulk data frame [%zu]: %s", this->bulk_data_frames_.size(),
+           format_hex_pretty(data.data(), data.size()).c_str());  // NOLINT
+  this->bulk_data_frames_.push_back(data);
 }
 
 void VotronicBle::decode_battery_computer_data_(const std::vector<uint8_t> &data) {
