@@ -6,8 +6,7 @@
 #include "esphome/components/text_sensor/text_sensor.h"
 #include "esphome/components/uart/uart.h"
 
-namespace esphome {
-namespace votronic {
+namespace esphome::votronic {
 
 class Votronic : public uart::UARTDevice, public PollingComponent {
  public:
@@ -295,5 +294,4 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   }
 };
 
-}  // namespace votronic
-}  // namespace esphome
+}  // namespace esphome::votronic

@@ -12,8 +12,7 @@
 
 #include <esp_gattc_api.h>
 
-namespace esphome {
-namespace votronic_ble {
+namespace esphome::votronic_ble {
 
 namespace espbt = esphome::esp32_ble_tracker;
 
@@ -141,7 +140,6 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   std::string solar_charger_status_bitmask_to_string_(uint8_t mask);
 };
 
-}  // namespace votronic_ble
-}  // namespace esphome
+}  // namespace esphome::votronic_ble
 
 #endif
