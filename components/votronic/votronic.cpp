@@ -2,8 +2,7 @@
 #include "esphome/core/log.h"
 #include "esphome/core/helpers.h"
 
-namespace esphome {
-namespace votronic {
+namespace esphome::votronic {
 
 static const char *const TAG = "votronic";
 static const char *const TAG_INFO1 = "votronic.i1";
@@ -664,5 +663,4 @@ std::string Votronic::charger_status_bitmask_to_string_(const uint8_t mask) {
   return errors_list;
 }
 
-}  // namespace votronic
-}  // namespace esphome
+}  // namespace esphome::votronic

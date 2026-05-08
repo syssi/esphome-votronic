@@ -2,8 +2,7 @@
 #include "esphome/core/log.h"
 #include "esphome/core/helpers.h"
 
-namespace esphome {
-namespace votronic_ble {
+namespace esphome::votronic_ble {
 
 static const char *const TAG = "votronic_ble";
 
@@ -329,5 +328,4 @@ std::string VotronicBle::solar_charger_status_bitmask_to_string_(const uint8_t m
   return format_unknown_hex(mask);
 }
 
-}  // namespace votronic_ble
-}  // namespace esphome
+}  // namespace esphome::votronic_ble
