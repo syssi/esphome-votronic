@@ -2,24 +2,32 @@
 
 #include "esphome/core/component.h"
 #include "esphome/core/hal.h"
-#include "esphome/components/ble_client/ble_client.h"
-#include "esphome/components/esp32_ble_tracker/esp32_ble_tracker.h"
 #include "esphome/components/binary_sensor/binary_sensor.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/text_sensor/text_sensor.h"
 
 #ifdef USE_ESP32
-
+#include "esphome/components/ble_client/ble_client.h"
+#include "esphome/components/esp32_ble_tracker/esp32_ble_tracker.h"
 #include <esp_gattc_api.h>
+#endif
 
 namespace esphome::votronic_ble {
 
+#ifdef USE_ESP32
 namespace espbt = esphome::esp32_ble_tracker;
+#endif
 
-class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingComponent {
+class VotronicBle :
+#ifdef USE_ESP32
+    public esphome::ble_client::BLEClientNode,
+#endif
+    public PollingComponent {
  public:
+#ifdef USE_ESP32
   void gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if,
                            esp_ble_gattc_cb_param_t *param) override;
+#endif
   void dump_config() override;
   void update() override;
   float get_setup_priority() const override { return setup_priority::DATA; }
@@ -80,7 +88,9 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
     pv_controller_status_text_sensor_ = pv_controller_status_text_sensor;
   }
 
+#ifdef USE_ESP32
   void on_votronic_ble_data(const uint8_t &handle, const std::vector<uint8_t> &data);
+#endif
   void set_throttle(uint32_t throttle) { this->throttle_ = throttle; }
 
  protected:
@@ -108,11 +118,9 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
   text_sensor::TextSensor *battery_status_text_sensor_{nullptr};
   text_sensor::TextSensor *pv_controller_status_text_sensor_{nullptr};
 
+#ifdef USE_ESP32
   uint16_t char_battery_computer_handle_{0x22};
   uint16_t char_solar_charger_handle_{0x25};
-  uint32_t last_battery_computer_data_{0};
-  uint32_t last_solar_charger_data_{0};
-  uint32_t throttle_;
 
   esp32_ble_tracker::ESPBTUUID service_bond_uuid_ =
       esp32_ble_tracker::ESPBTUUID::from_raw("70521e61-022d-f899-d046-4885a76acbd0");
@@ -130,6 +138,11 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
       esp32_ble_tracker::ESPBTUUID::from_raw("ac12f485-cab7-4e0a-aac5-3585918852f6");
   esp32_ble_tracker::ESPBTUUID char_bulk_data_uuid_ =
       esp32_ble_tracker::ESPBTUUID::from_raw("b8a37ffe-c57b-4007-b3c1-ca05a6b7f0c6");
+#endif
+
+  uint32_t last_battery_computer_data_{0};
+  uint32_t last_solar_charger_data_{0};
+  uint32_t throttle_{0};
 
   void decode_solar_charger_data_(const std::vector<uint8_t> &data);
   void decode_battery_computer_data_(const std::vector<uint8_t> &data);
@@ -141,5 +154,3 @@ class VotronicBle : public esphome::ble_client::BLEClientNode, public PollingCom
 };
 
 }  // namespace esphome::votronic_ble
-
-#endif

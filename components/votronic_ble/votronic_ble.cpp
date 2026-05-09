@@ -6,6 +6,8 @@ namespace esphome::votronic_ble {
 
 static const char *const TAG = "votronic_ble";
 
+#ifdef USE_ESP32
+
 void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if,
                                       esp_ble_gattc_cb_param_t *param) {
   switch (event) {
@@ -107,13 +109,6 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
   }
 }
 
-void VotronicBle::update() {
-  if (this->node_state != espbt::ClientState::ESTABLISHED) {
-    ESP_LOGW(TAG, "[%s] Not connected", this->parent_->address_str());
-    return;
-  }
-}
-
 void VotronicBle::on_votronic_ble_data(const uint8_t &handle, const std::vector<uint8_t> &data) {
   if (handle == this->char_solar_charger_handle_) {
     this->decode_solar_charger_data_(data);
@@ -129,6 +124,17 @@ void VotronicBle::on_votronic_ble_data(const uint8_t &handle, const std::vector<
                 "https://github.com/syssi/esphome-votronic/issues");
   ESP_LOGW(TAG, "Please provide the following unhandled message data: %s",
            format_hex_pretty(&data.front(), data.size()).c_str());  // NOLINT
+}
+
+#endif  // USE_ESP32
+
+void VotronicBle::update() {
+#ifdef USE_ESP32
+  if (this->node_state != espbt::ClientState::ESTABLISHED) {
+    ESP_LOGW(TAG, "[%s] Not connected", this->parent_->address_str());
+    return;
+  }
+#endif
 }
 
 void VotronicBle::decode_battery_computer_data_(const std::vector<uint8_t> &data) {
@@ -221,6 +227,7 @@ void VotronicBle::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
 
 void VotronicBle::dump_config() {
   ESP_LOGCONFIG(TAG, "VotronicBle:");
+#ifdef USE_ESP32
   ESP_LOGCONFIG(TAG, "  MAC address                         : %s", this->parent_->address_str());
   char service_monitoring_uuid_str[esp32_ble::UUID_STR_LEN];
   char char_battery_computer_uuid_str[esp32_ble::UUID_STR_LEN];
@@ -231,6 +238,7 @@ void VotronicBle::dump_config() {
                 this->char_battery_computer_uuid_.to_str(char_battery_computer_uuid_str));
   ESP_LOGCONFIG(TAG, "  Solar Charger Characteristic UUID   : %s",
                 this->char_solar_charger_uuid_.to_str(char_solar_charger_uuid_str));
+#endif
 
   LOG_BINARY_SENSOR("", "Charging", this->charging_binary_sensor_);
   LOG_BINARY_SENSOR("", "Discharging", this->discharging_binary_sensor_);

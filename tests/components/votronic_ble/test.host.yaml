@@ -1,0 +1,3 @@
+votronic_ble:
+  id: test_votronic_ble
+  update_interval: 2s
