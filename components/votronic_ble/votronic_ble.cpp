@@ -109,13 +109,6 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
   }
 }
 
-void VotronicBle::update() {
-  if (this->node_state != espbt::ClientState::ESTABLISHED) {
-    ESP_LOGW(TAG, "[%s] Not connected", this->parent_->address_str());
-    return;
-  }
-}
-
 void VotronicBle::on_votronic_ble_data(const uint8_t &handle, const std::vector<uint8_t> &data) {
   if (handle == this->char_solar_charger_handle_) {
     this->decode_solar_charger_data_(data);
@@ -134,6 +127,15 @@ void VotronicBle::on_votronic_ble_data(const uint8_t &handle, const std::vector<
 }
 
 #endif  // USE_ESP32
+
+void VotronicBle::update() {
+#ifdef USE_ESP32
+  if (this->node_state != espbt::ClientState::ESTABLISHED) {
+    ESP_LOGW(TAG, "[%s] Not connected", this->parent_->address_str());
+    return;
+  }
+#endif
+}
 
 void VotronicBle::decode_battery_computer_data_(const std::vector<uint8_t> &data) {
   if (data.size() != 20) {
