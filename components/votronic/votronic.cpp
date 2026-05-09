@@ -641,7 +641,7 @@ std::string Votronic::solar_charger_status_bitmask_to_string_(const uint8_t mask
 
 std::string Votronic::charger_status_bitmask_to_string_(const uint8_t mask) {
   bool first = true;
-  std::string errors_list = "";
+  std::string errors_list;
 
   if (mask == 0x00) {
     return "Standby";
