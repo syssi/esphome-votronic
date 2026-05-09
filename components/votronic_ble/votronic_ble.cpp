@@ -6,6 +6,8 @@ namespace esphome::votronic_ble {
 
 static const char *const TAG = "votronic_ble";
 
+#ifdef USE_ESP32
+
 void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if,
                                       esp_ble_gattc_cb_param_t *param) {
   switch (event) {
@@ -131,6 +133,8 @@ void VotronicBle::on_votronic_ble_data(const uint8_t &handle, const std::vector<
            format_hex_pretty(&data.front(), data.size()).c_str());  // NOLINT
 }
 
+#endif  // USE_ESP32
+
 void VotronicBle::decode_battery_computer_data_(const std::vector<uint8_t> &data) {
   if (data.size() != 20) {
     ESP_LOGW(TAG, "Invalid frame size: %zu", data.size());
@@ -221,6 +225,7 @@ void VotronicBle::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
 
 void VotronicBle::dump_config() {
   ESP_LOGCONFIG(TAG, "VotronicBle:");
+#ifdef USE_ESP32
   ESP_LOGCONFIG(TAG, "  MAC address                         : %s", this->parent_->address_str());
   char service_monitoring_uuid_str[esp32_ble::UUID_STR_LEN];
   char char_battery_computer_uuid_str[esp32_ble::UUID_STR_LEN];
@@ -231,6 +236,7 @@ void VotronicBle::dump_config() {
                 this->char_battery_computer_uuid_.to_str(char_battery_computer_uuid_str));
   ESP_LOGCONFIG(TAG, "  Solar Charger Characteristic UUID   : %s",
                 this->char_solar_charger_uuid_.to_str(char_solar_charger_uuid_str));
+#endif
 
   LOG_BINARY_SENSOR("", "Charging", this->charging_binary_sensor_);
   LOG_BINARY_SENSOR("", "Discharging", this->discharging_binary_sensor_);
