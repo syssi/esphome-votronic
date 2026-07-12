@@ -66,7 +66,7 @@ class TestVotronicBleSensorLists:
         assert ble_sensor.CONF_PV_VOLTAGE in ble_sensor.SENSOR_DEFS
         assert ble_sensor.CONF_CHARGED_CAPACITY in ble_sensor.SENSOR_DEFS
         assert ble_sensor.CONF_CHARGED_ENERGY in ble_sensor.SENSOR_DEFS
-        assert len(ble_sensor.SENSOR_DEFS) == 14
+        assert len(ble_sensor.SENSOR_DEFS) == 15
 
 
 class TestVotronicBleBinarySensorConstants:

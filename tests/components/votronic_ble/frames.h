@@ -50,33 +50,33 @@ static const std::vector<uint8_t> SOLAR_CHARGER_FRAME_AES = {
 // Night (no solar): bat=12.76V, pv=0V, I=0A, P=0W, temperature=0°C (inactive)
 // Source: field recording from issue #117
 static const std::vector<uint8_t> SOLAR_CHARGER_FRAME_FIELD_NIGHT = {
-    0xFC, 0x04,        // battery_voltage: 1276 * 0.01 = 12.76 V
-    0x00, 0x00,        // pv_voltage: 0 V
-    0x00, 0x00,        // pv_current: 0 A
-    0x00, 0x00,        // unknown
-    0x00,              // battery_status: Standby
-    0x00,              // pv_controller_temperature: 0 °C (no solar power)
-    0x00, 0x00,        // unknown
-    0x00,              // pv_controller_status: Standby
-    0x3F, 0x00,        // charged_capacity: 63 Ah
-    0x5B, 0x00,        // charged_energy: 91 * 10 = 910 Wh
-    0x00, 0x00,        // pv_power: 0 W
+    0xFC, 0x04,  // battery_voltage: 1276 * 0.01 = 12.76 V
+    0x00, 0x00,  // pv_voltage: 0 V
+    0x00, 0x00,  // pv_current: 0 A
+    0x00, 0x00,  // unknown
+    0x00,        // battery_status: Standby
+    0x00,        // pv_controller_temperature: 0 °C (no solar power)
+    0x00, 0x00,  // unknown
+    0x00,        // pv_controller_status: Standby
+    0x3F, 0x00,  // charged_capacity: 63 Ah
+    0x5B, 0x00,  // charged_energy: 91 * 10 = 910 Wh
+    0x00, 0x00,  // pv_power: 0 W
 };
 
 // Active charging: bat=13.32V, pv=21.64V, I=1.3A, P=18.4W, temperature=31°C
 // Source: field recording from issue #117
 static const std::vector<uint8_t> SOLAR_CHARGER_FRAME_FIELD_ACTIVE = {
-    0x34, 0x05,        // battery_voltage: 1332 * 0.01 = 13.32 V
-    0x74, 0x08,        // pv_voltage: 2164 * 0.01 = 21.64 V
-    0x0D, 0x00,        // pv_current: 13 * 0.1 = 1.3 A
-    0x00, 0x00,        // unknown
-    0x00,              // battery_status: Standby
-    0x1F,              // pv_controller_temperature: 31 °C
-    0x22, 0x00,        // unknown
-    0x09,              // pv_controller_status: Active (bit 3)
-    0x41, 0x00,        // charged_capacity: 65 Ah
-    0x5E, 0x00,        // charged_energy: 94 * 10 = 940 Wh
-    0xB8, 0x00,        // pv_power: 184 * 0.1 = 18.4 W
+    0x34, 0x05,  // battery_voltage: 1332 * 0.01 = 13.32 V
+    0x74, 0x08,  // pv_voltage: 2164 * 0.01 = 21.64 V
+    0x0D, 0x00,  // pv_current: 13 * 0.1 = 1.3 A
+    0x00, 0x00,  // unknown
+    0x00,        // battery_status: Standby
+    0x1F,        // pv_controller_temperature: 31 °C
+    0x22, 0x00,  // unknown
+    0x09,        // pv_controller_status: Active (bit 3)
+    0x41, 0x00,  // charged_capacity: 65 Ah
+    0x5E, 0x00,  // charged_energy: 94 * 10 = 940 Wh
+    0xB8, 0x00,  // pv_power: 184 * 0.1 = 18.4 W
 };
 
 // Reduced output: pv_controller_status=Reduced (0x10)
