@@ -32,6 +32,7 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
       this->publish_state_(this->battery_voltage_sensor_, NAN);
       this->publish_state_(this->pv_voltage_sensor_, NAN);
       this->publish_state_(this->pv_current_sensor_, NAN);
+      this->publish_state_(this->pv_controller_temperature_sensor_, NAN);
       this->publish_state_(this->battery_status_bitmask_sensor_, NAN);
       this->publish_state_(this->pv_controller_status_bitmask_sensor_, NAN);
       this->publish_state_(this->charged_capacity_sensor_, NAN);
@@ -205,6 +206,7 @@ void VotronicBle::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   this->publish_state_(this->battery_voltage_sensor_, votronic_get_16bit(0) * 0.01f);
   this->publish_state_(this->pv_voltage_sensor_, votronic_get_16bit(2) * 0.01f);
   this->publish_state_(this->pv_current_sensor_, votronic_get_16bit(4) * 0.1f);
+  this->publish_state_(this->pv_controller_temperature_sensor_, (float) data[9]);
   this->publish_state_(this->battery_status_bitmask_sensor_, data[8]);
   this->publish_state_(this->battery_status_text_sensor_, this->battery_status_bitmask_to_string_(data[8]));
   this->publish_state_(this->pv_controller_status_bitmask_sensor_, data[12]);
@@ -220,7 +222,7 @@ void VotronicBle::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   ESP_LOGD(TAG, "  Unknown (Byte  6): %d (0x%02X)", data[6], data[6]);
   ESP_LOGD(TAG, "  Unknown (Byte  7): %d (0x%02X)", data[7], data[7]);
   ESP_LOGD(TAG, "  Battery status bitmask: %d (0x%02X)", data[8], data[8]);
-  ESP_LOGD(TAG, "  Unknown (Byte  9): %d (0x%02X)", data[9], data[9]);
+  ESP_LOGD(TAG, "  PV controller temperature: %d °C", data[9]);
   ESP_LOGD(TAG, "  Unknown (Byte 10): %d (0x%02X)", data[10], data[10]);
   ESP_LOGD(TAG, "  Unknown (Byte 11): %d (0x%02X)", data[11], data[11]);
 }
@@ -255,6 +257,7 @@ void VotronicBle::dump_config() {
   LOG_SENSOR("", "Battery nominal capacity", this->battery_nominal_capacity_sensor_);
   LOG_SENSOR("", "PV voltage", this->pv_voltage_sensor_);
   LOG_SENSOR("", "PV current", this->pv_current_sensor_);
+  LOG_SENSOR("", "PV controller temperature", this->pv_controller_temperature_sensor_);
   LOG_SENSOR("", "PV power", this->pv_power_sensor_);
   LOG_SENSOR("", "Battery status bitmask", this->battery_status_bitmask_sensor_);
   LOG_SENSOR("", "PV controller status bitmask", this->pv_controller_status_bitmask_sensor_);

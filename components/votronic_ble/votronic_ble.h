@@ -67,6 +67,9 @@ class VotronicBle :
   }
   void set_pv_voltage_sensor(sensor::Sensor *pv_voltage_sensor) { pv_voltage_sensor_ = pv_voltage_sensor; }
   void set_pv_current_sensor(sensor::Sensor *pv_current_sensor) { pv_current_sensor_ = pv_current_sensor; }
+  void set_pv_controller_temperature_sensor(sensor::Sensor *pv_controller_temperature_sensor) {
+    pv_controller_temperature_sensor_ = pv_controller_temperature_sensor;
+  }
   void set_battery_status_bitmask_sensor(sensor::Sensor *battery_status_bitmask_sensor) {
     battery_status_bitmask_sensor_ = battery_status_bitmask_sensor;
   }
@@ -109,6 +112,7 @@ class VotronicBle :
   sensor::Sensor *battery_nominal_capacity_sensor_{nullptr};
   sensor::Sensor *pv_voltage_sensor_{nullptr};
   sensor::Sensor *pv_current_sensor_{nullptr};
+  sensor::Sensor *pv_controller_temperature_sensor_{nullptr};
   sensor::Sensor *battery_status_bitmask_sensor_{nullptr};
   sensor::Sensor *pv_controller_status_bitmask_sensor_{nullptr};
   sensor::Sensor *charged_capacity_sensor_{nullptr};

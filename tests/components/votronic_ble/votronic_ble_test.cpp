@@ -97,6 +97,30 @@ TEST(VotronicBleSolarTest, PvControllerReduced) {
   EXPECT_TRUE(current_reduction.state);
 }
 
+TEST(VotronicBleSolarTest, PvControllerTemperatureZeroAtNight) {
+  TestableVotronicBle ble;
+  sensor::Sensor pv_controller_temperature;
+  ble.set_pv_controller_temperature_sensor(&pv_controller_temperature);
+  ble.decode_solar_charger_data_(SOLAR_CHARGER_FRAME_FIELD_NIGHT);
+  EXPECT_FLOAT_EQ(pv_controller_temperature.state, 0.0f);
+}
+
+TEST(VotronicBleSolarTest, PvControllerTemperatureDuringCharging) {
+  TestableVotronicBle ble;
+  sensor::Sensor pv_controller_temperature, battery_voltage, pv_voltage, pv_current, pv_power;
+  ble.set_pv_controller_temperature_sensor(&pv_controller_temperature);
+  ble.set_battery_voltage_sensor(&battery_voltage);
+  ble.set_pv_voltage_sensor(&pv_voltage);
+  ble.set_pv_current_sensor(&pv_current);
+  ble.set_pv_power_sensor(&pv_power);
+  ble.decode_solar_charger_data_(SOLAR_CHARGER_FRAME_FIELD_ACTIVE);
+  EXPECT_FLOAT_EQ(pv_controller_temperature.state, 31.0f);
+  EXPECT_NEAR(battery_voltage.state, 13.32f, 0.01f);
+  EXPECT_NEAR(pv_voltage.state, 21.64f, 0.01f);
+  EXPECT_NEAR(pv_current.state, 1.3f, 0.01f);
+  EXPECT_NEAR(pv_power.state, 18.4f, 0.1f);
+}
+
 TEST(VotronicBleSolarTest, InvalidFrameSizeIgnored) {
   TestableVotronicBle ble;
   sensor::Sensor pv_voltage;

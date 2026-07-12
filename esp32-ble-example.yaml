@@ -104,6 +104,8 @@ sensor:
       name: "pv voltage"
     pv_current:
       name: "pv current"
+    pv_controller_temperature:
+      name: "pv controller temperature"
     battery_status_bitmask:
       name: "battery status bitmask"
     pv_controller_status_bitmask:

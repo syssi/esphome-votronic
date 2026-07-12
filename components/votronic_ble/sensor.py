@@ -9,12 +9,14 @@ from esphome.const import (
     DEVICE_CLASS_EMPTY,
     DEVICE_CLASS_ENERGY,
     DEVICE_CLASS_POWER,
+    DEVICE_CLASS_TEMPERATURE,
     DEVICE_CLASS_VOLTAGE,
     ENTITY_CATEGORY_DIAGNOSTIC,
     ICON_EMPTY,
     STATE_CLASS_MEASUREMENT,
     STATE_CLASS_TOTAL_INCREASING,
     UNIT_AMPERE,
+    UNIT_CELSIUS,
     UNIT_EMPTY,
     UNIT_PERCENT,
     UNIT_VOLT,
@@ -36,6 +38,7 @@ CONF_STATE_OF_CHARGE = "state_of_charge"
 CONF_BATTERY_NOMINAL_CAPACITY = "battery_nominal_capacity"
 CONF_PV_VOLTAGE = "pv_voltage"
 CONF_PV_CURRENT = "pv_current"
+CONF_PV_CONTROLLER_TEMPERATURE = "pv_controller_temperature"
 CONF_BATTERY_STATUS_BITMASK = "battery_status_bitmask"
 CONF_PV_CONTROLLER_STATUS_BITMASK = "pv_controller_status_bitmask"
 CONF_CHARGED_CAPACITY = "charged_capacity"
@@ -125,6 +128,13 @@ SENSOR_DEFS = {
         "icon": ICON_EMPTY,
         "accuracy_decimals": 1,
         "device_class": DEVICE_CLASS_POWER,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_PV_CONTROLLER_TEMPERATURE: {
+        "unit_of_measurement": UNIT_CELSIUS,
+        "icon": ICON_EMPTY,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_TEMPERATURE,
         "state_class": STATE_CLASS_MEASUREMENT,
     },
     CONF_BATTERY_STATUS_BITMASK: {
