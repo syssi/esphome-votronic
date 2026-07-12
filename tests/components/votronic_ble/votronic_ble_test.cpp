@@ -97,12 +97,12 @@ TEST(VotronicBleSolarTest, PvControllerReduced) {
   EXPECT_TRUE(current_reduction.state);
 }
 
-TEST(VotronicBleSolarTest, PvControllerTemperatureZeroAtNight) {
+TEST(VotronicBleSolarTest, PvControllerTemperatureNaNAtNight) {
   TestableVotronicBle ble;
   sensor::Sensor pv_controller_temperature;
   ble.set_pv_controller_temperature_sensor(&pv_controller_temperature);
   ble.decode_solar_charger_data_(SOLAR_CHARGER_FRAME_FIELD_NIGHT);
-  EXPECT_FLOAT_EQ(pv_controller_temperature.state, 0.0f);
+  EXPECT_TRUE(std::isnan(pv_controller_temperature.state));
 }
 
 TEST(VotronicBleSolarTest, PvControllerTemperatureDuringCharging) {

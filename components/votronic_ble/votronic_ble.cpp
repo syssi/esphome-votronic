@@ -206,7 +206,7 @@ void VotronicBle::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   this->publish_state_(this->battery_voltage_sensor_, votronic_get_16bit(0) * 0.01f);
   this->publish_state_(this->pv_voltage_sensor_, votronic_get_16bit(2) * 0.01f);
   this->publish_state_(this->pv_current_sensor_, votronic_get_16bit(4) * 0.1f);
-  this->publish_state_(this->pv_controller_temperature_sensor_, (float) data[9]);
+  this->publish_state_(this->pv_controller_temperature_sensor_, data[12] != 0 ? (float) data[9] : NAN);
   this->publish_state_(this->battery_status_bitmask_sensor_, data[8]);
   this->publish_state_(this->battery_status_text_sensor_, this->battery_status_bitmask_to_string_(data[8]));
   this->publish_state_(this->pv_controller_status_bitmask_sensor_, data[12]);
