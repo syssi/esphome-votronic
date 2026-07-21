@@ -15,6 +15,9 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   void update() override;
   float get_setup_priority() const override;
 
+  void set_commutation_binary_sensor(binary_sensor::BinarySensor *commutation_binary_sensor) {
+    commutation_binary_sensor_= commutation_binary_sensor;
+  }
   void set_charging_binary_sensor(binary_sensor::BinarySensor *charging_binary_sensor) {
     charging_binary_sensor_ = charging_binary_sensor;
   }
@@ -191,6 +194,7 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   void set_rx_timeout(uint16_t rx_timeout) { rx_timeout_ = rx_timeout; }
 
  protected:
+  binary_sensor::BinarySensor *commutation_binary_sensor_{nullptr};
   binary_sensor::BinarySensor *charging_binary_sensor_{nullptr};
   binary_sensor::BinarySensor *discharging_binary_sensor_{nullptr};
 

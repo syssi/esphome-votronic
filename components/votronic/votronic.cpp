@@ -349,15 +349,14 @@ void Votronic::decode_battery_computer_info1_data_(const std::vector<uint8_t> &d
            votronic_get_16bit(8));
   //  10   2  0x63 0x00
   this->publish_state_(this->state_of_charge_sensor_, (float) data[10]);
-  //  12   2  0x7B 0xFE
+  //  11   1  0x00        0x00 OFF / 0x10 ON
+  this->publish_state_(this->commutation_binary_sensor_, (data[11] == 0x10));
+  //  12   2  0x7B 0xFE 0xFF   Current (A)
   float current = votronic_get_24bit(12) * 0.001f;
   this->publish_state_(this->current_sensor_, current);
   this->publish_state_(this->power_sensor_, current * battery_voltage);
   this->publish_state_(this->charging_binary_sensor_, (current > 0.0f));
   this->publish_state_(this->discharging_binary_sensor_, (current < 0.0f));
-
-  //  14   1  0xFF
-  ESP_LOGI(TAG_INFO1, "Byte    14: 0x%02X / %d", data[14], data[14]);
   //  15   1  0x39        CRC
 }
 
@@ -464,6 +463,7 @@ void Votronic::dump_config() {
   ESP_LOGCONFIG(TAG, "Votronic:");
   ESP_LOGCONFIG(TAG, "  RX timeout: %d ms", this->rx_timeout_);
 
+  LOG_BINARY_SENSOR("", "Commutation", this->commutation_binary_sensor_);
   LOG_BINARY_SENSOR("", "Charging", this->charging_binary_sensor_);
   LOG_BINARY_SENSOR("", "Discharging", this->discharging_binary_sensor_);
 

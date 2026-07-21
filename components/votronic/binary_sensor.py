@@ -9,6 +9,7 @@ DEPENDENCIES = ["votronic"]
 
 CODEOWNERS = ["@syssi"]
 
+CONF_COMMUTATION = "commutation"
 CONF_CHARGING = "charging"
 CONF_DISCHARGING = "discharging"
 
@@ -29,6 +30,10 @@ CONF_PV_CURRENT_REDUCTION = "pv_current_reduction"
 CONF_PV_AES_ACTIVE = "pv_aes_active"
 
 BINARY_SENSOR_DEFS = {
+    CONF_COMMUTATION: {
+        "icon": "mdi:electric-switch",
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
     CONF_CHARGING: {
         "icon": "mdi:battery-charging",
         "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
