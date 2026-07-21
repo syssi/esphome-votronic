@@ -59,8 +59,8 @@ CONF_CHARGING_CONVERTER_SECONDARY_BATTERY_VOLTAGE = (
 CONF_CHARGING_CONVERTER_CURRENT = "charging_converter_current"
 CONF_CHARGING_CONVERTER_POWER = "charging_converter_power"
 CONF_CHARGING_CONVERTER_LOAD = "charging_converter_load"
-CONF_CHARGING_CONVERTER_CONTROLLER_TEMPERATURE = (
-    "charging_converter_controller_temperature"
+CONF_CHARGING_CONVERTER_BATTERY_TEMPERATURE = (
+    "charging_converter_battery_temperature"
 )
 CONF_CHARGING_CONVERTER_MODE_SETTING_ID = "charging_converter_mode_setting_id"
 CONF_CHARGING_CONVERTER_BATTERY_STATUS_BITMASK = (
@@ -255,7 +255,7 @@ SENSOR_DEFS = {
         "state_class": STATE_CLASS_MEASUREMENT,
         "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
     },
-    CONF_CHARGING_CONVERTER_CONTROLLER_TEMPERATURE: {
+    CONF_CHARGING_CONVERTER_BATTERY_TEMPERATURE: {
         "unit_of_measurement": UNIT_CELSIUS,
         "icon": ICON_EMPTY,
         "accuracy_decimals": 0,

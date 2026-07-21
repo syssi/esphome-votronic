@@ -290,8 +290,8 @@ void Votronic::decode_charging_converter_data_(const std::vector<uint8_t> &data)
   //   9   1  0x00        Reserved
   //  10   1  0xA0        Charging Power                     %    0-100% 1%/Bit
   this->publish_state_(this->charging_converter_load_sensor_, (float) data[10]);
-  //  11   1  0x15        Controller temperature
-  this->publish_state_(this->charging_converter_controller_temperature_sensor_, data[11] * 0.1f);
+  //  11   1  0x15        Battery temperature
+  this->publish_state_(this->charging_converter_battery_temperature_sensor_, data[11] * 0.1f);
   //  12   1  0x03        Charging mode setting (dip switches)
   this->publish_state_(this->charging_converter_mode_setting_id_sensor_, data[12]);
   this->publish_state_(this->charging_converter_mode_setting_text_sensor_,
@@ -515,7 +515,7 @@ void Votronic::dump_config() {
   LOG_SENSOR("", "Charging converter controller status bitmask",
              this->charging_converter_controller_status_bitmask_sensor_);
   LOG_SENSOR("", "Charging converter mode setting ID", this->charging_converter_mode_setting_id_sensor_);
-  LOG_SENSOR("", "Charging converter controller temperature", this->charging_converter_controller_temperature_sensor_);
+  LOG_SENSOR("", "Charging converter battery temperature", this->charging_converter_battery_temperature_sensor_);
   LOG_SENSOR("", "PV Mode Setting ID", this->pv_mode_setting_id_sensor_);
 
   LOG_TEXT_SENSOR("", "Battery status", this->battery_status_text_sensor_);

@@ -142,9 +142,9 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   void set_charging_converter_load_sensor(sensor::Sensor *charging_converter_load_sensor) {
     charging_converter_load_sensor_ = charging_converter_load_sensor;
   }
-  void set_charging_converter_controller_temperature_sensor(
-      sensor::Sensor *charging_converter_controller_temperature_sensor) {
-    charging_converter_controller_temperature_sensor_ = charging_converter_controller_temperature_sensor;
+  void set_charging_converter_battery_temperature_sensor(
+      sensor::Sensor *charging_converter_battery_temperature_sensor) {
+    charging_converter_battery_temperature_sensor_ = charging_converter_battery_temperature_sensor;
   }
   void set_charging_converter_mode_setting_id_sensor(sensor::Sensor *charging_converter_mode_setting_id_sensor) {
     charging_converter_mode_setting_id_sensor_ = charging_converter_mode_setting_id_sensor;
@@ -236,7 +236,7 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   sensor::Sensor *charging_converter_current_sensor_{nullptr};
   sensor::Sensor *charging_converter_power_sensor_{nullptr};
   sensor::Sensor *charging_converter_load_sensor_{nullptr};
-  sensor::Sensor *charging_converter_controller_temperature_sensor_{nullptr};
+  sensor::Sensor *charging_converter_battery_temperature_sensor_{nullptr};
   sensor::Sensor *charging_converter_mode_setting_id_sensor_{nullptr};
   sensor::Sensor *charging_converter_battery_status_bitmask_sensor_{nullptr};
   sensor::Sensor *charging_converter_controller_status_bitmask_sensor_{nullptr};
