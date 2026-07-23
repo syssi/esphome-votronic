@@ -321,6 +321,12 @@ void Votronic::decode_battery_computer_info1_data_(const std::vector<uint8_t> &d
   auto votronic_get_16bit = [&](size_t i) -> uint16_t {
     return (uint16_t(data[i + 1]) << 8) | (uint16_t(data[i + 0]) << 0);
   };
+  auto votronic_get_24bit = [&](size_t i) -> int32_t {
+    int j = (data[i + 1] << 16) |(data[i + 1] << 8) | (data[i + 0] << 0);
+    if (j & 0x800000)
+      j |= ~0xFFFFFF;
+    return j;
+  };
 
   // Example frame of a Votronic Smart Shunt 400 S:
   // 0xAA 0xCA 0x03 0x05 0x0F 0x05 0xC7 0x01 0x20 0x00 0x63 0x00 0x7B 0xFE 0xFF 0x39
@@ -344,7 +350,7 @@ void Votronic::decode_battery_computer_info1_data_(const std::vector<uint8_t> &d
   //  10   2  0x63 0x00
   this->publish_state_(this->state_of_charge_sensor_, (float) data[10]);
   //  12   2  0x7B 0xFE
-  float current = ((int16_t) votronic_get_16bit(12)) * 0.001f;
+  float current = votronic_get_24bit(12) * 0.001f;
   this->publish_state_(this->current_sensor_, current);
   this->publish_state_(this->power_sensor_, current * battery_voltage);
   this->publish_state_(this->charging_binary_sensor_, (current > 0.0f));
