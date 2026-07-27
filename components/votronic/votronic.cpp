@@ -343,20 +343,20 @@ void Votronic::decode_battery_computer_info1_data_(const std::vector<uint8_t> &d
   //   4   2  0x0F 0x05   Second Battery Voltage
   this->publish_state_(this->battery_computer_secondary_battery_voltage_sensor_, votronic_get_16bit(4) * 0.01f);
   //   6   2  0xC7 0x01
-  this->publish_state_(this->battery_capacity_remaining_sensor_, votronic_get_16bit(6) * 1.0f);
+  this->publish_state_(this->battery_computer_battery_capacity_remaining_sensor_, votronic_get_16bit(6) * 1.0f);
   //   8   2  0x20 0x00
   ESP_LOGD(TAG_INFO1, "Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9],
            votronic_get_16bit(8));
   //  10   2  0x63 0x00
-  this->publish_state_(this->state_of_charge_sensor_, (float) data[10]);
+  this->publish_state_(this->battery_computer_battery_charge_sensor_, (float) data[10]);
   //  11   1  0x00        0x00 OFF / 0x10 ON
-  this->publish_state_(this->commutation_binary_sensor_, (data[11] == 0x10));
+  this->publish_state_(this->battery_computer_commutation_binary_sensor_, (data[11] == 0x10));
   //  12   2  0x7B 0xFE 0xFF   Current (A)
   float current = votronic_get_24bit(12) * 0.001f;
-  this->publish_state_(this->current_sensor_, current);
-  this->publish_state_(this->power_sensor_, current * battery_voltage);
-  this->publish_state_(this->charging_binary_sensor_, (current > 0.0f));
-  this->publish_state_(this->discharging_binary_sensor_, (current < 0.0f));
+  this->publish_state_(this->battery_computer_current_sensor_, current);
+  this->publish_state_(this->battery_computer_power_sensor_, current * battery_voltage);
+  this->publish_state_(this->battery_computer_charging_binary_sensor_, (current > 0.0f));
+  this->publish_state_(this->battery_computer_discharging_binary_sensor_, (current < 0.0f));
   //  15   1  0x39        CRC
 }
 
@@ -387,7 +387,7 @@ void Votronic::decode_battery_computer_info2_data_(const std::vector<uint8_t> &d
   ESP_LOGD(TAG_INFO2, "Byte   4-5: 0x%02X 0x%02X / %d %d / %d", data[4], data[5], data[4], data[5],
            votronic_get_16bit(4));
   //   6   2  0xF8 0x11
-  this->publish_state_(this->battery_nominal_capacity_sensor_, votronic_get_16bit(6) * 0.1f);
+  this->publish_state_(this->battery_computer_battery_nominal_capacity_sensor_, votronic_get_16bit(6) * 0.1f);
   //   8   2  0x5E 0x07
   ESP_LOGD(TAG_INFO2, "Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9],
            votronic_get_16bit(8));
@@ -408,8 +408,8 @@ void Votronic::decode_battery_computer_info2_data_(const std::vector<uint8_t> &d
   // this->publish_state_(this->charging_mode_setting_id_sensor_, data[12]);
   // this->publish_state_(this->charging_mode_setting_text_sensor_, this->charging_mode_setting_to_string_(data[12]));
   //  13   1  0x04
-  this->publish_state_(this->battery_status_bitmask_sensor_, data[13]);
-  this->publish_state_(this->battery_status_text_sensor_, this->battery_status_bitmask_to_string_(data[13]));
+  this->publish_state_(this->battery_computer_battery_status_bitmask_sensor_, data[13]);
+  this->publish_state_(this->battery_computer_battery_status_text_sensor_, this->battery_status_bitmask_to_string_(data[13]));
   ESP_LOGD(TAG_INFO2, "Battery status bitmask: 0x%02X / %d", data[13], data[13]);
   //  14   1  0x02
   ESP_LOGD(TAG_INFO2, "Controller Status Bitmask?: 0x%02X / %d", data[14], data[14]);
@@ -463,9 +463,9 @@ void Votronic::dump_config() {
   ESP_LOGCONFIG(TAG, "Votronic:");
   ESP_LOGCONFIG(TAG, "  RX timeout: %d ms", this->rx_timeout_);
 
-  LOG_BINARY_SENSOR("", "Commutation", this->commutation_binary_sensor_);
-  LOG_BINARY_SENSOR("", "Charging", this->charging_binary_sensor_);
-  LOG_BINARY_SENSOR("", "Discharging", this->discharging_binary_sensor_);
+  LOG_BINARY_SENSOR("", "Battery computer commutation", this->battery_computer_commutation_binary_sensor_);
+  LOG_BINARY_SENSOR("", "Battery computer charging", this->battery_computer_charging_binary_sensor_);
+  LOG_BINARY_SENSOR("", "Battery computer discharging", this->battery_computer_discharging_binary_sensor_);
 
   LOG_BINARY_SENSOR("", "Charger charging", this->charger_charging_binary_sensor_);
   LOG_BINARY_SENSOR("", "Charger discharging", this->charger_discharging_binary_sensor_);
@@ -485,14 +485,15 @@ void Votronic::dump_config() {
   LOG_BINARY_SENSOR("", "PV current reduction", this->pv_current_reduction_binary_sensor_);
   LOG_BINARY_SENSOR("", "PV AES active", this->pv_aes_active_binary_sensor_);
 
-  LOG_SENSOR("", "Battery capacity remaining", this->battery_capacity_remaining_sensor_);
-  LOG_SENSOR("", "Battery nominal capacity", this->battery_nominal_capacity_sensor_);
-  LOG_SENSOR("", "State of charge", this->state_of_charge_sensor_);
-  LOG_SENSOR("", "Current", this->current_sensor_);
-  LOG_SENSOR("", "Power", this->power_sensor_);
-  LOG_SENSOR("", "Battery status bitmask", this->battery_status_bitmask_sensor_);
   LOG_SENSOR("", "Battery computer battery voltage", this->battery_computer_battery_voltage_sensor_);
   LOG_SENSOR("", "Battery computer secondary battery voltage", this->battery_computer_secondary_battery_voltage_sensor_);
+  LOG_SENSOR("", "Battery computer battery capacity remaining", this->battery_computer_battery_capacity_remaining_sensor_);
+  LOG_SENSOR("", "Battery computer battery nominal capacity", this->battery_computer_battery_nominal_capacity_sensor_);
+  LOG_SENSOR("", "Battery computer battery charge", this->battery_computer_battery_charge_sensor_);
+  LOG_SENSOR("", "Battery computer current", this->battery_computer_current_sensor_);
+  LOG_SENSOR("", "Battery computer power", this->battery_computer_power_sensor_);
+  LOG_SENSOR("", "Battery computer battery status bitmask", this->battery_computer_battery_status_bitmask_sensor_);
+
   LOG_SENSOR("", "PV battery voltage", this->pv_battery_voltage_sensor_);
   LOG_SENSOR("", "PV voltage", this->pv_voltage_sensor_);
   LOG_SENSOR("", "PV current", this->pv_current_sensor_);
@@ -524,7 +525,7 @@ void Votronic::dump_config() {
   LOG_SENSOR("", "Charging converter mode setting ID", this->charging_converter_mode_setting_id_sensor_);
   LOG_SENSOR("", "Charging converter battery temperature", this->charging_converter_battery_temperature_sensor_);
 
-  LOG_TEXT_SENSOR("", "Battery status", this->battery_status_text_sensor_);
+  LOG_TEXT_SENSOR("", "Battery computer battery status", this->battery_computer_battery_status_text_sensor_);
 
   LOG_TEXT_SENSOR("", "Charger battery status", this->charger_battery_status_text_sensor_);
   LOG_TEXT_SENSOR("", "Charger controller status", this->charger_controller_status_text_sensor_);
