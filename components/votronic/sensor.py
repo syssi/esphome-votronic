@@ -27,15 +27,16 @@ DEPENDENCIES = ["votronic"]
 
 CODEOWNERS = ["@syssi"]
 
-# CONF_BATTERY_VOLTAGE = "battery_voltage"
-CONF_SECONDARY_BATTERY_VOLTAGE = "secondary_battery_voltage"
 CONF_BATTERY_CAPACITY_REMAINING = "battery_capacity_remaining"
 CONF_STATE_OF_CHARGE = "state_of_charge"
 # CONF_CURRENT = "current"
 # CONF_POWER = "power"
 CONF_BATTERY_NOMINAL_CAPACITY = "battery_nominal_capacity"
 CONF_BATTERY_STATUS_BITMASK = "battery_status_bitmask"
+CONF_BATTERY_COMPUTER_BATTERY_VOLTAGE = "battery_computer_battery_voltage"
+CONF_BATTERY_COMPUTER_SECONDARY_BATTERY_VOLTAGE = "battery_computer_secondary_battery_voltage"
 
+CONF_PV_BATTERY_VOLTAGE = "pv_battery_voltage"
 CONF_PV_VOLTAGE = "pv_voltage"
 CONF_PV_CURRENT = "pv_current"
 CONF_PV_BATTERY_STATUS_BITMASK = "pv_battery_status_bitmask"
@@ -44,6 +45,8 @@ CONF_PV_POWER = "pv_power"
 CONF_PV_MODE_SETTING_ID = "pv_mode_setting_id"
 CONF_PV_CONTROLLER_TEMPERATURE = "pv_controller_temperature"
 
+CONF_CHARGER_BATTERY_VOLTAGE = "charger_battery_voltage"
+CONF_CHARGER_SECONDARY_BATTERY_VOLTAGE = "charger_secondary_battery_voltage"
 CONF_CHARGER_CURRENT = "charger_current"
 CONF_CHARGER_POWER = "charger_power"
 CONF_CHARGER_LOAD = "charger_load"
@@ -84,14 +87,14 @@ ICON_MODE_SETTING_ID = "mdi:car-battery"
 UNIT_AMPERE_HOURS = "Ah"
 
 SENSOR_DEFS = {
-    CONF_BATTERY_VOLTAGE: {
+    CONF_BATTERY_COMPUTER_BATTERY_VOLTAGE: {
         "unit_of_measurement": UNIT_VOLT,
         "icon": ICON_EMPTY,
         "accuracy_decimals": 2,
         "device_class": DEVICE_CLASS_VOLTAGE,
         "state_class": STATE_CLASS_MEASUREMENT,
     },
-    CONF_SECONDARY_BATTERY_VOLTAGE: {
+    CONF_BATTERY_COMPUTER_SECONDARY_BATTERY_VOLTAGE: {
         "unit_of_measurement": UNIT_VOLT,
         "icon": ICON_EMPTY,
         "accuracy_decimals": 2,
@@ -139,6 +142,20 @@ SENSOR_DEFS = {
         "accuracy_decimals": 0,
         "device_class": DEVICE_CLASS_EMPTY,
         "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CHARGER_BATTERY_VOLTAGE: {
+        "unit_of_measurement": UNIT_VOLT,
+        "icon": ICON_EMPTY,
+        "accuracy_decimals": 2,
+        "device_class": DEVICE_CLASS_VOLTAGE,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_CHARGER_SECONDARY_BATTERY_VOLTAGE: {
+        "unit_of_measurement": UNIT_VOLT,
+        "icon": ICON_EMPTY,
+        "accuracy_decimals": 2,
+        "device_class": DEVICE_CLASS_VOLTAGE,
+        "state_class": STATE_CLASS_MEASUREMENT,
     },
     CONF_CHARGER_CURRENT: {
         "unit_of_measurement": UNIT_AMPERE,
@@ -262,6 +279,13 @@ SENSOR_DEFS = {
         "device_class": DEVICE_CLASS_TEMPERATURE,
         "state_class": STATE_CLASS_MEASUREMENT,
         "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_PV_BATTERY_VOLTAGE: {
+        "unit_of_measurement": UNIT_VOLT,
+        "icon": ICON_EMPTY,
+        "accuracy_decimals": 2,
+        "device_class": DEVICE_CLASS_VOLTAGE,
+        "state_class": STATE_CLASS_MEASUREMENT,
     },
     CONF_PV_VOLTAGE: {
         "unit_of_measurement": UNIT_VOLT,
