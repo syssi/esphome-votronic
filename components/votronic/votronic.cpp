@@ -178,7 +178,7 @@ void Votronic::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   //   0   1  0xAA        Sync Byte
   //   1   1  0x1A        Frame Type
   //   2   2  0xA0 0x05   Battery Voltage                    V    U16 10mV/Bit
-  this->publish_state_(this->battery_voltage_sensor_, votronic_get_16bit(2) * 0.01f);
+  this->publish_state_(this->pv_battery_voltage_sensor_, votronic_get_16bit(2) * 0.01f);
   //   4   2  0xA4 0x06   PV Voltage                         V    U16 10mV/Bit Nur bei MPP-Version
   float pv_voltage = votronic_get_16bit(4) * 0.01f;
   this->publish_state_(this->pv_voltage_sensor_, pv_voltage);
@@ -227,9 +227,9 @@ void Votronic::decode_charger_data_(const std::vector<uint8_t> &data) {
   //   1   1  0x3A        Frame Type
   //   2   2  0xA0 0x05   Battery Voltage                    V    U16 10mV/Bit
   float battery_voltage = votronic_get_16bit(2) * 0.01f;
-  this->publish_state_(this->battery_voltage_sensor_, battery_voltage);
+  this->publish_state_(this->charger_battery_voltage_sensor_, battery_voltage);
   //   4   2  0xA4 0x06   Second Battery Voltage             V    U16 10mV/Bit
-  this->publish_state_(this->secondary_battery_voltage_sensor_, votronic_get_16bit(4) * 0.01f);
+  this->publish_state_(this->charger_secondary_battery_voltage_sensor_, votronic_get_16bit(4) * 0.01f);
   //   6   2  0x78 0x00   Charging Current                   A    S16 100mA/Bit
   float current = (float) ((int16_t) votronic_get_16bit(6)) * 0.1f;
   this->publish_state_(this->charger_current_sensor_, current);
@@ -290,8 +290,8 @@ void Votronic::decode_charging_converter_data_(const std::vector<uint8_t> &data)
   //   9   1  0x00        Reserved
   //  10   1  0xA0        Charging Power                     %    0-100% 1%/Bit
   this->publish_state_(this->charging_converter_load_sensor_, (float) data[10]);
-  //  11   1  0x15        Controller temperature
-  this->publish_state_(this->charging_converter_controller_temperature_sensor_, data[11] * 0.1f);
+  //  11   1  0x15        Battery temperature
+  this->publish_state_(this->charging_converter_battery_temperature_sensor_, data[11] * 0.1f);
   //  12   1  0x03        Charging mode setting (dip switches)
   this->publish_state_(this->charging_converter_mode_setting_id_sensor_, data[12]);
   this->publish_state_(this->charging_converter_mode_setting_text_sensor_,
@@ -321,6 +321,12 @@ void Votronic::decode_battery_computer_info1_data_(const std::vector<uint8_t> &d
   auto votronic_get_16bit = [&](size_t i) -> uint16_t {
     return (uint16_t(data[i + 1]) << 8) | (uint16_t(data[i + 0]) << 0);
   };
+  auto votronic_get_24bit = [&](size_t i) -> int32_t {
+    int j = (data[i + 1] << 16) |(data[i + 1] << 8) | (data[i + 0] << 0);
+    if (j & 0x800000)
+      j |= ~0xFFFFFF;
+    return j;
+  };
 
   // Example frame of a Votronic Smart Shunt 400 S:
   // 0xAA 0xCA 0x03 0x05 0x0F 0x05 0xC7 0x01 0x20 0x00 0x63 0x00 0x7B 0xFE 0xFF 0x39
@@ -333,25 +339,24 @@ void Votronic::decode_battery_computer_info1_data_(const std::vector<uint8_t> &d
   //   1   1  0xCA        Frame Type
   //   2   2  0x03 0x05   Battery Voltage
   float battery_voltage = votronic_get_16bit(2) * 0.01f;
-  this->publish_state_(this->battery_voltage_sensor_, battery_voltage);
+  this->publish_state_(this->battery_computer_battery_voltage_sensor_, battery_voltage);
   //   4   2  0x0F 0x05   Second Battery Voltage
-  this->publish_state_(this->secondary_battery_voltage_sensor_, votronic_get_16bit(4) * 0.01f);
+  this->publish_state_(this->battery_computer_secondary_battery_voltage_sensor_, votronic_get_16bit(4) * 0.01f);
   //   6   2  0xC7 0x01
-  this->publish_state_(this->battery_capacity_remaining_sensor_, votronic_get_16bit(6) * 1.0f);
+  this->publish_state_(this->battery_computer_battery_capacity_remaining_sensor_, votronic_get_16bit(6) * 1.0f);
   //   8   2  0x20 0x00
   ESP_LOGD(TAG_INFO1, "Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9],
            votronic_get_16bit(8));
   //  10   2  0x63 0x00
-  this->publish_state_(this->state_of_charge_sensor_, (float) data[10]);
-  //  12   2  0x7B 0xFE
-  float current = ((int16_t) votronic_get_16bit(12)) * 0.001f;
-  this->publish_state_(this->current_sensor_, current);
-  this->publish_state_(this->power_sensor_, current * battery_voltage);
-  this->publish_state_(this->charging_binary_sensor_, (current > 0.0f));
-  this->publish_state_(this->discharging_binary_sensor_, (current < 0.0f));
-
-  //  14   1  0xFF
-  ESP_LOGI(TAG_INFO1, "Byte    14: 0x%02X / %d", data[14], data[14]);
+  this->publish_state_(this->battery_computer_battery_charge_sensor_, (float) data[10]);
+  //  11   1  0x00        0x00 OFF / 0x10 ON
+  this->publish_state_(this->battery_computer_commutation_binary_sensor_, (data[11] == 0x10));
+  //  12   2  0x7B 0xFE 0xFF   Current (A)
+  float current = votronic_get_24bit(12) * 0.001f;
+  this->publish_state_(this->battery_computer_current_sensor_, current);
+  this->publish_state_(this->battery_computer_power_sensor_, current * battery_voltage);
+  this->publish_state_(this->battery_computer_charging_binary_sensor_, (current > 0.0f));
+  this->publish_state_(this->battery_computer_discharging_binary_sensor_, (current < 0.0f));
   //  15   1  0x39        CRC
 }
 
@@ -382,7 +387,7 @@ void Votronic::decode_battery_computer_info2_data_(const std::vector<uint8_t> &d
   ESP_LOGD(TAG_INFO2, "Byte   4-5: 0x%02X 0x%02X / %d %d / %d", data[4], data[5], data[4], data[5],
            votronic_get_16bit(4));
   //   6   2  0xF8 0x11
-  this->publish_state_(this->battery_nominal_capacity_sensor_, votronic_get_16bit(6) * 0.1f);
+  this->publish_state_(this->battery_computer_battery_nominal_capacity_sensor_, votronic_get_16bit(6) * 0.1f);
   //   8   2  0x5E 0x07
   ESP_LOGD(TAG_INFO2, "Byte   8-9: 0x%02X 0x%02X / %d %d / %d", data[8], data[9], data[8], data[9],
            votronic_get_16bit(8));
@@ -403,8 +408,8 @@ void Votronic::decode_battery_computer_info2_data_(const std::vector<uint8_t> &d
   // this->publish_state_(this->charging_mode_setting_id_sensor_, data[12]);
   // this->publish_state_(this->charging_mode_setting_text_sensor_, this->charging_mode_setting_to_string_(data[12]));
   //  13   1  0x04
-  this->publish_state_(this->battery_status_bitmask_sensor_, data[13]);
-  this->publish_state_(this->battery_status_text_sensor_, this->battery_status_bitmask_to_string_(data[13]));
+  this->publish_state_(this->battery_computer_battery_status_bitmask_sensor_, data[13]);
+  this->publish_state_(this->battery_computer_battery_status_text_sensor_, this->battery_status_bitmask_to_string_(data[13]));
   ESP_LOGD(TAG_INFO2, "Battery status bitmask: 0x%02X / %d", data[13], data[13]);
   //  14   1  0x02
   ESP_LOGD(TAG_INFO2, "Controller Status Bitmask?: 0x%02X / %d", data[14], data[14]);
@@ -458,9 +463,12 @@ void Votronic::dump_config() {
   ESP_LOGCONFIG(TAG, "Votronic:");
   ESP_LOGCONFIG(TAG, "  RX timeout: %d ms", this->rx_timeout_);
 
-  LOG_BINARY_SENSOR("", "Charging", this->charging_binary_sensor_);
-  LOG_BINARY_SENSOR("", "Discharging", this->discharging_binary_sensor_);
+  LOG_BINARY_SENSOR("", "Battery computer commutation", this->battery_computer_commutation_binary_sensor_);
+  LOG_BINARY_SENSOR("", "Battery computer charging", this->battery_computer_charging_binary_sensor_);
+  LOG_BINARY_SENSOR("", "Battery computer discharging", this->battery_computer_discharging_binary_sensor_);
 
+  LOG_BINARY_SENSOR("", "Charger charging", this->charger_charging_binary_sensor_);
+  LOG_BINARY_SENSOR("", "Charger discharging", this->charger_discharging_binary_sensor_);
   LOG_BINARY_SENSOR("", "Charger controller active", this->charger_controller_active_binary_sensor_);
   LOG_BINARY_SENSOR("", "Charger current reduction", this->charger_current_reduction_binary_sensor_);
   LOG_BINARY_SENSOR("", "Charger AES active", this->charger_aes_active_binary_sensor_);
@@ -477,24 +485,30 @@ void Votronic::dump_config() {
   LOG_BINARY_SENSOR("", "PV current reduction", this->pv_current_reduction_binary_sensor_);
   LOG_BINARY_SENSOR("", "PV AES active", this->pv_aes_active_binary_sensor_);
 
-  LOG_SENSOR("", "Battery voltage", this->battery_voltage_sensor_);
-  LOG_SENSOR("", "Secondary battery voltage", this->secondary_battery_voltage_sensor_);
-  LOG_SENSOR("", "Battery capacity remaining", this->battery_capacity_remaining_sensor_);
-  LOG_SENSOR("", "Battery nominal capacity", this->battery_nominal_capacity_sensor_);
-  LOG_SENSOR("", "State of charge", this->state_of_charge_sensor_);
-  LOG_SENSOR("", "Current", this->current_sensor_);
-  LOG_SENSOR("", "Power", this->power_sensor_);
-  LOG_SENSOR("", "Battery status bitmask", this->battery_status_bitmask_sensor_);
+  LOG_SENSOR("", "Battery computer battery voltage", this->battery_computer_battery_voltage_sensor_);
+  LOG_SENSOR("", "Battery computer secondary battery voltage", this->battery_computer_secondary_battery_voltage_sensor_);
+  LOG_SENSOR("", "Battery computer battery capacity remaining", this->battery_computer_battery_capacity_remaining_sensor_);
+  LOG_SENSOR("", "Battery computer battery nominal capacity", this->battery_computer_battery_nominal_capacity_sensor_);
+  LOG_SENSOR("", "Battery computer battery charge", this->battery_computer_battery_charge_sensor_);
+  LOG_SENSOR("", "Battery computer current", this->battery_computer_current_sensor_);
+  LOG_SENSOR("", "Battery computer power", this->battery_computer_power_sensor_);
+  LOG_SENSOR("", "Battery computer battery status bitmask", this->battery_computer_battery_status_bitmask_sensor_);
 
+  LOG_SENSOR("", "PV battery voltage", this->pv_battery_voltage_sensor_);
   LOG_SENSOR("", "PV voltage", this->pv_voltage_sensor_);
   LOG_SENSOR("", "PV current", this->pv_current_sensor_);
   LOG_SENSOR("", "PV power", this->pv_power_sensor_);
   LOG_SENSOR("", "PV battery status bitmask", this->pv_battery_status_bitmask_sensor_);
-  LOG_SENSOR("", "PV Controller status bitmask", this->pv_controller_status_bitmask_sensor_);
+  LOG_SENSOR("", "PV controller status bitmask", this->pv_controller_status_bitmask_sensor_);
   LOG_SENSOR("", "PV controller temperature", this->pv_controller_temperature_sensor_);
+  LOG_SENSOR("", "PV Mode Setting ID", this->pv_mode_setting_id_sensor_);
 
+  LOG_SENSOR("", "Charger battery voltage", this->charger_battery_voltage_sensor_);
+  LOG_SENSOR("", "Charger secondary battery voltage", this->charger_secondary_battery_voltage_sensor_);
+  LOG_SENSOR("", "Charger current", this->charger_current_sensor_);
+  LOG_SENSOR("", "Charger power", this->charger_power_sensor_);
   LOG_SENSOR("", "Charger battery status bitmask", this->charger_battery_status_bitmask_sensor_);
-  LOG_SENSOR("", "Charger Controller status bitmask", this->charger_controller_status_bitmask_sensor_);
+  LOG_SENSOR("", "Charger controller status bitmask", this->charger_controller_status_bitmask_sensor_);
   LOG_SENSOR("", "Charger mode setting ID", this->charger_mode_setting_id_sensor_);
   LOG_SENSOR("", "Charger controller temperature", this->charger_controller_temperature_sensor_);
   LOG_SENSOR("", "Charger load", this->charger_load_sensor_);
@@ -509,10 +523,9 @@ void Votronic::dump_config() {
   LOG_SENSOR("", "Charging converter controller status bitmask",
              this->charging_converter_controller_status_bitmask_sensor_);
   LOG_SENSOR("", "Charging converter mode setting ID", this->charging_converter_mode_setting_id_sensor_);
-  LOG_SENSOR("", "Charging converter controller temperature", this->charging_converter_controller_temperature_sensor_);
-  LOG_SENSOR("", "PV Mode Setting ID", this->pv_mode_setting_id_sensor_);
+  LOG_SENSOR("", "Charging converter battery temperature", this->charging_converter_battery_temperature_sensor_);
 
-  LOG_TEXT_SENSOR("", "Battery status", this->battery_status_text_sensor_);
+  LOG_TEXT_SENSOR("", "Battery computer battery status", this->battery_computer_battery_status_text_sensor_);
 
   LOG_TEXT_SENSOR("", "Charger battery status", this->charger_battery_status_text_sensor_);
   LOG_TEXT_SENSOR("", "Charger controller status", this->charger_controller_status_text_sensor_);
