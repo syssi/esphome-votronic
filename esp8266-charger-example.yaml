@@ -12,7 +12,7 @@ esphome:
   comment: ${device_description}
   project:
     name: "syssi.esphome-votronic"
-    version: 3.4.0
+    version: 4.0.0
 
 esp8266:
   board: d1_mini
