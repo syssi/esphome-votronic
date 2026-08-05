@@ -57,10 +57,10 @@ votronic:
 binary_sensor:
   - platform: votronic
     votronic_id: votronic0
-    charging:
-      name: "charging"
-    discharging:
-      name: "discharging"
+    battery_computer_charging:
+      name: "battery computer charging"
+    battery_computer_discharging:
+      name: "battery computer discharging"
 
     charger_charging:
       name: "charger charging"
@@ -94,14 +94,14 @@ binary_sensor:
 sensor:
   - platform: votronic
     votronic_id: votronic0
-    battery_voltage:
-      name: "battery voltage"
-    current:
-      name: "current"
-    power:
-      name: "power"
-    battery_status_bitmask:
-      name: "battery status bitmask"
+    battery_computer_battery_voltage:
+      name: "battery computer battery voltage"
+    battery_computer_current:
+      name: "battery computer current"
+    battery_computer_power:
+      name: "battery computer power"
+    battery_computer_battery_status_bitmask:
+      name: "battery computer battery status bitmask"
 
     charger_current:
       name: "charger current"
@@ -128,8 +128,8 @@ sensor:
       name: "charging converter power"
     charging_converter_load:
       name: "charging converter load"
-    charging_converter_controller_temperature:
-      name: "charging converter controller temperature"
+    charging_converter_battery_temperature:
+      name: "charging converter battery temperature"
     charging_converter_mode_setting_id:
       name: "charging converter mode setting id"
     charging_converter_battery_status_bitmask:
@@ -153,8 +153,8 @@ sensor:
 text_sensor:
   - platform: votronic
     votronic_id: votronic0
-    battery_status:
-      name: "battery status"
+    battery_computer_battery_status:
+      name: "battery computer battery status"
 
     charger_mode_setting:
       name: "charger mode setting"

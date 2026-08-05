@@ -11,7 +11,7 @@ namespace esphome::votronic::testing {
 TEST(VotronicSolarChargerTest, BatteryVoltage) {
   TestableVotronic votronic;
   sensor::Sensor battery_voltage;
-  votronic.set_battery_voltage_sensor(&battery_voltage);
+  votronic.set_pv_battery_voltage_sensor(&battery_voltage);
   votronic.decode_solar_charger_data_(SOLAR_CHARGER_FRAME_LOW_PV);
   EXPECT_NEAR(battery_voltage.state, 12.63f, 0.01f);
 }
@@ -117,8 +117,8 @@ TEST(VotronicChargerTest, StandbyState) {
   sensor::Sensor battery_voltage, secondary_voltage, current, power, load, temp, mode_id;
   binary_sensor::BinarySensor charging, discharging;
   text_sensor::TextSensor mode_text, controller_status;
-  votronic.set_battery_voltage_sensor(&battery_voltage);
-  votronic.set_secondary_battery_voltage_sensor(&secondary_voltage);
+  votronic.set_charger_battery_voltage_sensor(&battery_voltage);
+  votronic.set_charger_secondary_battery_voltage_sensor(&secondary_voltage);
   votronic.set_charger_current_sensor(&current);
   votronic.set_charger_power_sensor(&power);
   votronic.set_charger_load_sensor(&load);
@@ -147,7 +147,7 @@ TEST(VotronicChargerTest, ChargingState) {
   sensor::Sensor battery_voltage, current, power, load;
   binary_sensor::BinarySensor charging, discharging, controller_active;
   text_sensor::TextSensor controller_status;
-  votronic.set_battery_voltage_sensor(&battery_voltage);
+  votronic.set_charger_battery_voltage_sensor(&battery_voltage);
   votronic.set_charger_current_sensor(&current);
   votronic.set_charger_power_sensor(&power);
   votronic.set_charger_load_sensor(&load);
@@ -183,7 +183,7 @@ TEST(VotronicChargingConverterTest, VoltageCurrentPower) {
   votronic.set_charging_converter_current_sensor(&current);
   votronic.set_charging_converter_power_sensor(&power);
   votronic.set_charging_converter_load_sensor(&load);
-  votronic.set_charging_converter_controller_temperature_sensor(&temp);
+  votronic.set_charging_converter_battery_temperature_sensor(&temp);
   votronic.set_charging_converter_mode_setting_id_sensor(&mode_id);
   votronic.set_charging_converter_charging_binary_sensor(&charging);
   votronic.set_charging_converter_discharging_binary_sensor(&discharging);
@@ -217,15 +217,16 @@ TEST(VotronicChargingConverterTest, NullSensorsDoNotCrash) {
 TEST(VotronicBatteryComputerInfo1Test, ChargingState) {
   TestableVotronic votronic;
   sensor::Sensor battery_voltage, secondary_voltage, capacity_remaining, soc, current, power;
-  binary_sensor::BinarySensor charging, discharging;
-  votronic.set_battery_voltage_sensor(&battery_voltage);
-  votronic.set_secondary_battery_voltage_sensor(&secondary_voltage);
-  votronic.set_battery_capacity_remaining_sensor(&capacity_remaining);
-  votronic.set_state_of_charge_sensor(&soc);
-  votronic.set_current_sensor(&current);
-  votronic.set_power_sensor(&power);
-  votronic.set_charging_binary_sensor(&charging);
-  votronic.set_discharging_binary_sensor(&discharging);
+  binary_sensor::BinarySensor charging, discharging, commutation;
+  votronic.set_battery_computer_battery_voltage_sensor(&battery_voltage);
+  votronic.set_battery_computer_secondary_battery_voltage_sensor(&secondary_voltage);
+  votronic.set_battery_computer_battery_capacity_remaining_sensor(&capacity_remaining);
+  votronic.set_battery_computer_battery_charge_sensor(&soc);
+  votronic.set_battery_computer_current_sensor(&current);
+  votronic.set_battery_computer_power_sensor(&power);
+  votronic.set_battery_computer_charging_binary_sensor(&charging);
+  votronic.set_battery_computer_discharging_binary_sensor(&discharging);
+  votronic.set_battery_computer_commutation_binary_sensor(&commutation);
   votronic.decode_battery_computer_info1_data_(SMARTSHUNT_INFO1_FRAME_CHARGING);
   EXPECT_NEAR(battery_voltage.state, 13.54f, 0.01f);
   EXPECT_NEAR(secondary_voltage.state, 13.01f, 0.01f);
@@ -235,21 +236,32 @@ TEST(VotronicBatteryComputerInfo1Test, ChargingState) {
   EXPECT_NEAR(power.state, 5.27f, 0.1f);
   EXPECT_TRUE(charging.state);
   EXPECT_FALSE(discharging.state);
+  EXPECT_FALSE(commutation.state);
 }
 
 TEST(VotronicBatteryComputerInfo1Test, DischargingState) {
   TestableVotronic votronic;
   sensor::Sensor current, soc;
-  binary_sensor::BinarySensor charging, discharging;
-  votronic.set_current_sensor(&current);
-  votronic.set_state_of_charge_sensor(&soc);
-  votronic.set_charging_binary_sensor(&charging);
-  votronic.set_discharging_binary_sensor(&discharging);
+  binary_sensor::BinarySensor charging, discharging, commutation;
+  votronic.set_battery_computer_current_sensor(&current);
+  votronic.set_battery_computer_battery_charge_sensor(&soc);
+  votronic.set_battery_computer_charging_binary_sensor(&charging);
+  votronic.set_battery_computer_discharging_binary_sensor(&discharging);
+  votronic.set_battery_computer_commutation_binary_sensor(&commutation);
   votronic.decode_battery_computer_info1_data_(SMARTSHUNT_INFO1_FRAME_DISCHARGING);
   EXPECT_NEAR(current.state, -0.389f, 0.001f);
   EXPECT_FLOAT_EQ(soc.state, 99.0f);
   EXPECT_FALSE(charging.state);
   EXPECT_TRUE(discharging.state);
+  EXPECT_FALSE(commutation.state);
+}
+
+TEST(VotronicBatteryComputerInfo1Test, CommutationOn) {
+  TestableVotronic votronic;
+  binary_sensor::BinarySensor commutation;
+  votronic.set_battery_computer_commutation_binary_sensor(&commutation);
+  votronic.decode_battery_computer_info1_data_(SMARTSHUNT_INFO1_FRAME_COMMUTATION_ON);
+  EXPECT_TRUE(commutation.state);
 }
 
 TEST(VotronicBatteryComputerInfo1Test, NullSensorsDoNotCrash) {
@@ -263,9 +275,9 @@ TEST(VotronicBatteryComputerInfo2Test, NominalCapacityAndStatus) {
   TestableVotronic votronic;
   sensor::Sensor nominal_capacity, status_bitmask;
   text_sensor::TextSensor status_text;
-  votronic.set_battery_nominal_capacity_sensor(&nominal_capacity);
-  votronic.set_battery_status_bitmask_sensor(&status_bitmask);
-  votronic.set_battery_status_text_sensor(&status_text);
+  votronic.set_battery_computer_battery_nominal_capacity_sensor(&nominal_capacity);
+  votronic.set_battery_computer_battery_status_bitmask_sensor(&status_bitmask);
+  votronic.set_battery_computer_battery_status_text_sensor(&status_text);
   votronic.decode_battery_computer_info2_data_(SMARTSHUNT_INFO2_FRAME);
   EXPECT_NEAR(nominal_capacity.state, 460.0f, 0.1f);
   EXPECT_FLOAT_EQ(status_bitmask.state, 4.0f);
@@ -290,7 +302,7 @@ TEST(VotronicDispatchTest, SolarChargerFrameDispatched) {
 TEST(VotronicDispatchTest, ChargerFrameDispatched) {
   TestableVotronic votronic;
   sensor::Sensor battery_voltage;
-  votronic.set_battery_voltage_sensor(&battery_voltage);
+  votronic.set_charger_battery_voltage_sensor(&battery_voltage);
   votronic.on_votronic_data(TRIPLE_CHARGER_FRAME_STANDBY);
   EXPECT_NEAR(battery_voltage.state, 13.64f, 0.01f);
 }
@@ -306,7 +318,7 @@ TEST(VotronicDispatchTest, ChargingConverterFrameDispatched) {
 TEST(VotronicDispatchTest, BatteryComputerInfo1FrameDispatched) {
   TestableVotronic votronic;
   sensor::Sensor soc;
-  votronic.set_state_of_charge_sensor(&soc);
+  votronic.set_battery_computer_battery_charge_sensor(&soc);
   votronic.on_votronic_data(SMARTSHUNT_INFO1_FRAME_CHARGING);
   EXPECT_FLOAT_EQ(soc.state, 100.0f);
 }
@@ -314,7 +326,7 @@ TEST(VotronicDispatchTest, BatteryComputerInfo1FrameDispatched) {
 TEST(VotronicDispatchTest, BatteryComputerInfo2FrameDispatched) {
   TestableVotronic votronic;
   sensor::Sensor nominal_capacity;
-  votronic.set_battery_nominal_capacity_sensor(&nominal_capacity);
+  votronic.set_battery_computer_battery_nominal_capacity_sensor(&nominal_capacity);
   votronic.on_votronic_data(SMARTSHUNT_INFO2_FRAME);
   EXPECT_NEAR(nominal_capacity.state, 460.0f, 0.1f);
 }

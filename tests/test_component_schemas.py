@@ -25,14 +25,16 @@ class TestHubConstants:
 
 class TestVotronicSensorLists:
     def test_sensor_defs_completeness(self):
-        assert "battery_voltage" in sensor.SENSOR_DEFS
-        assert sensor.CONF_SECONDARY_BATTERY_VOLTAGE in sensor.SENSOR_DEFS
-        assert sensor.CONF_STATE_OF_CHARGE in sensor.SENSOR_DEFS
+        assert sensor.CONF_BATTERY_COMPUTER_BATTERY_VOLTAGE in sensor.SENSOR_DEFS
+        assert (
+            sensor.CONF_BATTERY_COMPUTER_SECONDARY_BATTERY_VOLTAGE in sensor.SENSOR_DEFS
+        )
+        assert sensor.CONF_BATTERY_COMPUTER_BATTERY_CHARGE in sensor.SENSOR_DEFS
         assert sensor.CONF_PV_VOLTAGE in sensor.SENSOR_DEFS
         assert sensor.CONF_PV_CURRENT in sensor.SENSOR_DEFS
         assert sensor.CONF_PV_POWER in sensor.SENSOR_DEFS
         assert sensor.CONF_CHARGER_CURRENT in sensor.SENSOR_DEFS
-        assert len(sensor.SENSOR_DEFS) == 31
+        assert len(sensor.SENSOR_DEFS) == 34
 
     def test_sensor_keys_are_strings(self):
         for key in sensor.SENSOR_DEFS:
@@ -41,18 +43,30 @@ class TestVotronicSensorLists:
 
 class TestVotronicBinarySensorConstants:
     def test_binary_sensor_defs_dict(self):
-        assert binary_sensor.CONF_CHARGING in binary_sensor.BINARY_SENSOR_DEFS
-        assert binary_sensor.CONF_DISCHARGING in binary_sensor.BINARY_SENSOR_DEFS
+        assert (
+            binary_sensor.CONF_BATTERY_COMPUTER_CHARGING
+            in binary_sensor.BINARY_SENSOR_DEFS
+        )
+        assert (
+            binary_sensor.CONF_BATTERY_COMPUTER_DISCHARGING
+            in binary_sensor.BINARY_SENSOR_DEFS
+        )
+        assert (
+            binary_sensor.CONF_BATTERY_COMPUTER_COMMUTATION
+            in binary_sensor.BINARY_SENSOR_DEFS
+        )
         assert binary_sensor.CONF_CHARGER_CHARGING in binary_sensor.BINARY_SENSOR_DEFS
         assert (
             binary_sensor.CONF_PV_CONTROLLER_ACTIVE in binary_sensor.BINARY_SENSOR_DEFS
         )
-        assert len(binary_sensor.BINARY_SENSOR_DEFS) == 15
+        assert len(binary_sensor.BINARY_SENSOR_DEFS) == 16
 
 
 class TestVotronicTextSensorConstants:
     def test_text_sensors_list(self):
-        assert text_sensor.CONF_BATTERY_STATUS in text_sensor.TEXT_SENSORS
+        assert (
+            text_sensor.CONF_BATTERY_COMPUTER_BATTERY_STATUS in text_sensor.TEXT_SENSORS
+        )
         assert text_sensor.CONF_CHARGER_MODE_SETTING in text_sensor.TEXT_SENSORS
         assert text_sensor.CONF_PV_BATTERY_STATUS in text_sensor.TEXT_SENSORS
         assert len(text_sensor.TEXT_SENSORS) == 10

@@ -57,10 +57,10 @@ votronic:
 binary_sensor:
   - platform: votronic
     votronic_id: votronic0
-    charging:
-      name: "charging"
-    discharging:
-      name: "discharging"
+    battery_computer_charging:
+      name: "battery computer charging"
+    battery_computer_discharging:
+      name: "battery computer discharging"
 
     pv_controller_active:
       name: "pv controller active"
@@ -72,8 +72,8 @@ binary_sensor:
 sensor:
   - platform: votronic
     votronic_id: votronic0
-    battery_voltage:
-      name: "battery voltage"
+    battery_computer_battery_voltage:
+      name: "battery computer battery voltage"
     pv_voltage:
       name: "pv voltage"
     pv_current:
