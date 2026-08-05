@@ -3,7 +3,7 @@ from esphome.components import text_sensor
 import esphome.config_validation as cv
 from esphome.const import ENTITY_CATEGORY_DIAGNOSTIC
 
-from . import CONF_VOTRONIC_ID, VOTRONIC_COMPONENT_SCHEMA
+from . import CONF_VOTRONIC_ID, VOTRONIC_COMPONENT_SCHEMA, deprecated_renames
 
 DEPENDENCIES = ["votronic"]
 
@@ -36,55 +36,64 @@ TEXT_SENSORS = [
     CONF_PV_CONTROLLER_STATUS,
 ]
 
-CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
-    {
-        cv.Optional(CONF_BATTERY_COMPUTER_BATTERY_STATUS): text_sensor.text_sensor_schema(
-            icon="mdi:alert-circle-outline",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_CHARGER_MODE_SETTING): text_sensor.text_sensor_schema(
-            icon="mdi:car-battery",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_CHARGER_CONTROLLER_STATUS): text_sensor.text_sensor_schema(
-            icon="mdi:heart-pulse",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_CHARGER_BATTERY_STATUS): text_sensor.text_sensor_schema(
-            icon="mdi:alert-circle-outline",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_BATTERY_STATUS
-        ): text_sensor.text_sensor_schema(
-            icon="mdi:car-battery",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_CONTROLLER_STATUS
-        ): text_sensor.text_sensor_schema(
-            icon="mdi:heart-pulse",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(
-            CONF_CHARGING_CONVERTER_MODE_SETTING
-        ): text_sensor.text_sensor_schema(
-            icon="mdi:car-battery",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_PV_MODE_SETTING): text_sensor.text_sensor_schema(
-            icon="mdi:car-battery",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_PV_BATTERY_STATUS): text_sensor.text_sensor_schema(
-            icon="mdi:alert-circle-outline",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-        cv.Optional(CONF_PV_CONTROLLER_STATUS): text_sensor.text_sensor_schema(
-            icon="mdi:heart-pulse",
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-    }
+_RENAMED_TEXT_SENSORS = {
+    "battery_status": CONF_BATTERY_COMPUTER_BATTERY_STATUS,
+}
+
+CONFIG_SCHEMA = cv.All(
+    deprecated_renames(_RENAMED_TEXT_SENSORS),
+    VOTRONIC_COMPONENT_SCHEMA.extend(
+        {
+            cv.Optional(
+                CONF_BATTERY_COMPUTER_BATTERY_STATUS
+            ): text_sensor.text_sensor_schema(
+                icon="mdi:alert-circle-outline",
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_CHARGER_MODE_SETTING): text_sensor.text_sensor_schema(
+                icon="mdi:car-battery",
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_CHARGER_CONTROLLER_STATUS): text_sensor.text_sensor_schema(
+                icon="mdi:heart-pulse",
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_CHARGER_BATTERY_STATUS): text_sensor.text_sensor_schema(
+                icon="mdi:alert-circle-outline",
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(
+                CONF_CHARGING_CONVERTER_BATTERY_STATUS
+            ): text_sensor.text_sensor_schema(
+                icon="mdi:car-battery",
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(
+                CONF_CHARGING_CONVERTER_CONTROLLER_STATUS
+            ): text_sensor.text_sensor_schema(
+                icon="mdi:heart-pulse",
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(
+                CONF_CHARGING_CONVERTER_MODE_SETTING
+            ): text_sensor.text_sensor_schema(
+                icon="mdi:car-battery",
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_PV_MODE_SETTING): text_sensor.text_sensor_schema(
+                icon="mdi:car-battery",
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_PV_BATTERY_STATUS): text_sensor.text_sensor_schema(
+                icon="mdi:alert-circle-outline",
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_PV_CONTROLLER_STATUS): text_sensor.text_sensor_schema(
+                icon="mdi:heart-pulse",
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+        }
+    ),
 )
 
 

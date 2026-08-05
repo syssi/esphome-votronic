@@ -1,13 +1,34 @@
+import logging
+
 import esphome.codegen as cg
 from esphome.components import uart
 import esphome.config_validation as cv
 from esphome.const import CONF_ID, CONF_THROTTLE
+
+_LOGGER = logging.getLogger(__name__)
 
 CODEOWNERS = ["@syssi"]
 
 DEPENDENCIES = ["uart"]
 AUTO_LOAD = ["binary_sensor", "sensor", "text_sensor"]
 MULTI_CONF = True
+
+
+def deprecated_renames(renames: dict[str, str]):
+    def validator(config):
+        config = config.copy()
+        for old, new in renames.items():
+            if old in config:
+                _LOGGER.warning(
+                    "'%s' is deprecated, use '%s' instead. Will be removed in a future release.",
+                    old,
+                    new,
+                )
+                config[new] = config.pop(old)
+        return config
+
+    return validator
+
 
 CONF_VOTRONIC_ID = "votronic_id"
 CONF_RX_TIMEOUT = "rx_timeout"

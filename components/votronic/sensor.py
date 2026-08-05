@@ -2,9 +2,6 @@ import esphome.codegen as cg
 from esphome.components import sensor
 import esphome.config_validation as cv
 from esphome.const import (
-    CONF_BATTERY_VOLTAGE,
-    CONF_CURRENT,
-    CONF_POWER,
     DEVICE_CLASS_CURRENT,
     DEVICE_CLASS_EMPTY,
     DEVICE_CLASS_POWER,
@@ -21,19 +18,25 @@ from esphome.const import (
     UNIT_WATT,
 )
 
-from . import CONF_VOTRONIC_ID, VOTRONIC_COMPONENT_SCHEMA
+from . import CONF_VOTRONIC_ID, VOTRONIC_COMPONENT_SCHEMA, deprecated_renames
 
 DEPENDENCIES = ["votronic"]
 
 CODEOWNERS = ["@syssi"]
 
 CONF_BATTERY_COMPUTER_BATTERY_VOLTAGE = "battery_computer_battery_voltage"
-CONF_BATTERY_COMPUTER_SECONDARY_BATTERY_VOLTAGE = "battery_computer_secondary_battery_voltage"
-CONF_BATTERY_COMPUTER_BATTERY_CAPACITY_REMAINING = "battery_computer_battery_capacity_remaining"
+CONF_BATTERY_COMPUTER_SECONDARY_BATTERY_VOLTAGE = (
+    "battery_computer_secondary_battery_voltage"
+)
+CONF_BATTERY_COMPUTER_BATTERY_CAPACITY_REMAINING = (
+    "battery_computer_battery_capacity_remaining"
+)
 CONF_BATTERY_COMPUTER_BATTERY_CHARGE = "battery_computer_battery_charge"
 CONF_BATTERY_COMPUTER_CURRENT = "battery_computer_current"
 CONF_BATTERY_COMPUTER_POWER = "battery_computer_power"
-CONF_BATTERY_COMPUTER_BATTERY_NOMINAL_CAPACITY = "battery_computer_battery_nominal_capacity"
+CONF_BATTERY_COMPUTER_BATTERY_NOMINAL_CAPACITY = (
+    "battery_computer_battery_nominal_capacity"
+)
 CONF_BATTERY_COMPUTER_BATTERY_STATUS_BITMASK = "battery_computer_battery_status_bitmask"
 
 CONF_PV_BATTERY_VOLTAGE = "pv_battery_voltage"
@@ -62,9 +65,7 @@ CONF_CHARGING_CONVERTER_SECONDARY_BATTERY_VOLTAGE = (
 CONF_CHARGING_CONVERTER_CURRENT = "charging_converter_current"
 CONF_CHARGING_CONVERTER_POWER = "charging_converter_power"
 CONF_CHARGING_CONVERTER_LOAD = "charging_converter_load"
-CONF_CHARGING_CONVERTER_BATTERY_TEMPERATURE = (
-    "charging_converter_battery_temperature"
-)
+CONF_CHARGING_CONVERTER_BATTERY_TEMPERATURE = "charging_converter_battery_temperature"
 CONF_CHARGING_CONVERTER_MODE_SETTING_ID = "charging_converter_mode_setting_id"
 CONF_CHARGING_CONVERTER_BATTERY_STATUS_BITMASK = (
     "charging_converter_battery_status_bitmask"
@@ -330,11 +331,41 @@ SENSOR_DEFS = {
     },
 }
 
-CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
-    {
-        cv.Optional(key): sensor.sensor_schema(**kwargs)
-        for key, kwargs in SENSOR_DEFS.items()
-    }
+_RENAMED_SENSORS = {
+    "state_of_charge": CONF_BATTERY_COMPUTER_BATTERY_CHARGE,
+    "current": CONF_BATTERY_COMPUTER_CURRENT,
+    "power": CONF_BATTERY_COMPUTER_POWER,
+    "battery_capacity_remaining": CONF_BATTERY_COMPUTER_BATTERY_CAPACITY_REMAINING,
+    "battery_nominal_capacity": CONF_BATTERY_COMPUTER_BATTERY_NOMINAL_CAPACITY,
+    "battery_status_bitmask": CONF_BATTERY_COMPUTER_BATTERY_STATUS_BITMASK,
+    "charging_converter_controller_temperature": (
+        CONF_CHARGING_CONVERTER_BATTERY_TEMPERATURE
+    ),
+}
+
+CONFIG_SCHEMA = cv.All(
+    deprecated_renames(_RENAMED_SENSORS),
+    VOTRONIC_COMPONENT_SCHEMA.extend(
+        {
+            cv.Optional(key): sensor.sensor_schema(**kwargs)
+            for key, kwargs in SENSOR_DEFS.items()
+        }
+    ).extend(
+        {
+            cv.Optional("battery_voltage"): cv.invalid(
+                "sensor.battery_voltage was ambiguous (shared between the PV, "
+                f"charger and battery computer frames); use one of "
+                f"'{CONF_PV_BATTERY_VOLTAGE}', '{CONF_CHARGER_BATTERY_VOLTAGE}' or "
+                f"'{CONF_BATTERY_COMPUTER_BATTERY_VOLTAGE}' instead."
+            ),
+            cv.Optional("secondary_battery_voltage"): cv.invalid(
+                "sensor.secondary_battery_voltage was ambiguous (shared between "
+                f"the charger and battery computer frames); use one of "
+                f"'{CONF_CHARGER_SECONDARY_BATTERY_VOLTAGE}' or "
+                f"'{CONF_BATTERY_COMPUTER_SECONDARY_BATTERY_VOLTAGE}' instead."
+            ),
+        }
+    ),
 )
 
 

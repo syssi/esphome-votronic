@@ -3,7 +3,7 @@ from esphome.components import binary_sensor
 import esphome.config_validation as cv
 from esphome.const import ENTITY_CATEGORY_DIAGNOSTIC
 
-from . import CONF_VOTRONIC_ID, VOTRONIC_COMPONENT_SCHEMA
+from . import CONF_VOTRONIC_ID, VOTRONIC_COMPONENT_SCHEMA, deprecated_renames
 
 DEPENDENCIES = ["votronic"]
 
@@ -96,11 +96,19 @@ BINARY_SENSOR_DEFS = {
     },
 }
 
-CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
-    {
-        cv.Optional(key): binary_sensor.binary_sensor_schema(**kwargs)
-        for key, kwargs in BINARY_SENSOR_DEFS.items()
-    }
+_RENAMED_BINARY_SENSORS = {
+    "charging": CONF_BATTERY_COMPUTER_CHARGING,
+    "discharging": CONF_BATTERY_COMPUTER_DISCHARGING,
+}
+
+CONFIG_SCHEMA = cv.All(
+    deprecated_renames(_RENAMED_BINARY_SENSORS),
+    VOTRONIC_COMPONENT_SCHEMA.extend(
+        {
+            cv.Optional(key): binary_sensor.binary_sensor_schema(**kwargs)
+            for key, kwargs in BINARY_SENSOR_DEFS.items()
+        }
+    ),
 )
 
 
