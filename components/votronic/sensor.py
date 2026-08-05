@@ -27,15 +27,16 @@ DEPENDENCIES = ["votronic"]
 
 CODEOWNERS = ["@syssi"]
 
-# CONF_BATTERY_VOLTAGE = "battery_voltage"
-CONF_SECONDARY_BATTERY_VOLTAGE = "secondary_battery_voltage"
-CONF_BATTERY_CAPACITY_REMAINING = "battery_capacity_remaining"
-CONF_STATE_OF_CHARGE = "state_of_charge"
-# CONF_CURRENT = "current"
-# CONF_POWER = "power"
-CONF_BATTERY_NOMINAL_CAPACITY = "battery_nominal_capacity"
-CONF_BATTERY_STATUS_BITMASK = "battery_status_bitmask"
+CONF_BATTERY_COMPUTER_BATTERY_VOLTAGE = "battery_computer_battery_voltage"
+CONF_BATTERY_COMPUTER_SECONDARY_BATTERY_VOLTAGE = "battery_computer_secondary_battery_voltage"
+CONF_BATTERY_COMPUTER_BATTERY_CAPACITY_REMAINING = "battery_computer_battery_capacity_remaining"
+CONF_BATTERY_COMPUTER_BATTERY_CHARGE = "battery_computer_battery_charge"
+CONF_BATTERY_COMPUTER_CURRENT = "battery_computer_current"
+CONF_BATTERY_COMPUTER_POWER = "battery_computer_power"
+CONF_BATTERY_COMPUTER_BATTERY_NOMINAL_CAPACITY = "battery_computer_battery_nominal_capacity"
+CONF_BATTERY_COMPUTER_BATTERY_STATUS_BITMASK = "battery_computer_battery_status_bitmask"
 
+CONF_PV_BATTERY_VOLTAGE = "pv_battery_voltage"
 CONF_PV_VOLTAGE = "pv_voltage"
 CONF_PV_CURRENT = "pv_current"
 CONF_PV_BATTERY_STATUS_BITMASK = "pv_battery_status_bitmask"
@@ -44,6 +45,8 @@ CONF_PV_POWER = "pv_power"
 CONF_PV_MODE_SETTING_ID = "pv_mode_setting_id"
 CONF_PV_CONTROLLER_TEMPERATURE = "pv_controller_temperature"
 
+CONF_CHARGER_BATTERY_VOLTAGE = "charger_battery_voltage"
+CONF_CHARGER_SECONDARY_BATTERY_VOLTAGE = "charger_secondary_battery_voltage"
 CONF_CHARGER_CURRENT = "charger_current"
 CONF_CHARGER_POWER = "charger_power"
 CONF_CHARGER_LOAD = "charger_load"
@@ -59,8 +62,8 @@ CONF_CHARGING_CONVERTER_SECONDARY_BATTERY_VOLTAGE = (
 CONF_CHARGING_CONVERTER_CURRENT = "charging_converter_current"
 CONF_CHARGING_CONVERTER_POWER = "charging_converter_power"
 CONF_CHARGING_CONVERTER_LOAD = "charging_converter_load"
-CONF_CHARGING_CONVERTER_CONTROLLER_TEMPERATURE = (
-    "charging_converter_controller_temperature"
+CONF_CHARGING_CONVERTER_BATTERY_TEMPERATURE = (
+    "charging_converter_battery_temperature"
 )
 CONF_CHARGING_CONVERTER_MODE_SETTING_ID = "charging_converter_mode_setting_id"
 CONF_CHARGING_CONVERTER_BATTERY_STATUS_BITMASK = (
@@ -71,74 +74,85 @@ CONF_CHARGING_CONVERTER_CONTROLLER_STATUS_BITMASK = (
 )
 
 ICON_BATTERY_CAPACITY_REMAINING = "mdi:battery-50"
-ICON_STATE_OF_CHARGE = "mdi:battery-50"
+ICON_BATTERY_CHARGE = "mdi:battery-50"
 ICON_CURRENT_DC = "mdi:current-dc"
 ICON_BATTERY_NOMINAL_CAPACITY = "mdi:battery"
 
-ICON_BATTERY_STATUS_BITMASK = "mdi:alert-circle-outline"
-ICON_PV_BATTERY_STATUS_BITMASK = "mdi:alert-circle-outline"
-ICON_CHARGING_CONTROLLER_STATUS_BITMASK = "mdi:alert-circle-outline"
-ICON_PV_CONTROLLER_STATUS_BITMASK = "mdi:alert-circle-outline"
+ICON_STATUS_BITMASK = "mdi:alert-circle-outline"
 ICON_MODE_SETTING_ID = "mdi:car-battery"
 
 UNIT_AMPERE_HOURS = "Ah"
 
 SENSOR_DEFS = {
-    CONF_BATTERY_VOLTAGE: {
+    CONF_BATTERY_COMPUTER_BATTERY_VOLTAGE: {
         "unit_of_measurement": UNIT_VOLT,
         "icon": ICON_EMPTY,
         "accuracy_decimals": 2,
         "device_class": DEVICE_CLASS_VOLTAGE,
         "state_class": STATE_CLASS_MEASUREMENT,
     },
-    CONF_SECONDARY_BATTERY_VOLTAGE: {
+    CONF_BATTERY_COMPUTER_SECONDARY_BATTERY_VOLTAGE: {
         "unit_of_measurement": UNIT_VOLT,
         "icon": ICON_EMPTY,
         "accuracy_decimals": 2,
         "device_class": DEVICE_CLASS_VOLTAGE,
         "state_class": STATE_CLASS_MEASUREMENT,
     },
-    CONF_BATTERY_CAPACITY_REMAINING: {
+    CONF_BATTERY_COMPUTER_BATTERY_CAPACITY_REMAINING: {
         "unit_of_measurement": UNIT_AMPERE_HOURS,
         "icon": ICON_BATTERY_CAPACITY_REMAINING,
         "accuracy_decimals": 0,
         "device_class": DEVICE_CLASS_EMPTY,
         "state_class": STATE_CLASS_MEASUREMENT,
     },
-    CONF_STATE_OF_CHARGE: {
+    CONF_BATTERY_COMPUTER_BATTERY_CHARGE: {
         "unit_of_measurement": UNIT_PERCENT,
-        "icon": ICON_STATE_OF_CHARGE,
+        "icon": ICON_BATTERY_CHARGE,
         "accuracy_decimals": 0,
         "device_class": DEVICE_CLASS_EMPTY,
         "state_class": STATE_CLASS_MEASUREMENT,
     },
-    CONF_CURRENT: {
+    CONF_BATTERY_COMPUTER_CURRENT: {
         "unit_of_measurement": UNIT_AMPERE,
         "icon": ICON_CURRENT_DC,
         "accuracy_decimals": 3,
         "device_class": DEVICE_CLASS_CURRENT,
         "state_class": STATE_CLASS_MEASUREMENT,
     },
-    CONF_POWER: {
+    CONF_BATTERY_COMPUTER_POWER: {
         "unit_of_measurement": UNIT_WATT,
         "icon": ICON_EMPTY,
         "accuracy_decimals": 2,
         "device_class": DEVICE_CLASS_POWER,
         "state_class": STATE_CLASS_MEASUREMENT,
     },
-    CONF_BATTERY_NOMINAL_CAPACITY: {
+    CONF_BATTERY_COMPUTER_BATTERY_NOMINAL_CAPACITY: {
         "unit_of_measurement": UNIT_AMPERE_HOURS,
         "icon": ICON_BATTERY_NOMINAL_CAPACITY,
         "accuracy_decimals": 1,
         "device_class": DEVICE_CLASS_EMPTY,
         "state_class": STATE_CLASS_MEASUREMENT,
     },
-    CONF_BATTERY_STATUS_BITMASK: {
+    CONF_BATTERY_COMPUTER_BATTERY_STATUS_BITMASK: {
         "unit_of_measurement": UNIT_EMPTY,
-        "icon": ICON_BATTERY_STATUS_BITMASK,
+        "icon": ICON_STATUS_BITMASK,
         "accuracy_decimals": 0,
         "device_class": DEVICE_CLASS_EMPTY,
         "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_CHARGER_BATTERY_VOLTAGE: {
+        "unit_of_measurement": UNIT_VOLT,
+        "icon": ICON_EMPTY,
+        "accuracy_decimals": 2,
+        "device_class": DEVICE_CLASS_VOLTAGE,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_CHARGER_SECONDARY_BATTERY_VOLTAGE: {
+        "unit_of_measurement": UNIT_VOLT,
+        "icon": ICON_EMPTY,
+        "accuracy_decimals": 2,
+        "device_class": DEVICE_CLASS_VOLTAGE,
+        "state_class": STATE_CLASS_MEASUREMENT,
     },
     CONF_CHARGER_CURRENT: {
         "unit_of_measurement": UNIT_AMPERE,
@@ -156,21 +170,21 @@ SENSOR_DEFS = {
     },
     CONF_CHARGER_LOAD: {
         "unit_of_measurement": UNIT_PERCENT,
-        "icon": ICON_STATE_OF_CHARGE,
+        "icon": ICON_BATTERY_CHARGE,
         "accuracy_decimals": 0,
         "device_class": DEVICE_CLASS_EMPTY,
         "state_class": STATE_CLASS_MEASUREMENT,
     },
     CONF_CHARGER_BATTERY_STATUS_BITMASK: {
         "unit_of_measurement": UNIT_EMPTY,
-        "icon": ICON_BATTERY_STATUS_BITMASK,
+        "icon": ICON_STATUS_BITMASK,
         "accuracy_decimals": 0,
         "device_class": DEVICE_CLASS_EMPTY,
         "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
     },
     CONF_CHARGER_CONTROLLER_STATUS_BITMASK: {
         "unit_of_measurement": UNIT_EMPTY,
-        "icon": ICON_CHARGING_CONTROLLER_STATUS_BITMASK,
+        "icon": ICON_STATUS_BITMASK,
         "accuracy_decimals": 0,
         "device_class": DEVICE_CLASS_EMPTY,
         "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
@@ -185,7 +199,7 @@ SENSOR_DEFS = {
     },
     CONF_PV_CONTROLLER_STATUS_BITMASK: {
         "unit_of_measurement": UNIT_EMPTY,
-        "icon": ICON_PV_CONTROLLER_STATUS_BITMASK,
+        "icon": ICON_STATUS_BITMASK,
         "accuracy_decimals": 0,
         "device_class": DEVICE_CLASS_EMPTY,
         "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
@@ -214,7 +228,7 @@ SENSOR_DEFS = {
     },
     CONF_CHARGING_CONVERTER_LOAD: {
         "unit_of_measurement": UNIT_PERCENT,
-        "icon": ICON_STATE_OF_CHARGE,
+        "icon": ICON_BATTERY_CHARGE,
         "accuracy_decimals": 0,
         "device_class": DEVICE_CLASS_EMPTY,
         "state_class": STATE_CLASS_MEASUREMENT,
@@ -235,14 +249,14 @@ SENSOR_DEFS = {
     },
     CONF_CHARGING_CONVERTER_BATTERY_STATUS_BITMASK: {
         "unit_of_measurement": UNIT_EMPTY,
-        "icon": ICON_BATTERY_STATUS_BITMASK,
+        "icon": ICON_STATUS_BITMASK,
         "accuracy_decimals": 0,
         "device_class": DEVICE_CLASS_EMPTY,
         "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
     },
     CONF_CHARGING_CONVERTER_CONTROLLER_STATUS_BITMASK: {
         "unit_of_measurement": UNIT_EMPTY,
-        "icon": ICON_CHARGING_CONTROLLER_STATUS_BITMASK,
+        "icon": ICON_STATUS_BITMASK,
         "accuracy_decimals": 0,
         "device_class": DEVICE_CLASS_EMPTY,
         "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
@@ -255,13 +269,20 @@ SENSOR_DEFS = {
         "state_class": STATE_CLASS_MEASUREMENT,
         "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
     },
-    CONF_CHARGING_CONVERTER_CONTROLLER_TEMPERATURE: {
+    CONF_CHARGING_CONVERTER_BATTERY_TEMPERATURE: {
         "unit_of_measurement": UNIT_CELSIUS,
         "icon": ICON_EMPTY,
         "accuracy_decimals": 0,
         "device_class": DEVICE_CLASS_TEMPERATURE,
         "state_class": STATE_CLASS_MEASUREMENT,
         "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_PV_BATTERY_VOLTAGE: {
+        "unit_of_measurement": UNIT_VOLT,
+        "icon": ICON_EMPTY,
+        "accuracy_decimals": 2,
+        "device_class": DEVICE_CLASS_VOLTAGE,
+        "state_class": STATE_CLASS_MEASUREMENT,
     },
     CONF_PV_VOLTAGE: {
         "unit_of_measurement": UNIT_VOLT,
@@ -286,7 +307,7 @@ SENSOR_DEFS = {
     },
     CONF_PV_BATTERY_STATUS_BITMASK: {
         "unit_of_measurement": UNIT_EMPTY,
-        "icon": ICON_PV_BATTERY_STATUS_BITMASK,
+        "icon": ICON_STATUS_BITMASK,
         "accuracy_decimals": 0,
         "device_class": DEVICE_CLASS_EMPTY,
         "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,

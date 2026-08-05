@@ -9,7 +9,7 @@ DEPENDENCIES = ["votronic"]
 
 CODEOWNERS = ["@syssi"]
 
-CONF_BATTERY_STATUS = "battery_status"
+CONF_BATTERY_COMPUTER_BATTERY_STATUS = "battery_computer_battery_status"
 
 CONF_CHARGER_MODE_SETTING = "charger_mode_setting"
 CONF_CHARGER_CONTROLLER_STATUS = "charger_controller_status"
@@ -24,7 +24,7 @@ CONF_PV_BATTERY_STATUS = "pv_battery_status"
 CONF_PV_CONTROLLER_STATUS = "pv_controller_status"
 
 TEXT_SENSORS = [
-    CONF_BATTERY_STATUS,
+    CONF_BATTERY_COMPUTER_BATTERY_STATUS,
     CONF_CHARGER_MODE_SETTING,
     CONF_CHARGER_CONTROLLER_STATUS,
     CONF_CHARGER_BATTERY_STATUS,
@@ -38,7 +38,7 @@ TEXT_SENSORS = [
 
 CONFIG_SCHEMA = VOTRONIC_COMPONENT_SCHEMA.extend(
     {
-        cv.Optional(CONF_BATTERY_STATUS): text_sensor.text_sensor_schema(
+        cv.Optional(CONF_BATTERY_COMPUTER_BATTERY_STATUS): text_sensor.text_sensor_schema(
             icon="mdi:alert-circle-outline",
             entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
         ),

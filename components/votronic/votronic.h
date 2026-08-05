@@ -15,11 +15,14 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   void update() override;
   float get_setup_priority() const override;
 
-  void set_charging_binary_sensor(binary_sensor::BinarySensor *charging_binary_sensor) {
-    charging_binary_sensor_ = charging_binary_sensor;
+  void set_battery_computer_commutation_binary_sensor(binary_sensor::BinarySensor *battery_computer_commutation_binary_sensor) {
+    battery_computer_commutation_binary_sensor_= battery_computer_commutation_binary_sensor;
   }
-  void set_discharging_binary_sensor(binary_sensor::BinarySensor *discharging_binary_sensor) {
-    discharging_binary_sensor_ = discharging_binary_sensor;
+  void set_battery_computer_charging_binary_sensor(binary_sensor::BinarySensor *battery_computer_charging_binary_sensor) {
+    battery_computer_charging_binary_sensor_ = battery_computer_charging_binary_sensor;
+  }
+  void set_battery_computer_discharging_binary_sensor(binary_sensor::BinarySensor *battery_computer_discharging_binary_sensor) {
+    battery_computer_discharging_binary_sensor_ = battery_computer_discharging_binary_sensor;
   }
   void set_charger_charging_binary_sensor(binary_sensor::BinarySensor *charger_charging_binary_sensor) {
     charger_charging_binary_sensor_ = charger_charging_binary_sensor;
@@ -68,31 +71,40 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
     charging_converter_aes_active_binary_sensor_ = charging_converter_aes_active_binary_sensor;
   }
 
-  void set_battery_voltage_sensor(sensor::Sensor *battery_voltage_sensor) {
-    battery_voltage_sensor_ = battery_voltage_sensor;
+  void set_battery_computer_battery_voltage_sensor(sensor::Sensor *battery_computer_battery_voltage_sensor) {
+    battery_computer_battery_voltage_sensor_ = battery_computer_battery_voltage_sensor;
   }
-  void set_secondary_battery_voltage_sensor(sensor::Sensor *secondary_battery_voltage_sensor) {
-    secondary_battery_voltage_sensor_ = secondary_battery_voltage_sensor;
+  void set_battery_computer_secondary_battery_voltage_sensor(sensor::Sensor *battery_computer_secondary_battery_voltage_sensor) {
+    battery_computer_secondary_battery_voltage_sensor_ = battery_computer_secondary_battery_voltage_sensor;
   }
-  void set_state_of_charge_sensor(sensor::Sensor *state_of_charge_sensor) {
-    state_of_charge_sensor_ = state_of_charge_sensor;
+  void set_battery_computer_battery_charge_sensor(sensor::Sensor *battery_computer_battery_charge_sensor) {
+    battery_computer_battery_charge_sensor_ = battery_computer_battery_charge_sensor;
   }
-  void set_current_sensor(sensor::Sensor *current_sensor) { current_sensor_ = current_sensor; }
-  void set_power_sensor(sensor::Sensor *power_sensor) { power_sensor_ = power_sensor; }
+  void set_battery_computer_current_sensor(sensor::Sensor *battery_computer_current_sensor) { battery_computer_current_sensor_ = battery_computer_current_sensor; }
+  void set_battery_computer_power_sensor(sensor::Sensor *battery_computer_power_sensor) { battery_computer_power_sensor_ = battery_computer_power_sensor; }
+  void set_battery_computer_battery_status_bitmask_sensor(sensor::Sensor *battery_computer_battery_status_bitmask_sensor) {
+    battery_computer_battery_status_bitmask_sensor_ = battery_computer_battery_status_bitmask_sensor;
+  }
   void set_charger_current_sensor(sensor::Sensor *charger_current_sensor) {
     charger_current_sensor_ = charger_current_sensor;
   }
   void set_charger_power_sensor(sensor::Sensor *charger_power_sensor) { charger_power_sensor_ = charger_power_sensor; }
   void set_charger_load_sensor(sensor::Sensor *charger_load_sensor) { charger_load_sensor_ = charger_load_sensor; }
+  void set_charger_battery_voltage_sensor(sensor::Sensor *charger_battery_voltage_sensor) {
+    charger_battery_voltage_sensor_ = charger_battery_voltage_sensor;
+  }
+  void set_charger_secondary_battery_voltage_sensor(sensor::Sensor *charger_secondary_battery_voltage_sensor) {
+    charger_secondary_battery_voltage_sensor_ = charger_secondary_battery_voltage_sensor;
+  }
   void set_charger_battery_status_bitmask_sensor(sensor::Sensor *charger_battery_status_bitmask_sensor) {
     charger_battery_status_bitmask_sensor_ = charger_battery_status_bitmask_sensor;
+  }
+  void set_pv_battery_voltage_sensor(sensor::Sensor *pv_battery_voltage_sensor) {
+    pv_battery_voltage_sensor_ = pv_battery_voltage_sensor;
   }
   void set_pv_voltage_sensor(sensor::Sensor *pv_voltage_sensor) { pv_voltage_sensor_ = pv_voltage_sensor; }
   void set_pv_current_sensor(sensor::Sensor *pv_current_sensor) { pv_current_sensor_ = pv_current_sensor; }
   void set_pv_power_sensor(sensor::Sensor *pv_power_sensor) { pv_power_sensor_ = pv_power_sensor; }
-  void set_battery_status_bitmask_sensor(sensor::Sensor *battery_status_bitmask_sensor) {
-    battery_status_bitmask_sensor_ = battery_status_bitmask_sensor;
-  }
   void set_pv_battery_status_bitmask_sensor(sensor::Sensor *pv_battery_status_bitmask_sensor) {
     pv_battery_status_bitmask_sensor_ = pv_battery_status_bitmask_sensor;
   }
@@ -117,11 +129,11 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   void set_pv_mode_setting_id_sensor(sensor::Sensor *pv_mode_setting_id_sensor) {
     pv_mode_setting_id_sensor_ = pv_mode_setting_id_sensor;
   }
-  void set_battery_capacity_remaining_sensor(sensor::Sensor *battery_capacity_remaining_sensor) {
-    battery_capacity_remaining_sensor_ = battery_capacity_remaining_sensor;
+  void set_battery_computer_battery_capacity_remaining_sensor(sensor::Sensor *battery_computer_battery_capacity_remaining_sensor) {
+    battery_computer_battery_capacity_remaining_sensor_ = battery_computer_battery_capacity_remaining_sensor;
   }
-  void set_battery_nominal_capacity_sensor(sensor::Sensor *battery_nominal_capacity_sensor) {
-    battery_nominal_capacity_sensor_ = battery_nominal_capacity_sensor;
+  void set_battery_computer_battery_nominal_capacity_sensor(sensor::Sensor *battery_computer_battery_nominal_capacity_sensor) {
+    battery_computer_battery_nominal_capacity_sensor_ = battery_computer_battery_nominal_capacity_sensor;
   }
   void set_charging_converter_battery_voltage_sensor(sensor::Sensor *charging_converter_battery_voltage_sensor) {
     charging_converter_battery_voltage_sensor_ = charging_converter_battery_voltage_sensor;
@@ -139,9 +151,9 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   void set_charging_converter_load_sensor(sensor::Sensor *charging_converter_load_sensor) {
     charging_converter_load_sensor_ = charging_converter_load_sensor;
   }
-  void set_charging_converter_controller_temperature_sensor(
-      sensor::Sensor *charging_converter_controller_temperature_sensor) {
-    charging_converter_controller_temperature_sensor_ = charging_converter_controller_temperature_sensor;
+  void set_charging_converter_battery_temperature_sensor(
+      sensor::Sensor *charging_converter_battery_temperature_sensor) {
+    charging_converter_battery_temperature_sensor_ = charging_converter_battery_temperature_sensor;
   }
   void set_charging_converter_mode_setting_id_sensor(sensor::Sensor *charging_converter_mode_setting_id_sensor) {
     charging_converter_mode_setting_id_sensor_ = charging_converter_mode_setting_id_sensor;
@@ -155,8 +167,8 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
     charging_converter_controller_status_bitmask_sensor_ = charging_converter_controller_status_bitmask_sensor;
   }
 
-  void set_battery_status_text_sensor(text_sensor::TextSensor *battery_status_text_sensor) {
-    battery_status_text_sensor_ = battery_status_text_sensor;
+  void set_battery_computer_battery_status_text_sensor(text_sensor::TextSensor *battery_computer_battery_status_text_sensor) {
+    battery_computer_battery_status_text_sensor_ = battery_computer_battery_status_text_sensor;
   }
   void set_pv_mode_setting_text_sensor(text_sensor::TextSensor *pv_mode_setting_text_sensor) {
     pv_mode_setting_text_sensor_ = pv_mode_setting_text_sensor;
@@ -191,8 +203,9 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   void set_rx_timeout(uint16_t rx_timeout) { rx_timeout_ = rx_timeout; }
 
  protected:
-  binary_sensor::BinarySensor *charging_binary_sensor_{nullptr};
-  binary_sensor::BinarySensor *discharging_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *battery_computer_commutation_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *battery_computer_charging_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *battery_computer_discharging_binary_sensor_{nullptr};
 
   binary_sensor::BinarySensor *charger_charging_binary_sensor_{nullptr};
   binary_sensor::BinarySensor *charger_discharging_binary_sensor_{nullptr};
@@ -210,15 +223,17 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   binary_sensor::BinarySensor *pv_aes_active_binary_sensor_{nullptr};
   binary_sensor::BinarySensor *pv_current_reduction_binary_sensor_{nullptr};
 
-  sensor::Sensor *battery_voltage_sensor_{nullptr};
-  sensor::Sensor *secondary_battery_voltage_sensor_{nullptr};
-  sensor::Sensor *state_of_charge_sensor_{nullptr};
-  sensor::Sensor *current_sensor_{nullptr};
-  sensor::Sensor *power_sensor_{nullptr};
-  sensor::Sensor *battery_status_bitmask_sensor_{nullptr};
-  sensor::Sensor *battery_capacity_remaining_sensor_{nullptr};
-  sensor::Sensor *battery_nominal_capacity_sensor_{nullptr};
+  sensor::Sensor *battery_computer_battery_voltage_sensor_{nullptr};
+  sensor::Sensor *battery_computer_secondary_battery_voltage_sensor_{nullptr};
+  sensor::Sensor *battery_computer_battery_charge_sensor_{nullptr};
+  sensor::Sensor *battery_computer_current_sensor_{nullptr};
+  sensor::Sensor *battery_computer_power_sensor_{nullptr};
+  sensor::Sensor *battery_computer_battery_status_bitmask_sensor_{nullptr};
+  sensor::Sensor *battery_computer_battery_capacity_remaining_sensor_{nullptr};
+  sensor::Sensor *battery_computer_battery_nominal_capacity_sensor_{nullptr};
 
+  sensor::Sensor *charger_battery_voltage_sensor_{nullptr};
+  sensor::Sensor *charger_secondary_battery_voltage_sensor_{nullptr};
   sensor::Sensor *charger_current_sensor_{nullptr};
   sensor::Sensor *charger_power_sensor_{nullptr};
   sensor::Sensor *charger_load_sensor_{nullptr};
@@ -232,11 +247,12 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   sensor::Sensor *charging_converter_current_sensor_{nullptr};
   sensor::Sensor *charging_converter_power_sensor_{nullptr};
   sensor::Sensor *charging_converter_load_sensor_{nullptr};
-  sensor::Sensor *charging_converter_controller_temperature_sensor_{nullptr};
+  sensor::Sensor *charging_converter_battery_temperature_sensor_{nullptr};
   sensor::Sensor *charging_converter_mode_setting_id_sensor_{nullptr};
   sensor::Sensor *charging_converter_battery_status_bitmask_sensor_{nullptr};
   sensor::Sensor *charging_converter_controller_status_bitmask_sensor_{nullptr};
 
+  sensor::Sensor *pv_battery_voltage_sensor_{nullptr};
   sensor::Sensor *pv_voltage_sensor_{nullptr};
   sensor::Sensor *pv_current_sensor_{nullptr};
   sensor::Sensor *pv_power_sensor_{nullptr};
@@ -245,7 +261,7 @@ class Votronic : public uart::UARTDevice, public PollingComponent {
   sensor::Sensor *pv_controller_temperature_sensor_{nullptr};
   sensor::Sensor *pv_mode_setting_id_sensor_{nullptr};
 
-  text_sensor::TextSensor *battery_status_text_sensor_{nullptr};
+  text_sensor::TextSensor *battery_computer_battery_status_text_sensor_{nullptr};
 
   text_sensor::TextSensor *charger_mode_setting_text_sensor_{nullptr};
   text_sensor::TextSensor *charger_battery_status_text_sensor_{nullptr};
