@@ -59,6 +59,15 @@ CONFIG_SCHEMA = cv.All(
     .extend(uart.UART_DEVICE_SCHEMA),
 )
 
+FINAL_VALIDATE_SCHEMA = uart.final_validate_device_schema(
+    "votronic",
+    baud_rate=1000,
+    data_bits=8,
+    parity="NONE",
+    stop_bits=1,
+    require_rx=True,
+)
+
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
