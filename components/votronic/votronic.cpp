@@ -541,8 +541,6 @@ void Votronic::dump_config() {
   LOG_TEXT_SENSOR("", "PV battery status", this->pv_battery_status_text_sensor_);
   LOG_TEXT_SENSOR("", "PV controller status", this->pv_controller_status_text_sensor_);
   LOG_TEXT_SENSOR("", "PV Mode Setting", this->pv_mode_setting_text_sensor_);
-
-  this->check_uart_settings(1000);
 }
 
 float Votronic::get_setup_priority() const {
