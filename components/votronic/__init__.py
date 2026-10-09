@@ -8,6 +8,7 @@ from esphome.const import CONF_ID, CONF_THROTTLE
 _LOGGER = logging.getLogger(__name__)
 
 CODEOWNERS = ["@syssi"]
+DOMAIN = "votronic"
 
 DEPENDENCIES = ["uart"]
 AUTO_LOAD = ["binary_sensor", "sensor", "text_sensor"]
