@@ -2,9 +2,14 @@
 #include "esphome/core/log.h"
 #include "esphome/core/helpers.h"
 
+// Fallback for ESPHome < 2026.10.0
+#ifndef ESPHOME_LOG_TAG
+#define ESPHOME_LOG_TAG(name, tag) static const char *const name = tag
+#endif
+
 namespace esphome::votronic {
 
-static const char *const TAG = "votronic";
+ESPHOME_LOG_TAG(TAG, "votronic");
 static const char *const TAG_INFO1 = "votronic.i1";
 static const char *const TAG_INFO2 = "votronic.i2";
 static const char *const TAG_INFO3 = "votronic.i3";
