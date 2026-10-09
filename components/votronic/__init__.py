@@ -61,7 +61,7 @@ CONFIG_SCHEMA = cv.All(
 )
 
 FINAL_VALIDATE_SCHEMA = uart.final_validate_device_schema(
-    "votronic",
+    DOMAIN,
     baud_rate=1000,
     data_bits=8,
     parity="NONE",
