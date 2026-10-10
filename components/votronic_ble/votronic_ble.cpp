@@ -11,6 +11,8 @@ namespace esphome::votronic_ble {
 
 ESPHOME_LOG_TAG(TAG, "votronic_ble");
 
+static constexpr size_t MAX_HEX_DUMP_BYTES = 100;
+
 #ifdef USE_ESP32
 
 void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if,
@@ -102,8 +104,9 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
       break;
     }
     case ESP_GATTC_NOTIFY_EVT: {
+      char hex_buf[format_hex_pretty_size(MAX_HEX_DUMP_BYTES)];
       ESP_LOGVV(TAG, "Notification received (handle %d): %s", param->notify.handle,
-                format_hex_pretty(param->notify.value, param->notify.value_len).c_str());  // NOLINT
+                format_hex_pretty_to(hex_buf, param->notify.value, param->notify.value_len, '.'));
 
       std::vector<uint8_t> data(param->notify.value, param->notify.value + param->notify.value_len);
 
@@ -128,8 +131,8 @@ void VotronicBle::on_votronic_ble_data(const uint8_t &handle, const std::vector<
 
   ESP_LOGW(TAG, "Your device is probably not supported. Please create an issue here: "
                 "https://github.com/syssi/esphome-votronic/issues");
-  ESP_LOGW(TAG, "Please provide the following unhandled message data: %s",
-           format_hex_pretty(&data.front(), data.size()).c_str());  // NOLINT
+  char hex_buf[format_hex_pretty_size(MAX_HEX_DUMP_BYTES)];
+  ESP_LOGW(TAG, "Please provide the following unhandled message data: %s", format_hex_pretty_to(hex_buf, data, '.'));
 }
 
 #endif  // USE_ESP32
