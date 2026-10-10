@@ -10,6 +10,16 @@
 namespace esphome::votronic {
 
 ESPHOME_LOG_TAG(TAG, "votronic");
+
+static constexpr size_t MAX_HEX_DUMP_BYTES = 100;
+
+static void log_hex_chunked(const char *tag, const uint8_t *data, size_t size) {
+  char buf[format_hex_pretty_size(100)];
+  for (size_t i = 0; i < size; i += 100) {
+    size_t len = std::min<size_t>(100, size - i);
+    ESP_LOGD(tag, "  %s", format_hex_pretty_to(buf, sizeof(buf), data + i, len, '.'));
+  }
+}
 static const char *const TAG_INFO1 = "votronic.i1";
 static const char *const TAG_INFO2 = "votronic.i2";
 static const char *const TAG_INFO3 = "votronic.i3";
@@ -70,8 +80,8 @@ void Votronic::loop() {
   const uint32_t now = millis();
 
   if (now - this->last_byte_ > this->rx_timeout_) {
-    ESP_LOGVV(TAG, "Buffer cleared due to timeout: %s",
-              format_hex_pretty(&this->rx_buffer_.front(), this->rx_buffer_.size()).c_str());  // NOLINT
+    char hex_buf[format_hex_pretty_size(MAX_HEX_DUMP_BYTES)];
+    ESP_LOGVV(TAG, "Buffer cleared due to timeout: %s", format_hex_pretty_to(hex_buf, this->rx_buffer_, '.'));
     this->rx_buffer_.clear();
     this->last_byte_ = now;
   }
@@ -82,8 +92,8 @@ void Votronic::loop() {
     if (this->parse_votronic_byte_(byte)) {
       this->last_byte_ = now;
     } else {
-      ESP_LOGVV(TAG, "Buffer cleared due to reset: %s",
-                format_hex_pretty(&this->rx_buffer_.front(), this->rx_buffer_.size()).c_str());  // NOLINT
+      char hex_buf[format_hex_pretty_size(MAX_HEX_DUMP_BYTES)];
+      ESP_LOGVV(TAG, "Buffer cleared due to reset: %s", format_hex_pretty_to(hex_buf, this->rx_buffer_, '.'));
       this->rx_buffer_.clear();
     }
   }
@@ -114,7 +124,8 @@ bool Votronic::parse_votronic_byte_(uint8_t byte) {
     return false;
   }
 
-  ESP_LOGVV(TAG, "RX <- %s", format_hex_pretty(raw, at + 1).c_str());  // NOLINT
+  char hex_buf[format_hex_pretty_size(MAX_HEX_DUMP_BYTES)];
+  ESP_LOGVV(TAG, "RX <- %s", format_hex_pretty_to(hex_buf, raw, at + 1, '.'));
 
   std::vector<uint8_t> data(this->rx_buffer_.begin(), this->rx_buffer_.begin() + frame_len);
 
@@ -160,8 +171,9 @@ void Votronic::on_votronic_data(const std::vector<uint8_t> &data) {
     default:
       ESP_LOGW(TAG, "Your device is probably not supported. Please create an issue here: "
                     "https://github.com/syssi/esphome-votronic/issues");
+      char hex_buf[format_hex_pretty_size(MAX_HEX_DUMP_BYTES)];
       ESP_LOGW(TAG, "Please provide the following unhandled message data (0x%02X): %s", frame_type,
-               format_hex_pretty(&data.front(), data.size()).c_str());  // NOLINT
+               format_hex_pretty_to(hex_buf, data, '.'));
   }
 }
 
@@ -177,7 +189,7 @@ void Votronic::decode_solar_charger_data_(const std::vector<uint8_t> &data) {
   };
 
   ESP_LOGI(TAG, "Solar charger data received");
-  ESP_LOGD(TAG, "  %s", format_hex_pretty(&data.front(), data.size()).c_str());  // NOLINT
+  log_hex_chunked(TAG, data.data(), data.size());
 
   // Byte Len Payload     Description                      Unit  Precision
   //   0   1  0xAA        Sync Byte
@@ -225,7 +237,7 @@ void Votronic::decode_charger_data_(const std::vector<uint8_t> &data) {
   };
 
   ESP_LOGI(TAG, "Charger data received");
-  ESP_LOGD(TAG, "  %s", format_hex_pretty(&data.front(), data.size()).c_str());  // NOLINT
+  log_hex_chunked(TAG, data.data(), data.size());
 
   // Byte Len Payload     Description                      Unit  Precision
   //   0   1  0xAA        Sync Byte
@@ -275,7 +287,7 @@ void Votronic::decode_charging_converter_data_(const std::vector<uint8_t> &data)
   };
 
   ESP_LOGI(TAG, "Charging converter data received");
-  ESP_LOGD(TAG, "  %s", format_hex_pretty(&data.front(), data.size()).c_str());  // NOLINT
+  log_hex_chunked(TAG, data.data(), data.size());
 
   // Byte Len Payload     Description                      Unit  Precision
   //   0   1  0xAA        Sync Byte
@@ -337,7 +349,7 @@ void Votronic::decode_battery_computer_info1_data_(const std::vector<uint8_t> &d
   // 0xAA 0xCA 0x03 0x05 0x0F 0x05 0xC7 0x01 0x20 0x00 0x63 0x00 0x7B 0xFE 0xFF 0x39
 
   ESP_LOGI(TAG, "Battery computer info1 data received");
-  ESP_LOGD(TAG, "  %s", format_hex_pretty(&data.front(), data.size()).c_str());  // NOLINT
+  log_hex_chunked(TAG, data.data(), data.size());
 
   // Byte Len Payload     Description                      Unit  Precision
   //   0   1  0xAA        Sync Byte
@@ -380,7 +392,7 @@ void Votronic::decode_battery_computer_info2_data_(const std::vector<uint8_t> &d
   // 0xAA 0xDA 0x00 0x00 0x00 0x00 0xF8 0x11 0x5E 0x07 0x00 0x00 0x2F 0x04 0x02 0x43
 
   ESP_LOGI(TAG, "Battery computer info2 data received");
-  ESP_LOGD(TAG, "  %s", format_hex_pretty(&data.front(), data.size()).c_str());  // NOLINT
+  log_hex_chunked(TAG, data.data(), data.size());
 
   // Byte Len Payload     Description                      Unit  Precision
   //   0   1  0xAA        Sync Byte
@@ -437,7 +449,7 @@ void Votronic::decode_battery_computer_info3_data_(const std::vector<uint8_t> &d
   // 0xAA 0xFA 0x2F 0x00 0x00 0x00 0xD2 0x02 0x00 0x0A 0x00 0x00 0x28 0xD0 0x00 0xF7
 
   ESP_LOGI(TAG, "Battery computer info3 data received");
-  ESP_LOGD(TAG, "  %s", format_hex_pretty(&data.front(), data.size()).c_str());  // NOLINT
+  log_hex_chunked(TAG, data.data(), data.size());
 
   // Byte Len Payload     Description                      Unit  Precision
   //   0   1  0xAA        Sync Byte
