@@ -621,6 +621,8 @@ std::string Votronic::charging_mode_setting_to_string_(const uint8_t charging_mo
     case 88:
     case 188:
       return "LiFePo4 14.8V";
+    default:
+      break;
   }
 
   return format_unknown_hex(charging_mode_setting);
