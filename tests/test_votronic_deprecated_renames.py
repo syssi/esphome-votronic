@@ -1,10 +1,10 @@
 """Tests for the votronic deprecated-key compatibility layer (see components/votronic/__init__.py)."""
 
 import logging
-import os
+from pathlib import Path
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pytest  # noqa: E402
 import voluptuous as vol  # noqa: E402
