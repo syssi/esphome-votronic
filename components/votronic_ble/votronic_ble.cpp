@@ -68,6 +68,8 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
       break;
     }
     case ESP_GATTC_SEARCH_CMPL_EVT: {
+      this->char_battery_computer_handle_ = 0;
+      this->char_solar_charger_handle_ = 0;
       this->pending_notify_registrations_ = 0;
 
       auto *char_battery_computer =
