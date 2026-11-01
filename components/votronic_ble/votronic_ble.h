@@ -123,8 +123,9 @@ class VotronicBle :
   text_sensor::TextSensor *pv_controller_status_text_sensor_{nullptr};
 
 #ifdef USE_ESP32
-  uint16_t char_battery_computer_handle_{0x22};
-  uint16_t char_solar_charger_handle_{0x25};
+  uint16_t char_battery_computer_handle_{0};
+  uint16_t char_solar_charger_handle_{0};
+  uint8_t pending_notify_registrations_{0};
 
   esp32_ble_tracker::ESPBTUUID service_bond_uuid_ =
       esp32_ble_tracker::ESPBTUUID::from_raw("70521e61-022d-f899-d046-4885a76acbd0");

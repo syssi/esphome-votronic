@@ -28,6 +28,7 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
     }
     case ESP_GATTC_DISCONNECT_EVT: {
       this->node_state = espbt::ClientState::IDLE;
+      this->pending_notify_registrations_ = 0;
 
       this->publish_state_(this->battery_voltage_sensor_, NAN);
       this->publish_state_(this->secondary_battery_voltage_sensor_, NAN);
@@ -67,19 +68,24 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
       break;
     }
     case ESP_GATTC_SEARCH_CMPL_EVT: {
+      this->char_battery_computer_handle_ = 0;
+      this->char_solar_charger_handle_ = 0;
+      this->pending_notify_registrations_ = 0;
+
       auto *char_battery_computer =
           this->parent_->get_characteristic(this->service_monitoring_uuid_, this->char_battery_computer_uuid_);
       if (char_battery_computer == nullptr) {
         ESP_LOGW(TAG, "[%s] No battery computer characteristic found at device. No battery computer attached?",
                  this->parent_->address_str());
-        break;
-      }
-      this->char_battery_computer_handle_ = char_battery_computer->handle;
-
-      auto status = esp_ble_gattc_register_for_notify(this->parent()->get_gattc_if(), this->parent()->get_remote_bda(),
-                                                      char_battery_computer->handle);
-      if (status) {
-        ESP_LOGW(TAG, "esp_ble_gattc_register_for_notify failed, status=%d", status);
+      } else {
+        this->char_battery_computer_handle_ = char_battery_computer->handle;
+        auto status = esp_ble_gattc_register_for_notify(
+            this->parent()->get_gattc_if(), this->parent()->get_remote_bda(), char_battery_computer->handle);
+        if (status) {
+          ESP_LOGW(TAG, "esp_ble_gattc_register_for_notify failed, status=%d", status);
+        } else {
+          this->pending_notify_registrations_++;
+        }
       }
 
       auto *char_solar_charger =
@@ -87,20 +93,28 @@ void VotronicBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t 
       if (char_solar_charger == nullptr) {
         ESP_LOGW(TAG, "[%s] No solar charger characteristic found at device. No solar charger attached?",
                  this->parent_->address_str());
-        break;
-      }
-      this->char_solar_charger_handle_ = char_solar_charger->handle;
-
-      auto status2 = esp_ble_gattc_register_for_notify(this->parent()->get_gattc_if(), this->parent()->get_remote_bda(),
-                                                       char_solar_charger->handle);
-      if (status2) {
-        ESP_LOGW(TAG, "esp_ble_gattc_register_for_notify failed, status=%d", status2);
+      } else {
+        this->char_solar_charger_handle_ = char_solar_charger->handle;
+        auto status = esp_ble_gattc_register_for_notify(this->parent()->get_gattc_if(),
+                                                        this->parent()->get_remote_bda(), char_solar_charger->handle);
+        if (status) {
+          ESP_LOGW(TAG, "esp_ble_gattc_register_for_notify failed, status=%d", status);
+        } else {
+          this->pending_notify_registrations_++;
+        }
       }
 
       break;
     }
     case ESP_GATTC_REG_FOR_NOTIFY_EVT: {
-      this->node_state = espbt::ClientState::ESTABLISHED;
+      // Wait until all notification registrations are completed. Signaling ESTABLISHED too early
+      // makes the ble_client release its services before the remaining notify descriptors are written.
+      if (this->pending_notify_registrations_ > 0) {
+        this->pending_notify_registrations_--;
+      }
+      if (this->pending_notify_registrations_ == 0) {
+        this->node_state = espbt::ClientState::ESTABLISHED;
+      }
       break;
     }
     case ESP_GATTC_NOTIFY_EVT: {
