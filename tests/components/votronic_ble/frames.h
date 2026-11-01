@@ -133,4 +133,25 @@ static const std::vector<uint8_t> BATTERY_COMPUTER_FRAME_DISCHARGING = {
     0x00, 0x00, 0x00, 0x00, 0x00,  // unknown
 };
 
+// Log data (bulk data characteristic B8A37FFE), captured in docs/btsnoop_hci-reset-today.log
+
+// 24h log: begin of stream, 0x90 = 144 records
+static const std::vector<uint8_t> LOG_24H_BEGIN = {0xAA, 0x90, 0x60, 0x00, 0x00, 0x00,
+                                                   0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+// 24h log record (12 bytes, big endian): package 0, 13.3 V, PV 0.0 A, status 0x01, -0.3 A, 280 Ah, 12.4 V
+static const std::vector<uint8_t> LOG_24H_RECORD = {0x00, 0x00, 0x85, 0x00, 0x00, 0x01,
+                                                    0xFF, 0xFD, 0x01, 0x18, 0x00, 0x7C};
+static const std::vector<uint8_t> LOG_24H_END = {0xFF, 0x90, 0x00, 0x00, 0x00, 0x00,
+                                                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// Daily log: begin of stream, 0x3C = 60 records
+static const std::vector<uint8_t> LOG_DAILY_BEGIN = {0xAA, 0x3C, 0x20, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+// Daily log record (18 bytes, big endian): package 0, 13.2..13.6 V, PV 0.9 A, 0 min current limitation,
+//   16 Ah charged, 274..280 Ah, -0.3..6.7 A, starter battery 12.3..12.4 V
+static const std::vector<uint8_t> LOG_DAILY_RECORD = {0x00, 0x3E, 0x42, 0x00, 0x09, 0x00, 0x00, 0x10, 0x01,
+                                                      0x12, 0x01, 0x18, 0xFF, 0xFD, 0x00, 0x43, 0x35, 0x36};
+static const std::vector<uint8_t> LOG_DAILY_END = {0xFF, 0x3C, 0x00, 0x00, 0x00, 0x00,
+                                                   0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
 }  // namespace esphome::votronic_ble::testing

@@ -13,6 +13,11 @@ class TestableVotronicBle : public VotronicBle {
   using VotronicBle::decode_battery_computer_data_;
   using VotronicBle::battery_status_bitmask_to_string_;
   using VotronicBle::solar_charger_status_bitmask_to_string_;
+  using VotronicBle::decode_bulk_data_;
+
+  bool bulk_data_receiving() const { return this->bulk_data_receiving_; }
+  uint8_t bulk_data_expected_records() const { return this->bulk_data_expected_records_; }
+  uint16_t bulk_data_received_records() const { return this->bulk_data_received_records_; }
 };
 
 }  // namespace esphome::votronic_ble::testing

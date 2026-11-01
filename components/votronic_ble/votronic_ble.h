@@ -95,6 +95,7 @@ class VotronicBle :
   void on_votronic_ble_data(const uint8_t &handle, const std::vector<uint8_t> &data);
 #endif
   void set_throttle(uint32_t throttle) { this->throttle_ = throttle; }
+  bool send_command(uint8_t command);
 
  protected:
   binary_sensor::BinarySensor *charging_binary_sensor_{nullptr};
@@ -125,6 +126,8 @@ class VotronicBle :
 #ifdef USE_ESP32
   uint16_t char_battery_computer_handle_{0};
   uint16_t char_solar_charger_handle_{0};
+  uint16_t char_management_handle_{0};
+  uint16_t char_bulk_data_handle_{0};
   uint8_t pending_notify_registrations_{0};
 
   esp32_ble_tracker::ESPBTUUID service_bond_uuid_ =
@@ -149,8 +152,15 @@ class VotronicBle :
   uint32_t last_solar_charger_data_{0};
   uint32_t throttle_{0};
 
+  bool bulk_data_receiving_{false};
+  uint8_t bulk_data_expected_records_{0};
+  uint16_t bulk_data_received_records_{0};
+
   void decode_solar_charger_data_(const std::vector<uint8_t> &data);
   void decode_battery_computer_data_(const std::vector<uint8_t> &data);
+  void decode_bulk_data_(const std::vector<uint8_t> &data);
+  void decode_24h_log_record_(const std::vector<uint8_t> &data);
+  void decode_daily_log_record_(const std::vector<uint8_t> &data);
   void publish_state_(binary_sensor::BinarySensor *binary_sensor, const bool &state);
   void publish_state_(sensor::Sensor *sensor, float value);
   void publish_state_(text_sensor::TextSensor *text_sensor, const std::string &state);

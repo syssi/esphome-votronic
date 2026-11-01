@@ -80,6 +80,18 @@ binary_sensor:
     aes_active:
       name: "aes active"
 
+button:
+  - platform: votronic_ble
+    votronic_ble_id: votronic0
+    # Resets the charged capacity and charged energy counters of the solar charger
+    reset_solar_counter:
+      name: "reset solar counter"
+    # The log records are printed to the log at INFO level
+    retrieve_24h_log:
+      name: "retrieve 24h log"
+    retrieve_daily_log:
+      name: "retrieve daily log"
+
 sensor:
   - platform: votronic_ble
     votronic_ble_id: votronic0
