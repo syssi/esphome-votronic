@@ -222,4 +222,45 @@ TEST(VotronicBleBitmaskTest, UnknownBitmaskFormatted) {
   EXPECT_EQ(ble.solar_charger_status_bitmask_to_string_(0x01), "Unknown (0x01)");
 }
 
+// Log data
+
+TEST(VotronicBleLogDataTest, Transmission24h) {
+  TestableVotronicBle ble;
+  ble.decode_bulk_data_(LOG_24H_BEGIN);
+  EXPECT_TRUE(ble.bulk_data_receiving());
+  EXPECT_EQ(ble.bulk_data_expected_records(), 144);
+
+  ble.decode_bulk_data_(LOG_24H_RECORD);
+  ble.decode_bulk_data_(LOG_24H_RECORD);
+  EXPECT_EQ(ble.bulk_data_received_records(), 2);
+
+  ble.decode_bulk_data_(LOG_24H_END);
+  EXPECT_FALSE(ble.bulk_data_receiving());
+}
+
+TEST(VotronicBleLogDataTest, TransmissionDaily) {
+  TestableVotronicBle ble;
+  ble.decode_bulk_data_(LOG_DAILY_BEGIN);
+  EXPECT_EQ(ble.bulk_data_expected_records(), 60);
+
+  ble.decode_bulk_data_(LOG_DAILY_RECORD);
+  EXPECT_EQ(ble.bulk_data_received_records(), 1);
+
+  ble.decode_bulk_data_(LOG_DAILY_END);
+  EXPECT_FALSE(ble.bulk_data_receiving());
+}
+
+TEST(VotronicBleLogDataTest, RecordOutsideTransmissionIgnored) {
+  TestableVotronicBle ble;
+  ble.decode_bulk_data_(LOG_24H_RECORD);
+  EXPECT_FALSE(ble.bulk_data_receiving());
+  EXPECT_EQ(ble.bulk_data_received_records(), 0);
+}
+
+TEST(VotronicBleLogDataTest, EmptyFrameIgnored) {
+  TestableVotronicBle ble;
+  ble.decode_bulk_data_({});
+  EXPECT_FALSE(ble.bulk_data_receiving());
+}
+
 }  // namespace esphome::votronic_ble::testing

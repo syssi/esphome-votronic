@@ -69,6 +69,16 @@ esphome run esp32-ble-example.yaml
 3. Turn `on` the `enable bluetooth connection` switch or power on the ESP
 4. If pairing was successful, both LEDs will light up simultaneously
 
+## Controls
+
+| Button                | Command | Description                                                                          |
+|-----------------------|---------|--------------------------------------------------------------------------------------|
+| `reset_solar_counter` | `0x06`  | Resets the charged capacity and charged energy counters of the solar charger          |
+| `retrieve_24h_log`    | `0x01`  | Requests the last 24 hours (144 records, 10 minute resolution) and dumps them to the log |
+| `retrieve_daily_log`  | `0x04`  | Requests the daily statistics (up to 60 days) and dumps them to the log               |
+
+The log records are printed at `INFO` log level.
+
 ## Example response all sensors enabled
 
 ```
